@@ -3,13 +3,18 @@ import { PlaceholderPage } from '../components/PlaceholderPage'
 import { PublicLayout } from '../components/PublicLayout'
 import { ReaderLayout } from '../components/ReaderLayout'
 import { RouteErrorBoundary } from '../components/RouteErrorBoundary'
+import { CadastroPage } from '../pages/CadastroPage'
+import { LandingPage } from '../pages/LandingPage'
+import { LoginPage } from '../pages/LoginPage'
+import { RecuperarSenhaPage } from '../pages/RecuperarSenhaPage'
 import { RequireAuth } from './guards/RequireAuth'
 import { RequireRole } from './guards/RequireRole'
 
 /**
  * Toda a árvore de rotas do produto, declarada num só lugar — nenhuma rota "pertence" a uma
- * feature. Cada rota abaixo aponta pra `PlaceholderPage`; etapas futuras (9, 10, 12-19) substituem
- * só o `element` da rota correspondente pela tela real, sem tocar na estrutura da árvore.
+ * feature. Cada rota ainda não implementada aponta pra `PlaceholderPage`; etapas futuras (9, 10,
+ * 12-19) substituem só o `element` da rota correspondente pela tela real, sem tocar na estrutura da
+ * árvore — `/`, `/login`, `/cadastro`, `/recuperar-senha` já ganharam a tela final na Etapa 9.
  *
  * Separado de `AppRoutes.jsx` (não `createBrowserRouter` aqui) só pra `AppRoutes.test.jsx` poder
  * montar um `createMemoryRouter` próprio, com URL inicial controlada por teste — e pra manter
@@ -20,10 +25,10 @@ const routeConfig = [
     element: <PublicLayout />,
     errorElement: <RouteErrorBoundary />,
     children: [
-      { path: '/', element: <PlaceholderPage title="Landing" /> },
-      { path: '/login', element: <PlaceholderPage title="Login" /> },
-      { path: '/cadastro', element: <PlaceholderPage title="Cadastro" /> },
-      { path: '/recuperar-senha', element: <PlaceholderPage title="Recuperar senha" /> },
+      { path: '/', element: <LandingPage /> },
+      { path: '/login', element: <LoginPage /> },
+      { path: '/cadastro', element: <CadastroPage /> },
+      { path: '/recuperar-senha', element: <RecuperarSenhaPage /> },
       {
         path: '/nao-autorizado',
         element: (

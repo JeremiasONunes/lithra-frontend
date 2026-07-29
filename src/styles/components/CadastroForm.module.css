@@ -1,0 +1,62 @@
+.card {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.titulo {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-xl);
+  color: var(--on-surface);
+  text-align: center;
+  margin: 0;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.termosCampo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.termos {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--on-surface-muted);
+}
+
+.checkbox {
+  accent-color: var(--primary);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.erroTermos {
+  color: var(--danger);
+  font-size: var(--text-xs);
+}
+
+.erroGeral {
+  color: var(--danger);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.rodape {
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--on-surface-muted);
+  margin: 0;
+}

@@ -1,0 +1,35 @@
+.card {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.titulo {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-xl);
+  color: var(--primary);
+  text-align: center;
+  margin: 0;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.erroGeral {
+  color: var(--danger);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.rodape {
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--on-surface-muted);
+  margin: 0;
+}

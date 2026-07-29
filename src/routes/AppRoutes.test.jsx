@@ -38,16 +38,17 @@ afterEach(() => {
 })
 
 describe('AppRoutes', () => {
-  it('renderiza o placeholder de uma rota pública', async () => {
+  it('renderiza a tela real de uma rota pública', async () => {
     renderEm('/login')
 
-    expect(await screen.findByRole('heading', { name: 'Login' })).toBeInTheDocument()
+    // "Entrar" é o título de LoginForm (Etapa 9) — a rota deixou de apontar pra PlaceholderPage.
+    expect(await screen.findByRole('heading', { name: 'Entrar' })).toBeInTheDocument()
   })
 
   it('redireciona pra /login ao acessar rota de leitor sem sessão', async () => {
     renderEm('/feed')
 
-    expect(await screen.findByRole('heading', { name: 'Login' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Entrar' })).toBeInTheDocument()
   })
 
   it('permite leitor autenticado acessar rota de leitor', async () => {
