@@ -1,0 +1,23 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-4);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-md);
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.description {
+  color: var(--on-surface-muted);
+  font-size: var(--text-sm);
+  max-width: var(--container-narrow);
+  margin: 0;
+}

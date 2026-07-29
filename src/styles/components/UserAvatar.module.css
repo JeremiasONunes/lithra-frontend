@@ -1,0 +1,9 @@
+.wrapper {
+  display: inline-flex;
+  border-radius: var(--radius-clay-full);
+}
+
+.online {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}

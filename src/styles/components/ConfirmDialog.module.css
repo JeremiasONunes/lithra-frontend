@@ -1,0 +1,26 @@
+.corpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.mensagem {
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+.acoes .destrutivo {
+  background: var(--danger);
+  color: var(--on-danger);
+}
+
+.acoes .destrutivo:active:not(:disabled) {
+  box-shadow: var(--shadow-clay-pressed);
+  transform: translateY(2px);
+}

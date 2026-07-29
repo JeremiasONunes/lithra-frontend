@@ -1,0 +1,34 @@
+.thumb {
+  aspect-ratio: 9 / 11;
+  border-radius: var(--radius-clay-sm);
+  background: var(--background);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.sm {
+  width: 96px;
+}
+
+.md {
+  width: 140px;
+}
+
+.lg {
+  width: 180px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--on-surface-muted);
+}
