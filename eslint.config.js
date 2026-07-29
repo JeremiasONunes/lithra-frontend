@@ -20,4 +20,17 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  {
+    // `01-arquitetura-frontend.md` fixa "Provider + hook de consumo no mesmo arquivo" como
+    // convenção de `context/` — sem isto, `react-refresh/only-export-components` barra esse
+    // padrão (só permite exportar componentes). Escopo restrito a `context/` para não afrouxar a
+    // regra no resto do projeto (`components/`, `hooks/` etc. continuam com um export só).
+    files: ['src/context/**/*.jsx'],
+    rules: {
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowExportNames: ['useAuth', 'useUILayout'] },
+      ],
+    },
+  },
 ])
