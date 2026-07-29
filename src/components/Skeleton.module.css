@@ -1,0 +1,20 @@
+.skeleton {
+  display: inline-block;
+  background: var(--outline);
+  border-radius: var(--radius-clay-sm);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}

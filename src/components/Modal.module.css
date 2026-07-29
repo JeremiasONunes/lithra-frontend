@@ -1,0 +1,65 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  /* rgba(74,59,49,...) do kit de referência é --on-surface (#4A3B31) com opacidade — usando
+     color-mix() pra derivar do token em vez de repetir o valor de cor na mão. */
+  background: color-mix(in srgb, var(--on-surface) 35%, transparent);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: var(--space-4);
+}
+
+.dialog {
+  width: min(480px, 100%);
+  max-height: 85vh;
+  overflow: auto;
+  background: var(--surface-raised);
+  border-radius: var(--radius-clay-lg);
+  box-shadow: var(--shadow-clay-lg);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.dialog:focus {
+  outline: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-lg);
+  color: var(--on-surface);
+}
+
+.closeButton {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-clay-full);
+  border: none;
+  background: var(--background);
+  box-shadow: var(--shadow-clay-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--on-surface);
+  flex-shrink: 0;
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}

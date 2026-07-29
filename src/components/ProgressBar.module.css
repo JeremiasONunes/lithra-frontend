@@ -1,0 +1,31 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  font-family: var(--font-body);
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: var(--on-surface-muted);
+}
+
+.track {
+  height: 14px;
+  border-radius: var(--radius-clay-full);
+  background: var(--background);
+  box-shadow: var(--shadow-clay-inset);
+  padding: 2px;
+}
+
+.fill {
+  height: 100%;
+  border-radius: var(--radius-clay-full);
+  background: var(--primary);
+  box-shadow: var(--shadow-clay-sm);
+  transition: width var(--duration-slow) var(--ease-out);
+}
