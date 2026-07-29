@@ -44,6 +44,17 @@ function LoginForm() {
   return (
     <Card className={styles.card}>
       <h1 className={styles.titulo}>Entrar</h1>
+      {/* Credenciais de teste temporárias — remover antes de produção real (dados da fixture de
+       * usuarioService, Etapa 7). */}
+      <div className={styles.credenciaisTeste}>
+        <p className={styles.credenciaisTitulo}>Credenciais de teste (temporário)</p>
+        <p>
+          <strong>Leitor:</strong> mariana@exemplo.com / senha123
+        </p>
+        <p>
+          <strong>Administrador:</strong> admin@lythra.com / admin123
+        </p>
+      </div>
       <form onSubmit={handleSubmit(aoSubmeter)} className={styles.formulario} noValidate>
         <Input
           label="E-mail"
