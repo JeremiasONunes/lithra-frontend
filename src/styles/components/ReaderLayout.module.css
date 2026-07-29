@@ -1,0 +1,18 @@
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navPlaceholder {
+  padding: var(--space-4) var(--space-6);
+  background: var(--surface-raised);
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.content {
+  flex: 1;
+}

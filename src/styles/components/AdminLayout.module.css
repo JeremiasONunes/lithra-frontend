@@ -1,0 +1,17 @@
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navPlaceholder {
+  padding: var(--space-4) var(--space-6);
+  background: var(--on-surface);
+  color: var(--surface-raised);
+  font-size: 14px;
+  text-align: center;
+}
+
+.content {
+  flex: 1;
+}
