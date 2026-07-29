@@ -57,6 +57,10 @@
   outline-offset: 2px;
 }
 
+.sairRotulo {
+  display: none;
+}
+
 @media (min-width: 768px) {
   .nav {
     position: static;
@@ -87,5 +91,9 @@
 
   .sair {
     font-size: var(--text-sm);
+  }
+
+  .sairRotulo {
+    display: inline;
   }
 }

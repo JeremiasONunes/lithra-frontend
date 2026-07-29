@@ -31,8 +31,10 @@ function AppNavigation() {
       </ul>
       <div className={styles.rodape}>
         <UserMenu />
-        <button type="button" className={styles.sair} onClick={logout}>
+        <button type="button" className={styles.sair} onClick={logout} aria-label="Sair">
           <LogOut size={20} aria-hidden="true" />
+          {/* Escondido no mobile (barra inferior sem espaço sobrando) — `aria-label` acima garante
+           * o nome acessível mesmo sem o texto visível; reaparece no desktop. */}
           <span className={styles.sairRotulo}>Sair</span>
         </button>
       </div>
