@@ -1,0 +1,60 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.autorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.nome {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-sm);
+  color: var(--on-surface);
+}
+
+.acoes {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.acao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-clay-full);
+  color: var(--on-surface-muted);
+  cursor: pointer;
+}
+
+.acao:hover {
+  background: var(--background);
+  color: var(--on-surface);
+}
+
+.acao:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.resenha {
+  color: var(--on-surface);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}

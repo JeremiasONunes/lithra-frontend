@@ -1,0 +1,9 @@
+.formulario {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.formulario > :first-child {
+  flex: 1;
+}

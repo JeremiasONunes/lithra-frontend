@@ -1,0 +1,22 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.campoNota {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.erroNota {
+  color: var(--danger);
+  font-size: var(--text-xs);
+}
+
+.erroGeral {
+  color: var(--danger);
+  font-size: var(--text-sm);
+  margin: 0;
+}

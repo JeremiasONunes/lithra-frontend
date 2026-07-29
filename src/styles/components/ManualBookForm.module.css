@@ -1,0 +1,33 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 480px;
+}
+
+.aviso {
+  color: var(--on-surface-muted);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.linha {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.linha > * {
+  flex: 1;
+}
+
+.erroGeral {
+  color: var(--danger);
+  font-size: var(--text-sm);
+  margin: 0;
+}

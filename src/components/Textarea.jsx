@@ -1,8 +1,14 @@
+import { forwardRef } from 'react'
+
 import styles from '../styles/components/Textarea.module.css'
 
 /** Mesmo tratamento visual do `Input` (Etapa 4), em versão multilinha. Não existe no
- * `Lythra Design System` (o kit não tem textarea) — estilo derivado por analogia direta do `Input`. */
-function Textarea({ label, id, error, className = '', ...props }) {
+ * `Lythra Design System` (o kit não tem textarea) — estilo derivado por analogia direta do `Input`.
+ *
+ * `forwardRef` (Etapa 12, mesmo bug documentado em `Input.jsx` na Etapa 9): `react-hook-form`
+ * precisa do `ref` chegando no `<textarea>` real do DOM pra ler o valor do campo — sem isto,
+ * `resenha` chegaria sempre `undefined` no `ReviewForm`. */
+const Textarea = forwardRef(function Textarea({ label, id, error, className = '', ...props }, ref) {
   return (
     <div className={styles.field}>
       {label ? (
@@ -11,6 +17,7 @@ function Textarea({ label, id, error, className = '', ...props }) {
         </label>
       ) : null}
       <textarea
+        ref={ref}
         id={id}
         aria-invalid={!!error}
         className={`${styles.textarea} ${error ? styles.error : ''} ${className}`}
@@ -23,6 +30,6 @@ function Textarea({ label, id, error, className = '', ...props }) {
       ) : null}
     </div>
   )
-}
+})
 
 export { Textarea }

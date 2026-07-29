@@ -1,0 +1,66 @@
+/* Mobile first: capa em cima, informações embaixo, centralizado. A partir de 768px
+ * (--breakpoint-tablet, ver tokens/breakpoints.css) vira lado a lado. */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.titulo {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-xl);
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.autor {
+  color: var(--on-surface-muted);
+  font-size: var(--text-md);
+  margin: 0;
+}
+
+.avaliacao {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.totalAvaliacoes {
+  color: var(--on-surface-muted);
+  font-size: var(--text-sm);
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .info {
+    align-items: flex-start;
+  }
+
+  .acoes {
+    justify-content: flex-start;
+  }
+}
