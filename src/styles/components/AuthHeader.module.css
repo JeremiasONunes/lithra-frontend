@@ -1,4 +1,8 @@
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
   padding: var(--space-4) var(--space-6);
 }
 
@@ -20,4 +24,19 @@
   font-weight: var(--weight-display);
   font-size: var(--text-lg);
   color: var(--primary);
+}
+
+/* Mesmo visual de pílula do `Button` `ghost`/`sm` (display/padding/raio/tipografia), CSS próprio em
+ * vez de importar as classes de `Button.module.css` — de propósito, sem nenhuma regra de `:hover`:
+ * é só a cor do texto que muda (herdada do reset global `a:hover`, `tokens/effects.css`), sem o
+ * fundo claro que o `ghost` normalmente ganha ao passar o mouse. */
+.entrar {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  border-radius: var(--radius-clay-full);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-sm);
+  color: var(--on-surface);
 }
