@@ -23,7 +23,10 @@ const NAVEGACAO_POR_PAPEL = {
     { rota: '/estatisticas', rotulo: 'Estatísticas', icon: BarChart2 },
   ],
   administrador: [
-    { rota: '/admin', rotulo: 'Dashboard', icon: LayoutDashboard },
+    // `exato: true` — sem isso, o `NavLink` de "/admin" também fica marcado como ativo em
+    // "/admin/catalogo" etc. (a rota é prefixo literal das outras), duas entradas "selecionadas" ao
+    // mesmo tempo. As demais rotas não precisam disso: nenhuma é prefixo de outro item do menu.
+    { rota: '/admin', rotulo: 'Dashboard', icon: LayoutDashboard, exato: true },
     { rota: '/admin/catalogo', rotulo: 'Catálogo', icon: Library },
     { rota: '/admin/usuarios', rotulo: 'Usuários', icon: Users },
     { rota: '/admin/configuracoes', rotulo: 'Configurações', icon: Settings },

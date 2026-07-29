@@ -35,13 +35,16 @@
 .sair {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
+  gap: var(--space-1);
+  padding: var(--space-2);
   background: none;
   border: none;
-  border-radius: var(--radius-clay-full);
+  border-radius: var(--radius-clay-md);
   color: var(--on-surface-muted);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-xs);
+  white-space: nowrap;
   cursor: pointer;
 }
 
@@ -77,5 +80,12 @@
 
   .rodape {
     margin-top: auto;
+    /* Avatar na ponta esquerda, "Sair" na ponta direita da sidebar (`.nav` tem `align-items:
+       stretch`, então `.rodape` já ocupa a largura inteira). */
+    justify-content: space-between;
+  }
+
+  .sair {
+    font-size: var(--text-sm);
   }
 }

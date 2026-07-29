@@ -31,8 +31,9 @@ function AppNavigation() {
       </ul>
       <div className={styles.rodape}>
         <UserMenu />
-        <button type="button" className={styles.sair} onClick={logout} aria-label="Sair">
+        <button type="button" className={styles.sair} onClick={logout}>
           <LogOut size={20} aria-hidden="true" />
+          <span className={styles.sairRotulo}>Sair</span>
         </button>
       </div>
     </nav>

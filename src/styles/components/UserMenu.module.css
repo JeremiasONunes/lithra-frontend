@@ -17,7 +17,11 @@
 }
 
 /* Abre sempre pra cima — funciona tanto na barra inferior fixa (mobile) quanto no rodapé da
- * sidebar (desktop), sem precisar de posicionamento diferente por breakpoint. */
+ * sidebar (desktop). O lado (`left`/`right`) precisa mudar por breakpoint: no mobile o avatar fica
+ * perto da borda direita da tela (abrir pra esquerda mantém dentro da viewport); no desktop o
+ * avatar fica na ponta esquerda da sidebar (`justify-content: space-between` no rodapé, "Sair" na
+ * ponta direita) — abrir pra direita é o que mantém o menu dentro da sidebar, não vazando pra fora
+ * dela pela esquerda. */
 .menu {
   position: absolute;
   bottom: calc(100% + var(--space-2));
@@ -30,6 +34,13 @@
   margin: 0;
   list-style: none;
   z-index: 60;
+}
+
+@media (min-width: 768px) {
+  .menu {
+    right: auto;
+    left: 0;
+  }
 }
 
 .item {
