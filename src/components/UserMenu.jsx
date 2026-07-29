@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
-import { Settings, User } from 'lucide-react'
+import { LogOut, Settings, User } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import { useAuth } from '../context/AuthContext'
 import { UserAvatar } from './UserAvatar'
 import styles from '../styles/components/UserMenu.module.css'
 
-/** Menu do usuário — avatar como gatilho, lista de ações. Fecha ao clicar fora e ao pressionar
- * `Esc`, implementado na mão (mesmo padrão "Menu suspenso" documentado em
- * `01-arquitetura-frontend.md`). `usuario` nunca é `null` aqui: `UserMenu` só é renderizado dentro
- * de `AppNavigation`, que só existe atrás de `RequireAuth`. "Sair" não está mais aqui — virou botão
- * próprio, sempre visível, ao lado do avatar (`AppNavigation.jsx`). */
+/** Menu do usuário — avatar (+ nome, só no desktop) como gatilho, lista de ações (Meu Perfil,
+ * Configurações, Sair). Fecha ao clicar fora e ao pressionar `Esc`, implementado na mão (mesmo
+ * padrão "Menu suspenso" documentado em `01-arquitetura-frontend.md`). `usuario` nunca é `null`
+ * aqui: `UserMenu` só é renderizado dentro de `AppNavigation`, que só existe atrás de
+ * `RequireAuth`. */
 function UserMenu() {
-  const { usuario } = useAuth()
+  const { usuario, logout } = useAuth()
   const [aberto, setAberto] = useState(false)
   const menuRef = useRef(null)
 
@@ -48,6 +48,9 @@ function UserMenu() {
         aria-label={`Menu de ${usuario.nome}`}
       >
         <UserAvatar name={usuario.nome} src={usuario.fotoUrl} size="sm" />
+        {/* Escondido no mobile (barra inferior sem espaço sobrando) — o `aria-label` acima garante
+         * o nome acessível mesmo sem o texto visível; reaparece no desktop. */}
+        <span className={styles.nome}>{usuario.nome}</span>
       </button>
       {aberto ? (
         <ul className={styles.menu} role="menu">
@@ -72,6 +75,12 @@ function UserMenu() {
               <Settings size={16} aria-hidden="true" />
               Configurações
             </Link>
+          </li>
+          <li role="none">
+            <button type="button" role="menuitem" className={styles.item} onClick={logout}>
+              <LogOut size={16} aria-hidden="true" />
+              Sair
+            </button>
           </li>
         </ul>
       ) : null}
