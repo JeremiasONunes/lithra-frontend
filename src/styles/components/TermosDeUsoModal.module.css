@@ -1,0 +1,67 @@
+/* Rola aqui dentro (não em `.dialog` do `Modal`, Etapa 4 — evita mexer num componente
+ * compartilhado por outras telas) — texto longo, precisa de scroll próprio com barra discreta e
+ * dentro dos tokens do Design System, em vez da barra padrão do navegador. */
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  color: var(--on-surface);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: var(--space-3);
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--outline) transparent;
+}
+
+.conteudo::-webkit-scrollbar {
+  width: 8px;
+}
+
+.conteudo::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.conteudo::-webkit-scrollbar-thumb {
+  background: var(--outline);
+  border-radius: var(--radius-clay-full);
+}
+
+.conteudo::-webkit-scrollbar-thumb:hover {
+  background: var(--on-surface-muted);
+}
+
+.conteudo p {
+  margin: 0;
+}
+
+.atualizacao {
+  color: var(--on-surface-muted);
+  font-size: var(--text-xs);
+}
+
+.secao {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-base);
+  color: var(--on-surface);
+  margin: 0 0 var(--space-2);
+}
+
+.lista {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.aviso {
+  color: var(--on-surface-muted);
+  font-size: var(--text-xs);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-4);
+}

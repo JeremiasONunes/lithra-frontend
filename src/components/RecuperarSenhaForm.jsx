@@ -44,6 +44,7 @@ function RecuperarSenhaForm() {
             label="E-mail"
             id="email"
             type="email"
+            placeholder="voce@exemplo.com"
             autoComplete="email"
             error={errors.email?.message}
             {...register('email')}

@@ -49,6 +49,7 @@ function LoginForm() {
           label="E-mail"
           id="email"
           type="email"
+          placeholder="voce@exemplo.com"
           autoComplete="email"
           error={errors.email?.message}
           {...register('email')}
@@ -57,6 +58,7 @@ function LoginForm() {
           label="Senha"
           id="senha"
           type="password"
+          placeholder="••••••••"
           autoComplete="current-password"
           error={errors.senha?.message}
           {...register('senha')}

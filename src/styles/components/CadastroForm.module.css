@@ -43,6 +43,31 @@
   margin-top: 2px;
 }
 
+/* `<button>` por baixo (abre o modal de Termos, não navega — não é um `Link`), mas visualmente
+ * idêntico a um link de texto sublinhado, sem nenhum resquício de aparência de botão do navegador
+ * (`appearance: none` + reset completo de fundo/borda/margem). */
+.linkTermos {
+  appearance: none;
+  display: inline;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--text-link);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.linkTermos:hover {
+  color: var(--text-link-hover);
+}
+
+.linkTermos:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 .erroTermos {
   color: var(--danger);
   font-size: var(--text-xs);

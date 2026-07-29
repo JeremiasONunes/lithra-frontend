@@ -47,6 +47,15 @@
   box-shadow: var(--shadow-clay-md);
 }
 
+/* `color` repetido aqui de propósito (não só `background`): o reset global `a:hover` (Etapa 3,
+ * `tokens/effects.css`) tem mais especificidade que uma classe só e vazava por cima da cor do texto
+ * quando o botão é um `<a>` (`LandingHero`/`LandingCTA`, Etapa 9) — sem isto, o texto ficava com a
+ * mesma cor do fundo (`--primary`) ao passar o mouse, ilegível. */
+.primary:hover:not(:disabled) {
+  background: var(--primary-pressed);
+  color: var(--on-primary);
+}
+
 .primary:active:not(:disabled) {
   box-shadow: var(--shadow-clay-pressed);
   transform: translateY(2px);
@@ -56,6 +65,13 @@
   background: var(--secondary);
   color: var(--on-secondary);
   box-shadow: var(--shadow-clay-md);
+}
+
+/* Mesmo problema/solução do `.primary:hover` acima — sem token de "secondary pressed" no Design
+ * System, o hover aqui só reforça a cor do texto (evita o vazamento do `a:hover` global), sem
+ * escurecer o fundo. */
+.secondary:hover:not(:disabled) {
+  color: var(--on-secondary);
 }
 
 .secondary:active:not(:disabled) {
@@ -71,4 +87,5 @@
 
 .ghost:hover:not(:disabled) {
   background: var(--surface);
+  color: var(--on-surface);
 }

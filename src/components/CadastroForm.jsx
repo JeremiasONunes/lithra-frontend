@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext'
 import { Button } from './Button'
 import { Card } from './Card'
 import { Input } from './Input'
+import { TermosDeUsoModal } from './TermosDeUsoModal'
 import styles from '../styles/components/CadastroForm.module.css'
 
 const esquema = z
@@ -33,6 +34,7 @@ function CadastroForm() {
   const { cadastrar } = useAuth()
   const navigate = useNavigate()
   const [erroCadastro, setErroCadastro] = useState(null)
+  const [termosAbertos, setTermosAbertos] = useState(false)
 
   const {
     register,
@@ -57,6 +59,7 @@ function CadastroForm() {
         <Input
           label="Nome"
           id="nome"
+          placeholder="Seu nome"
           autoComplete="name"
           error={errors.nome?.message}
           {...register('nome')}
@@ -65,6 +68,7 @@ function CadastroForm() {
           label="E-mail"
           id="email"
           type="email"
+          placeholder="voce@exemplo.com"
           autoComplete="email"
           error={errors.email?.message}
           {...register('email')}
@@ -73,6 +77,7 @@ function CadastroForm() {
           label="Senha"
           id="senha"
           type="password"
+          placeholder="••••••••"
           autoComplete="new-password"
           error={errors.senha?.message}
           {...register('senha')}
@@ -81,6 +86,7 @@ function CadastroForm() {
           label="Confirmar senha"
           id="confirmarSenha"
           type="password"
+          placeholder="••••••••"
           autoComplete="new-password"
           error={errors.confirmarSenha?.message}
           {...register('confirmarSenha')}
@@ -88,7 +94,17 @@ function CadastroForm() {
         <div className={styles.termosCampo}>
           <label className={styles.termos}>
             <input type="checkbox" className={styles.checkbox} {...register('aceiteTermos')} />
-            Ao continuar, você aceita os termos de uso do Lythra.
+            <span>
+              Ao continuar, você aceita os{' '}
+              <button
+                type="button"
+                className={styles.linkTermos}
+                onClick={() => setTermosAbertos(true)}
+              >
+                termos de uso
+              </button>{' '}
+              do Lythra.
+            </span>
           </label>
           {errors.aceiteTermos ? (
             <span role="alert" className={styles.erroTermos}>
@@ -108,6 +124,7 @@ function CadastroForm() {
       <p className={styles.rodape}>
         Já tem conta? <Link to="/login">Entrar</Link>
       </p>
+      <TermosDeUsoModal open={termosAbertos} onClose={() => setTermosAbertos(false)} />
     </Card>
   )
 }
