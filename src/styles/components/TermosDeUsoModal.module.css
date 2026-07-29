@@ -1,6 +1,6 @@
 /* Rola aqui dentro (não em `.dialog` do `Modal`, Etapa 4 — evita mexer num componente
- * compartilhado por outras telas) — texto longo, precisa de scroll próprio com barra discreta e
- * dentro dos tokens do Design System, em vez da barra padrão do navegador. */
+ * compartilhado por outras telas) — texto longo, precisa de scroll próprio. A cor da barra em si
+ * vem do reset global (`styles/scrollbar.css`), aplicado a qualquer contêiner com scroll. */
 .conteudo {
   display: flex;
   flex-direction: column;
@@ -11,27 +11,6 @@
   max-height: 60vh;
   overflow-y: auto;
   padding-right: var(--space-3);
-
-  /* Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: var(--outline) transparent;
-}
-
-.conteudo::-webkit-scrollbar {
-  width: 8px;
-}
-
-.conteudo::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.conteudo::-webkit-scrollbar-thumb {
-  background: var(--outline);
-  border-radius: var(--radius-clay-full);
-}
-
-.conteudo::-webkit-scrollbar-thumb:hover {
-  background: var(--on-surface-muted);
 }
 
 .conteudo p {
