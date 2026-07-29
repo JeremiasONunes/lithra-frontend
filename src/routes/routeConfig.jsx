@@ -3,6 +3,7 @@ import { PlaceholderPage } from '../components/PlaceholderPage'
 import { PublicLayout } from '../components/PublicLayout'
 import { ReaderLayout } from '../components/ReaderLayout'
 import { RouteErrorBoundary } from '../components/RouteErrorBoundary'
+import { AcessoNaoAutorizadoPage } from '../pages/AcessoNaoAutorizadoPage'
 import { CadastroPage } from '../pages/CadastroPage'
 import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
@@ -12,9 +13,10 @@ import { RequireRole } from './guards/RequireRole'
 
 /**
  * Toda a árvore de rotas do produto, declarada num só lugar — nenhuma rota "pertence" a uma
- * feature. Cada rota ainda não implementada aponta pra `PlaceholderPage`; etapas futuras (9, 10,
- * 12-19) substituem só o `element` da rota correspondente pela tela real, sem tocar na estrutura da
- * árvore — `/`, `/login`, `/cadastro`, `/recuperar-senha` já ganharam a tela final na Etapa 9.
+ * feature. Cada rota ainda não implementada aponta pra `PlaceholderPage`; etapas futuras (11-19)
+ * substituem só o `element` da rota correspondente pela tela real, sem tocar na estrutura da árvore
+ * — `/`, `/login`, `/cadastro`, `/recuperar-senha` (Etapa 9) e `/nao-autorizado` (Etapa 10) já
+ * ganharam a tela final.
  *
  * Separado de `AppRoutes.jsx` (não `createBrowserRouter` aqui) só pra `AppRoutes.test.jsx` poder
  * montar um `createMemoryRouter` próprio, com URL inicial controlada por teste — e pra manter
@@ -29,15 +31,7 @@ const routeConfig = [
       { path: '/login', element: <LoginPage /> },
       { path: '/cadastro', element: <CadastroPage /> },
       { path: '/recuperar-senha', element: <RecuperarSenhaPage /> },
-      {
-        path: '/nao-autorizado',
-        element: (
-          <PlaceholderPage
-            title="Acesso não autorizado"
-            description="Você não tem permissão para acessar esta página."
-          />
-        ),
-      },
+      { path: '/nao-autorizado', element: <AcessoNaoAutorizadoPage /> },
       {
         path: '*',
         element: (

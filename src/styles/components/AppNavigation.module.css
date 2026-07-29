@@ -1,0 +1,54 @@
+/* Mobile first: barra inferior fixa, base do layout (sem media query). A partir de 768px
+ * (--breakpoint-tablet, ver tokens/breakpoints.css — `var()` não funciona dentro de `@media`, valor
+ * escrito por extenso) vira sidebar em fluxo normal, mais alta que larga. */
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  background: var(--surface-raised);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.lista {
+  display: flex;
+  flex: 1;
+  justify-content: space-around;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rodape {
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    position: static;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 220px;
+    height: 100vh;
+    border-top: none;
+    border-right: 1px solid var(--border-subtle);
+    padding: var(--space-6) var(--space-4);
+    gap: var(--space-6);
+  }
+
+  .lista {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .rodape {
+    margin-top: auto;
+  }
+}

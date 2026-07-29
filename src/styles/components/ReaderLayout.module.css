@@ -4,15 +4,18 @@
   flex-direction: column;
 }
 
-.navPlaceholder {
-  padding: var(--space-4) var(--space-6);
-  background: var(--surface-raised);
-  color: var(--text-muted);
-  font-size: 14px;
-  text-align: center;
-  border-bottom: 1px solid var(--border-subtle);
-}
-
 .content {
   flex: 1;
+  /* Espaço pra `AppNavigation` (barra inferior fixa) não cobrir o fim do conteúdo no mobile. */
+  padding: var(--space-4) var(--space-4) 80px;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    flex-direction: row;
+  }
+
+  .content {
+    padding: var(--space-6);
+  }
 }

@@ -1,0 +1,40 @@
+/* Mobile first: ícone em cima, rótulo embaixo, compacto (barra inferior). A partir de 768px
+ * (--breakpoint-tablet, ver tokens/breakpoints.css) vira linha de sidebar: ícone e rótulo lado a
+ * lado, com fundo de destaque quando ativo. */
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-2);
+  border-radius: var(--radius-clay-md);
+  color: var(--on-surface-muted);
+  text-decoration: none;
+}
+
+.item.ativo {
+  color: var(--primary);
+}
+
+.rotulo {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-xs);
+}
+
+@media (min-width: 768px) {
+  .item {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 10px 12px;
+  }
+
+  .item.ativo {
+    background: var(--background);
+  }
+
+  .rotulo {
+    font-size: var(--text-sm);
+  }
+}
