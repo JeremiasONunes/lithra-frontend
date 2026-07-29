@@ -1,0 +1,12 @@
+/*
+ * Não vem do `Lythra Design System` (o kit não define breakpoints) — criado nesta etapa, conforme
+ * `02-plano-mestre.md` (Etapa 3). Mobile é a base, sem media query; os dois breakpoints marcam onde
+ * o layout ganha mais espaço (tablet) e vira desktop. CSS custom properties não podem ser usadas
+ * dentro de `@media (min-width: ...)` diretamente (limitação da spec) — os valores abaixo são a
+ * referência documentada; cada `@media` escreve o pixel por extenso, mas sempre um destes dois
+ * valores, nunca um terceiro valor solto.
+ */
+:root {
+  --breakpoint-tablet: 768px; /* usar em @media (min-width: 768px) */
+  --breakpoint-desktop: 1024px; /* usar em @media (min-width: 1024px) */
+}

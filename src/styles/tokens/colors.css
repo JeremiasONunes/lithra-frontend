@@ -1,0 +1,50 @@
+/*
+ * Copiado de `lythra/Lythra Design System/tokens/colors.css` (Etapa 3), com uma correção
+ * deliberada: `on-primary`, `on-secondary` e `on-danger` do arquivo original usam texto branco, que
+ * falha contraste WCAG AA sobre as respectivas cores de fundo (fórmula oficial de luminância
+ * relativa do WCAG, não estimativa visual):
+ *   - branco sobre `primary` (#EF8C6F):   ~2.43:1 (mínimo exigido: 4.5:1)
+ *   - branco sobre `secondary` (#8FB894): ~2.22:1
+ *   - branco sobre `danger` (#E2777A):    ~2.94:1
+ * As três correções abaixo usam `on-surface` (o marrom escuro já definido neste arquivo) no lugar de
+ * branco — cada par recalculado passa AA com folga (~4.6:1, ~4.8:1 e ~5.8:1, respectivamente). Todo
+ * o resto dos valores é copiado como está.
+ */
+:root {
+  --background: #f3ece0;
+  --surface: #faf6ef;
+  --surface-raised: #fdfbf7;
+  --on-surface: #4a3b31;
+  --on-surface-muted: #8a7a6b;
+  --outline: #dcd0bf;
+  --primary: #ef8c6f;
+  --primary-pressed: #d9755a;
+  --on-primary: var(--on-surface); /* era #FFFFFF — falha AA, ver nota acima */
+  --secondary: #8fb894;
+  --on-secondary: var(--on-surface); /* era #FFFFFF — falha AA, ver nota acima */
+  --accent: #f3c267;
+  --on-accent: #4a3b31;
+  --success: #8fb894;
+  --on-success: var(
+    --on-surface
+  ); /* alias de --on-secondary: --success é o mesmo valor de --secondary */
+  --warning: #f3c267;
+  --on-warning: #4a3b31; /* alias de --on-accent: --warning é o mesmo valor de --accent */
+  --danger: #e2777a;
+  --on-danger: var(--on-surface); /* era #FFFFFF — falha AA, ver nota acima */
+  --text-heading: var(--on-surface);
+  --text-body: var(--on-surface);
+  --text-muted: var(--on-surface-muted);
+  --text-inverse: var(--surface-raised);
+  --text-link: var(--primary-pressed);
+  --text-link-hover: var(--primary);
+  --surface-page: var(--background);
+  --surface-card: var(--surface);
+  --surface-sunken: var(--background);
+  --border-subtle: var(--outline);
+  --border-default: var(--outline);
+  --accent-primary: var(--primary);
+  --accent-primary-hover: var(--primary-pressed);
+  --accent-secondary: var(--secondary);
+  --focus-ring: var(--primary);
+}

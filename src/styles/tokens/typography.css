@@ -1,0 +1,34 @@
+/*
+ * Copiado de `lythra/Lythra Design System/tokens/typography.css` (Etapa 3), com uma mudança: o
+ * arquivo original carrega Fredoka/Nunito via `@import url(...)` do Google Fonts (CDN). Aqui as
+ * fontes são autohospedadas via `@fontsource` (instalado como dependência), reduzindo a dependência
+ * de rede externa em produção — só os pesos realmente usados pelos tokens abaixo (Fredoka 600,
+ * Nunito 400/600/700; o CDN original também carregava Fredoka 500 e Nunito 800, que nenhum token
+ * usa). Atenção: é `@fontsource/nunito` (a família "Nunito"), não `@fontsource/nunito-sans` — são
+ * famílias tipográficas diferentes, e o kit de design especifica a primeira.
+ */
+@import '@fontsource/fredoka/600.css';
+@import '@fontsource/nunito/400.css';
+@import '@fontsource/nunito/600.css';
+@import '@fontsource/nunito/700.css';
+
+:root {
+  --font-display: 'Fredoka', ui-rounded, system-ui, sans-serif;
+  --font-body: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.375rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.25rem;
+  --text-3xl: 3rem;
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+  --weight-regular: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-display: 600;
+}

@@ -1,0 +1,49 @@
+/* Copiado de `lythra/Lythra Design System/tokens/effects.css` (Etapa 3), sem alterações — valores de
+ * sombra/raio já validados (batem, byte a byte, com os já usados e aprovados no projeto anterior). */
+:root {
+  --radius-clay-sm: 16px;
+  --radius-clay-md: 24px;
+  --radius-clay-lg: 32px;
+  --radius-clay-full: 999px;
+  --radius-sm: var(--radius-clay-sm);
+  --radius-md: var(--radius-clay-md);
+  --radius-lg: var(--radius-clay-lg);
+  --radius-pill: var(--radius-clay-full);
+  --shadow-clay-sm: -4px -4px 8px rgba(255, 255, 255, 0.7), 4px 4px 8px rgba(174, 141, 112, 0.25);
+  --shadow-clay-md: -8px -8px 16px rgba(255, 255, 255, 0.7), 8px 8px 16px rgba(174, 141, 112, 0.3);
+  --shadow-clay-lg:
+    -12px -12px 32px rgba(255, 255, 255, 0.6), 12px 12px 32px rgba(174, 141, 112, 0.35);
+  --shadow-clay-pressed:
+    inset -6px -6px 12px rgba(255, 255, 255, 0.5), inset 6px 6px 12px rgba(174, 141, 112, 0.3);
+  --shadow-clay-inset:
+    inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 4px 4px 8px rgba(174, 141, 112, 0.25);
+  --shadow-sm: var(--shadow-clay-sm);
+  --shadow-md: var(--shadow-clay-md);
+  --shadow-lg: var(--shadow-clay-lg);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--surface-page);
+  color: var(--text-body);
+  font-family: var(--font-body);
+  margin: 0;
+}
+
+a {
+  color: var(--text-link);
+  text-decoration: none;
+  font-weight: var(--weight-semibold);
+}
+
+a:hover {
+  color: var(--text-link-hover);
+}
