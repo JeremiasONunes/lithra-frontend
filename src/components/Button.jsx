@@ -1,4 +1,4 @@
-import styles from './Button.module.css'
+import styles from '../styles/components/Button.module.css'
 
 /** Botão pílula clay — variantes `primary`/`secondary`/`ghost`. Estado pressionado resolvido com
  * `:active` em CSS puro (o kit de referência usa `onMouseDown`/`onMouseUp` porque não tem CSS Module

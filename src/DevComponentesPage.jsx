@@ -9,7 +9,7 @@ import { Avatar } from './components/Avatar'
 import { Modal } from './components/Modal'
 import { ProgressBar } from './components/ProgressBar'
 import { Skeleton } from './components/Skeleton'
-import styles from './DevTokensPage.module.css'
+import styles from './styles/DevTokensPage.module.css'
 
 /**
  * Página temporária de conferência visual dos componentes da Etapa 4 — mesmo tratamento de

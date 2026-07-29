@@ -1,4 +1,4 @@
-import styles from './Card.module.css'
+import styles from '../styles/components/Card.module.css'
 
 function Card({ children, onClick, className = '', ...props }) {
   return (

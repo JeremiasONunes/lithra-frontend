@@ -1,4 +1,4 @@
-import styles from './Textarea.module.css'
+import styles from '../styles/components/Textarea.module.css'
 
 /** Mesmo tratamento visual do `Input` (Etapa 4), em versão multilinha. Não existe no
  * `Lythra Design System` (o kit não tem textarea) — estilo derivado por analogia direta do `Input`. */

@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef } from 'react'
 import { X } from 'lucide-react'
-import styles from './Modal.module.css'
+import styles from '../styles/components/Modal.module.css'
 
 /**
  * Modal acessível implementado na mão (sem Radix — ver `01-arquitetura-frontend.md`): fecha com

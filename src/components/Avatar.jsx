@@ -1,4 +1,4 @@
-import styles from './Avatar.module.css'
+import styles from '../styles/components/Avatar.module.css'
 
 function getInitials(name) {
   return name

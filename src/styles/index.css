@@ -2,11 +2,11 @@
  * sombra/breakpoint para todo componente construído a partir da Etapa 4. O bloco abaixo (herdado do
  * scaffold inicial) estiliza só a página placeholder desta fase — intocado de propósito, mesmo
  * tratamento já dado a `App.jsx`/`App.css` na Etapa 1. */
-@import './styles/tokens/colors.css';
-@import './styles/tokens/typography.css';
-@import './styles/tokens/spacing.css';
-@import './styles/tokens/effects.css';
-@import './styles/tokens/breakpoints.css';
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './tokens/effects.css';
+@import './tokens/breakpoints.css';
 
 :root {
   --text: #6b6375;

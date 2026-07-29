@@ -1,4 +1,4 @@
-import styles from './DevTokensPage.module.css'
+import styles from './styles/DevTokensPage.module.css'
 
 /**
  * Página temporária de conferência visual dos tokens (Etapa 3) — não é produto, é diagnóstico

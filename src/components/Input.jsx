@@ -1,4 +1,4 @@
-import styles from './Input.module.css'
+import styles from '../styles/components/Input.module.css'
 
 /** Campo de texto clay entalhado — `error` mostra a mensagem e liga `aria-invalid`. Sem ícone
  * embutido (o kit de referência tem um slot de ícone; aqui quem precisa posiciona o próprio ícone

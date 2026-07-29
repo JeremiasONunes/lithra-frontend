@@ -1,4 +1,4 @@
-import styles from './Skeleton.module.css'
+import styles from '../styles/components/Skeleton.module.css'
 
 /** Placeholder de carregamento — não existe no `Lythra Design System` (o kit não define um). Sempre
  * `aria-hidden`: é puramente visual, sem conteúdo para anunciar; quem compõe uma lista de `Skeleton`

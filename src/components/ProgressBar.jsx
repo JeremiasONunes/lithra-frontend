@@ -1,4 +1,4 @@
-import styles from './ProgressBar.module.css'
+import styles from '../styles/components/ProgressBar.module.css'
 
 /** Barra de progresso entalhada. `role="progressbar"` + `aria-value*` — o kit de referência não tem
  * isso, mas uma barra de progresso sem semântica é invisível para leitor de tela. */
