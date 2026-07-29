@@ -27,6 +27,31 @@
 
 .rodape {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sair {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-clay-full);
+  color: var(--on-surface-muted);
+  cursor: pointer;
+}
+
+.sair:hover {
+  color: var(--danger);
+}
+
+.sair:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 @media (min-width: 768px) {
@@ -44,7 +69,9 @@
   }
 
   .lista {
+    flex: initial;
     flex-direction: column;
+    justify-content: flex-start;
     gap: var(--space-1);
   }
 

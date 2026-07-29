@@ -1,3 +1,5 @@
+import { LogOut } from 'lucide-react'
+
 import { useAuth } from '../context/AuthContext'
 import { useNavigationItems } from '../hooks/useNavigationItems'
 import { NavItem } from './NavItem'
@@ -10,9 +12,12 @@ import styles from '../styles/components/AppNavigation.module.css'
  * `ReaderLayout` quanto por `AdminLayout`: os itens vêm de `useNavigationItems(papel)`, nunca
  * hard-coded por layout — é isso que garante "mesma navegação, mesmos itens" por papel (Critério de
  * Aceite desta etapa).
+ *
+ * "Sair" fica como botão próprio, sempre visível ao lado do avatar — não só dentro do menu suspenso
+ * (`UserMenu`), que exige um clique a mais pra revelar uma ação tão frequente.
  */
 function AppNavigation() {
-  const { papel } = useAuth()
+  const { papel, logout } = useAuth()
   const itens = useNavigationItems(papel)
 
   return (
@@ -26,6 +31,9 @@ function AppNavigation() {
       </ul>
       <div className={styles.rodape}>
         <UserMenu />
+        <button type="button" className={styles.sair} onClick={logout} aria-label="Sair">
+          <LogOut size={20} aria-hidden="true" />
+        </button>
       </div>
     </nav>
   )

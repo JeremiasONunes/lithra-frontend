@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { LogOut, Settings, User } from 'lucide-react'
+import { Settings, User } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import { useAuth } from '../context/AuthContext'
@@ -9,9 +9,10 @@ import styles from '../styles/components/UserMenu.module.css'
 /** Menu do usuário — avatar como gatilho, lista de ações. Fecha ao clicar fora e ao pressionar
  * `Esc`, implementado na mão (mesmo padrão "Menu suspenso" documentado em
  * `01-arquitetura-frontend.md`). `usuario` nunca é `null` aqui: `UserMenu` só é renderizado dentro
- * de `AppNavigation`, que só existe atrás de `RequireAuth`. */
+ * de `AppNavigation`, que só existe atrás de `RequireAuth`. "Sair" não está mais aqui — virou botão
+ * próprio, sempre visível, ao lado do avatar (`AppNavigation.jsx`). */
 function UserMenu() {
-  const { usuario, logout } = useAuth()
+  const { usuario } = useAuth()
   const [aberto, setAberto] = useState(false)
   const menuRef = useRef(null)
 
@@ -71,12 +72,6 @@ function UserMenu() {
               <Settings size={16} aria-hidden="true" />
               Configurações
             </Link>
-          </li>
-          <li role="none">
-            <button type="button" role="menuitem" className={styles.item} onClick={logout}>
-              <LogOut size={16} aria-hidden="true" />
-              Sair
-            </button>
           </li>
         </ul>
       ) : null}
