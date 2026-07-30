@@ -4,9 +4,10 @@ import { livroService } from '../services/livroService'
 import { useAsync } from './useAsync'
 
 /**
- * Busca livros por título/autor — `query` controlada por quem chama (normalmente só muda quando o
- * usuário confirma a busca, não a cada tecla digitada; ver `BuscarLivroPage`). Termo vazio já
- * resolve pro catálogo inteiro dentro do próprio `livroService.buscarPorTitulo`, sem lançar erro.
+ * Busca livros por título, autor ou gênero (mesmo campo cobre os três) — `query` controlada por
+ * quem chama (normalmente só muda quando o usuário confirma a busca, não a cada tecla digitada; ver
+ * `BuscarLivroPage`). Termo vazio já resolve pro catálogo inteiro dentro do próprio
+ * `livroService.buscarPorTitulo`, sem lançar erro.
  * @param {string} query
  */
 function useBuscaDeLivros(query) {

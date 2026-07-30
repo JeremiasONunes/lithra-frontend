@@ -38,6 +38,14 @@ describe('livroService', () => {
     expect(resultado.some((livro) => livro.id === 'livro-1')).toBe(true)
   })
 
+  it('buscarPorTitulo encontra por gênero, trazendo todos os livros daquele gênero', async () => {
+    const resultado = await livroService.buscarPorTitulo('fantasia')
+    expect(resultado.some((livro) => livro.id === 'livro-1')).toBe(true)
+    expect(resultado.some((livro) => livro.id === 'livro-5')).toBe(true)
+    expect(resultado.some((livro) => livro.id === 'livro-9')).toBe(true)
+    expect(resultado.every((livro) => livro.genero === 'Fantasia')).toBe(true)
+  })
+
   it('buscarPorTitulo retorna o catálogo inteiro pra termo em branco, sem lançar erro', async () => {
     const resultado = await livroService.buscarPorTitulo('   ')
     const todos = await livroService.listar()
