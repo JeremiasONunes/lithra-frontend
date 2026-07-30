@@ -38,8 +38,14 @@ describe('livroService', () => {
     expect(resultado.some((livro) => livro.id === 'livro-1')).toBe(true)
   })
 
-  it('buscarPorTitulo retorna lista vazia pra termo em branco, sem lançar erro', async () => {
+  it('buscarPorTitulo retorna o catálogo inteiro pra termo em branco, sem lançar erro', async () => {
     const resultado = await livroService.buscarPorTitulo('   ')
+    const todos = await livroService.listar()
+    expect(resultado).toEqual(todos)
+  })
+
+  it('buscarPorTitulo retorna lista vazia quando nenhum livro corresponde ao termo', async () => {
+    const resultado = await livroService.buscarPorTitulo('termo-que-nao-existe-em-nenhum-livro')
     expect(resultado).toEqual([])
   })
 

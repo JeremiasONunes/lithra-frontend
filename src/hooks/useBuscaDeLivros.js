@@ -6,7 +6,7 @@ import { useAsync } from './useAsync'
 /**
  * Busca livros por título/autor — `query` controlada por quem chama (normalmente só muda quando o
  * usuário confirma a busca, não a cada tecla digitada; ver `BuscarLivroPage`). Termo vazio já
- * resolve pra lista vazia dentro do próprio `livroService.buscarPorTitulo`, sem lançar erro.
+ * resolve pro catálogo inteiro dentro do próprio `livroService.buscarPorTitulo`, sem lançar erro.
  * @param {string} query
  */
 function useBuscaDeLivros(query) {

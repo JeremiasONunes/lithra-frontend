@@ -178,13 +178,14 @@ async function buscarPorId(id) {
 }
 
 /** Busca por título ou autor — simula o que, com API real, seria a consulta a um catálogo externo
- * (Etapa 12). Resultado vazio é um caso de sucesso válido ("livro não encontrado, cadastre
- * manualmente"), não um erro. */
+ * (Etapa 12). Termo vazio devolve o catálogo inteiro (campo de busca vazio = "mostrar todos os
+ * livros", não "nenhum resultado"). Resultado vazio de uma busca com termo é um caso de sucesso
+ * válido ("livro não encontrado, cadastre manualmente"), não um erro. */
 async function buscarPorTitulo(query) {
   await delay(500)
   const termo = query.trim().toLowerCase()
   if (!termo) {
-    return []
+    return getAll()
   }
   return getAll().filter(
     (livro) =>
