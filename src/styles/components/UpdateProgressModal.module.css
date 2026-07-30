@@ -1,0 +1,61 @@
+.corpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.titulo {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-md);
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--on-surface);
+}
+
+.select {
+  height: 48px;
+  padding: 0 18px;
+  border-radius: var(--radius-clay-md);
+  background: var(--surface);
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-clay-inset);
+  font-size: var(--text-base);
+  font-family: var(--font-body);
+  color: var(--on-surface);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.erroGeral {
+  color: var(--danger);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.acoes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}

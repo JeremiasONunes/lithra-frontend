@@ -8,8 +8,10 @@ import { PageStateBoundary } from '../components/PageStateBoundary'
 import { ReviewForm } from '../components/ReviewForm'
 import { ReviewList } from '../components/ReviewList'
 import { useAuth } from '../context/AuthContext'
+import { useAdicionarNaEstante } from '../hooks/useAdicionarNaEstante'
 import { useAvaliacoesDoLivro } from '../hooks/useAvaliacoesDoLivro'
 import { useExcluirAvaliacao } from '../hooks/useExcluirAvaliacao'
+import { useItemDaEstante } from '../hooks/useItemDaEstante'
 import { useLivro } from '../hooks/useLivro'
 import { useUsuarios } from '../hooks/useUsuarios'
 import styles from '../styles/pages/BookPage.module.css'
@@ -33,6 +35,10 @@ function BookPage() {
     recarregar: recarregarAvaliacoes,
   } = useAvaliacoesDoLivro(livroId)
   const { dado: usuarios } = useUsuarios()
+  const { dado: itemNaEstante, recarregar: recarregarItemNaEstante } = useItemDaEstante(
+    usuario.id,
+    livroId,
+  )
 
   const [formularioAberto, setFormularioAberto] = useState(false)
 
@@ -42,6 +48,8 @@ function BookPage() {
   }
 
   const { excluir } = useExcluirAvaliacao(aoConcluirMutacao)
+  const { adicionar, enviando: adicionandoNaEstante } =
+    useAdicionarNaEstante(recarregarItemNaEstante)
 
   const minhaAvaliacao = avaliacoes?.find((avaliacao) => avaliacao.usuarioId === usuario.id)
 
@@ -70,6 +78,11 @@ function BookPage() {
               livro={livro}
               jaAvaliou={!!minhaAvaliacao}
               onAvaliar={() => setFormularioAberto(true)}
+              naEstante={!!itemNaEstante}
+              onAdicionarNaEstante={() =>
+                adicionar({ usuarioId: usuario.id, livroId, status: 'quero-ler' })
+              }
+              adicionando={adicionandoNaEstante}
             />
             <BookSynopsis sinopse={livro.sinopse} />
             <section className={styles.avaliacoes}>

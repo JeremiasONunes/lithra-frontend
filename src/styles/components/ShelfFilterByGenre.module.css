@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--on-surface);
+}
+
+.select {
+  height: 40px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-clay-md);
+  background: var(--surface);
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-clay-inset);
+  font-size: var(--text-sm);
+  font-family: var(--font-body);
+  color: var(--on-surface);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--primary);
+}

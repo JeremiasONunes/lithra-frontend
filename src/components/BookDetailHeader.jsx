@@ -6,16 +6,26 @@ import styles from '../styles/components/BookDetailHeader.module.css'
 
 /**
  * Capa + título + autor + gênero + média da comunidade + ações, no topo da Página do Livro.
- * "Adicionar à Estante" fica desabilitado — a ação em si (gravar em `itemDaEstanteService`) é
- * funcionalidade da Etapa 13; aqui só o botão já existe, no lugar certo, como o roadmap desta etapa
- * descreve ("a ação existe aqui; a tela de gestão da estante é da Etapa 13").
+ * "Adicionar à Estante" foi deixado desabilitado na Etapa 12 (a gravação em `itemDaEstanteService`
+ * é funcionalidade da Etapa 13) — agora ligado: desabilita de novo (com rótulo "Na Estante") quando
+ * `naEstante` é verdadeiro, pra não deixar clicar de novo num livro já adicionado.
  * @param {{
  *   livro: object,
  *   jaAvaliou: boolean,
  *   onAvaliar: () => void,
+ *   naEstante: boolean,
+ *   onAdicionarNaEstante: () => void,
+ *   adicionando: boolean,
  * }} props
  */
-function BookDetailHeader({ livro, jaAvaliou, onAvaliar }) {
+function BookDetailHeader({
+  livro,
+  jaAvaliou,
+  onAvaliar,
+  naEstante,
+  onAdicionarNaEstante,
+  adicionando,
+}) {
   return (
     <div className={styles.wrapper}>
       <BookCoverThumb src={livro.capaUrl} title={livro.titulo} size="lg" />
@@ -31,8 +41,12 @@ function BookDetailHeader({ livro, jaAvaliou, onAvaliar }) {
           </span>
         </div>
         <div className={styles.acoes}>
-          <Button variant="primary" disabled>
-            Adicionar à Estante
+          <Button
+            variant="primary"
+            onClick={onAdicionarNaEstante}
+            disabled={naEstante || adicionando}
+          >
+            {naEstante ? 'Na Estante' : adicionando ? 'Adicionando...' : 'Adicionar à Estante'}
           </Button>
           <Button variant="ghost" onClick={onAvaliar}>
             {/* "Editar minha avaliação", não só "Editar avaliação" — evita nome acessível igual ao

@@ -55,7 +55,8 @@ describe('AppRoutes', () => {
     // usuario-1 (Mariana Silva) é leitor ativo na fixture da Etapa 7.
     renderEm('/estante', { usuarioId: 'usuario-1' })
 
-    expect(await screen.findByRole('heading', { name: 'Estante' })).toBeInTheDocument()
+    // "Minha Estante" é o título real da página (Etapa 13) — /estante deixou de ser PlaceholderPage.
+    expect(await screen.findByRole('heading', { name: 'Minha Estante' })).toBeInTheDocument()
   })
 
   it('redireciona pra /nao-autorizado quando leitor tenta acessar rota de admin', async () => {
