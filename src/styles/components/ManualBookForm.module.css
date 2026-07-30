@@ -11,6 +11,9 @@
   margin: 0;
 }
 
+/* Mobile first: uma coluna só. A partir de 768px vira grid de duas colunas (capa | campos) pra
+ * encurtar a altura total do card — sinopse, número de páginas/ano e o botão de envio (`.spanTudo`)
+ * ocupam a largura cheia abaixo das duas colunas. */
 .formulario {
   display: flex;
   flex-direction: column;
@@ -34,6 +37,29 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
+}
+
+.colunaCampos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .card {
+    max-width: 560px;
+  }
+
+  .formulario {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    align-items: start;
+    gap: var(--space-4) var(--space-5);
+  }
+
+  .spanTudo {
+    grid-column: 1 / -1;
+  }
 }
 
 .labelCapa {

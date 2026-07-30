@@ -44,6 +44,10 @@ const esquema = z.object({
  * `<label>` já abre o seletor nativo de arquivo (comportamento padrão do HTML pra
  * `<label htmlFor>` associado a um input), sem precisar de `ref`/`click()` manual; `onDrop` no
  * `<label>` cobre o caso de arrastar a imagem pra dentro.
+ *
+ * Layout em duas colunas a partir de 768px (capa à esquerda, título/autor/gênero à direita) pra
+ * reduzir a altura total do card — sinopse, número de páginas/ano e o botão de envio ocupam a
+ * largura cheia abaixo das duas colunas (`.spanTudo`). Abaixo de 768px vira uma coluna só.
  * @param {{ tituloInicial?: string, onCadastrado: (livro: object) => void }} props
  */
 function ManualBookForm({ tituloInicial = '', onCadastrado }) {
@@ -97,9 +101,6 @@ function ManualBookForm({ tituloInicial = '', onCadastrado }) {
     <Card className={styles.card}>
       <p className={styles.aviso}>Não encontramos esse livro. Cadastre manualmente:</p>
       <form onSubmit={handleSubmit(aoSubmeter)} className={styles.formulario} noValidate>
-        <Input label="Título" id="titulo" error={errors.titulo?.message} {...register('titulo')} />
-        <Input label="Autor" id="autor" error={errors.autor?.message} {...register('autor')} />
-        <Input label="Gênero" id="genero" error={errors.genero?.message} {...register('genero')} />
         <div className={styles.campoCapa}>
           <span className={styles.labelCapa}>Capa do livro</span>
           <label
@@ -137,13 +138,30 @@ function ManualBookForm({ tituloInicial = '', onCadastrado }) {
             </span>
           ) : null}
         </div>
-        <Textarea
-          label="Sinopse"
-          id="sinopse"
-          error={errors.sinopse?.message}
-          {...register('sinopse')}
-        />
-        <div className={styles.linha}>
+        <div className={styles.colunaCampos}>
+          <Input
+            label="Título"
+            id="titulo"
+            error={errors.titulo?.message}
+            {...register('titulo')}
+          />
+          <Input label="Autor" id="autor" error={errors.autor?.message} {...register('autor')} />
+          <Input
+            label="Gênero"
+            id="genero"
+            error={errors.genero?.message}
+            {...register('genero')}
+          />
+        </div>
+        <div className={styles.spanTudo}>
+          <Textarea
+            label="Sinopse"
+            id="sinopse"
+            error={errors.sinopse?.message}
+            {...register('sinopse')}
+          />
+        </div>
+        <div className={`${styles.linha} ${styles.spanTudo}`}>
           <Input
             label="Número de páginas"
             id="numeroPaginas"
@@ -161,11 +179,11 @@ function ManualBookForm({ tituloInicial = '', onCadastrado }) {
           />
         </div>
         {erroGeral ? (
-          <p role="alert" className={styles.erroGeral}>
+          <p role="alert" className={`${styles.erroGeral} ${styles.spanTudo}`}>
             {erroGeral}
           </p>
         ) : null}
-        <Button type="submit" variant="primary" disabled={enviando}>
+        <Button type="submit" variant="primary" disabled={enviando} className={styles.spanTudo}>
           {enviando ? 'Cadastrando...' : 'Cadastrar livro'}
         </Button>
       </form>
