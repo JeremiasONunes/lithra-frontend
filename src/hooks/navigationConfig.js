@@ -5,6 +5,7 @@ import {
   Home,
   LayoutDashboard,
   Library,
+  Search,
   Settings,
   Users,
 } from 'lucide-react'
@@ -19,6 +20,7 @@ const NAVEGACAO_POR_PAPEL = {
   leitor: [
     { rota: '/feed', rotulo: 'Feed', icon: Home },
     { rota: '/descobrir', rotulo: 'Descobrir', icon: Compass },
+    { rota: '/buscar-livro', rotulo: 'Buscar Livro', icon: Search },
     { rota: '/estante', rotulo: 'Estante', icon: Bookmark },
     { rota: '/estatisticas', rotulo: 'Estatísticas', icon: BarChart2 },
   ],

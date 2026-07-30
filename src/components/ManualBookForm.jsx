@@ -14,6 +14,9 @@ const esquema = z.object({
   titulo: z.string().min(1, 'Informe o título.'),
   autor: z.string().min(1, 'Informe o autor.'),
   genero: z.string().min(1, 'Informe o gênero.'),
+  // Guarda o arquivo já convertido em data URL (string base64) — obrigatório, `min(1)` cobre "não
+  // selecionou nenhum arquivo" (o campo começa vazio).
+  capaUrl: z.string().min(1, 'Selecione uma imagem de capa.'),
   sinopse: z.string().min(1, 'Informe uma sinopse.'),
   numeroPaginas: z.coerce
     .number({ message: 'Informe o número de páginas.' })
@@ -27,6 +30,13 @@ const esquema = z.object({
  * de referência só pede título/autor/gênero; `sinopse`/`numeroPaginas`/`ano` são obrigatórios no
  * formato de `Livro` (Etapa 7), sem eles o livro apareceria quebrado na própria Página do Livro
  * depois — por isso o formulário pede mais campos do que a tela de referência mostra.
+ *
+ * Capa é upload de arquivo, não URL — não existe backend real pra hospedar a imagem (projeto
+ * 100% mockado até a Etapa 22), então o arquivo é lido como data URL (`FileReader`) e a própria
+ * string base64 vira o `capaUrl` salvo em `localStorage`. `<input type="file">` não é um campo que
+ * `register()` consiga ler direto (o valor nativo dele é um `FileList`, não a string que
+ * `capaUrl` precisa guardar) — por isso fica fora de `register()`, com `setValue()` no `onChange`,
+ * mesmo padrão já usado pra `nota` (`RatingStars`) em `ReviewForm.jsx`.
  * @param {{ tituloInicial?: string, onCadastrado: (livro: object) => void }} props
  */
 function ManualBookForm({ tituloInicial = '', onCadastrado }) {
@@ -36,8 +46,26 @@ function ManualBookForm({ tituloInicial = '', onCadastrado }) {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(esquema), defaultValues: { titulo: tituloInicial } })
+  } = useForm({
+    resolver: zodResolver(esquema),
+    defaultValues: { titulo: tituloInicial, capaUrl: '' },
+  })
+
+  const capaPreview = watch('capaUrl')
+
+  function aoSelecionarCapa(evento) {
+    const arquivo = evento.target.files?.[0]
+    if (!arquivo) return
+
+    const leitor = new FileReader()
+    leitor.onload = () => {
+      setValue('capaUrl', leitor.result, { shouldValidate: true })
+    }
+    leitor.readAsDataURL(arquivo)
+  }
 
   async function aoSubmeter(dados) {
     setErroGeral(null)
@@ -55,6 +83,26 @@ function ManualBookForm({ tituloInicial = '', onCadastrado }) {
         <Input label="Título" id="titulo" error={errors.titulo?.message} {...register('titulo')} />
         <Input label="Autor" id="autor" error={errors.autor?.message} {...register('autor')} />
         <Input label="Gênero" id="genero" error={errors.genero?.message} {...register('genero')} />
+        <div className={styles.campoCapa}>
+          <label htmlFor="capaArquivo" className={styles.labelCapa}>
+            Capa do livro
+          </label>
+          <input
+            id="capaArquivo"
+            type="file"
+            accept="image/*"
+            aria-invalid={!!errors.capaUrl}
+            onChange={aoSelecionarCapa}
+          />
+          {capaPreview ? (
+            <img src={capaPreview} alt="Pré-visualização da capa" className={styles.preview} />
+          ) : null}
+          {errors.capaUrl ? (
+            <span role="alert" className={styles.erroCapa}>
+              {errors.capaUrl.message}
+            </span>
+          ) : null}
+        </div>
         <Textarea
           label="Sinopse"
           id="sinopse"
