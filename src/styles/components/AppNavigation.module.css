@@ -38,7 +38,11 @@
     align-items: stretch;
     justify-content: flex-start;
     width: 220px;
-    height: 100vh;
+    /* `min-height`, não `height` — com `height` fixa a sidebar ficava travada em exatamente 100vh
+     * mesmo quando o conteúdo ao lado (ex.: `ManualBookForm`) cresce além da viewport, deixando um
+     * vão visível embaixo dela; `min-height` + `align-items: stretch` do `.wrapper` (flex row) fazem
+     * a sidebar acompanhar a altura real do conteúdo, com 100vh como piso pra telas curtas. */
+    min-height: 100vh;
     border-top: none;
     border-right: 1px solid var(--border-subtle);
     padding: var(--space-6) var(--space-4);

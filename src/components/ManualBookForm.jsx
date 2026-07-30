@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { ImageUp } from 'lucide-react'
 import { z } from 'zod'
 
 import { useCadastrarLivro } from '../hooks/useCadastrarLivro'
@@ -35,12 +36,19 @@ const esquema = z.object({
  * 100% mockado até a Etapa 22), então o arquivo é lido como data URL (`FileReader`) e a própria
  * string base64 vira o `capaUrl` salvo em `localStorage`. `<input type="file">` não é um campo que
  * `register()` consiga ler direto (o valor nativo dele é um `FileList`, não a string que
- * `capaUrl` precisa guardar) — por isso fica fora de `register()`, com `setValue()` no `onChange`,
- * mesmo padrão já usado pra `nota` (`RatingStars`) em `ReviewForm.jsx`.
+ * `capaUrl` precisa guardar) — por isso fica fora de `register()`, com `setValue()` no
+ * `onChange`/`onDrop`, mesmo padrão já usado pra `nota` (`RatingStars`) em `ReviewForm.jsx`.
+ *
+ * O `<input type="file">` real fica visualmente escondido (`.inputEscondido`) dentro de um
+ * `<label>` estilizado como zona de arrastar-e-soltar (`.dropzone`) — clicar em qualquer parte do
+ * `<label>` já abre o seletor nativo de arquivo (comportamento padrão do HTML pra
+ * `<label htmlFor>` associado a um input), sem precisar de `ref`/`click()` manual; `onDrop` no
+ * `<label>` cobre o caso de arrastar a imagem pra dentro.
  * @param {{ tituloInicial?: string, onCadastrado: (livro: object) => void }} props
  */
 function ManualBookForm({ tituloInicial = '', onCadastrado }) {
   const [erroGeral, setErroGeral] = useState(null)
+  const [arrastando, setArrastando] = useState(false)
   const { cadastrar, enviando } = useCadastrarLivro(onCadastrado)
 
   const {
@@ -56,15 +64,24 @@ function ManualBookForm({ tituloInicial = '', onCadastrado }) {
 
   const capaPreview = watch('capaUrl')
 
-  function aoSelecionarCapa(evento) {
-    const arquivo = evento.target.files?.[0]
-    if (!arquivo) return
+  function processarArquivoDeCapa(arquivo) {
+    if (!arquivo || !arquivo.type.startsWith('image/')) return
 
     const leitor = new FileReader()
     leitor.onload = () => {
       setValue('capaUrl', leitor.result, { shouldValidate: true })
     }
     leitor.readAsDataURL(arquivo)
+  }
+
+  function aoSelecionarCapa(evento) {
+    processarArquivoDeCapa(evento.target.files?.[0])
+  }
+
+  function aoSoltarCapa(evento) {
+    evento.preventDefault()
+    setArrastando(false)
+    processarArquivoDeCapa(evento.dataTransfer.files?.[0])
   }
 
   async function aoSubmeter(dados) {
@@ -84,19 +101,36 @@ function ManualBookForm({ tituloInicial = '', onCadastrado }) {
         <Input label="Autor" id="autor" error={errors.autor?.message} {...register('autor')} />
         <Input label="Gênero" id="genero" error={errors.genero?.message} {...register('genero')} />
         <div className={styles.campoCapa}>
-          <label htmlFor="capaArquivo" className={styles.labelCapa}>
-            Capa do livro
+          <span className={styles.labelCapa}>Capa do livro</span>
+          <label
+            htmlFor="capaArquivo"
+            className={`${styles.dropzone} ${arrastando ? styles.dropzoneArrastando : ''} ${capaPreview ? styles.dropzoneComImagem : ''}`}
+            onDragOver={(evento) => {
+              evento.preventDefault()
+              setArrastando(true)
+            }}
+            onDragLeave={() => setArrastando(false)}
+            onDrop={aoSoltarCapa}
+          >
+            {capaPreview ? (
+              <img src={capaPreview} alt="Pré-visualização da capa" className={styles.preview} />
+            ) : (
+              <span className={styles.dropzoneConteudo}>
+                <ImageUp className={styles.dropzoneIcon} size={28} />
+                <span className={styles.dropzoneTexto}>
+                  Arraste a imagem aqui ou clique para enviar
+                </span>
+              </span>
+            )}
+            <input
+              id="capaArquivo"
+              type="file"
+              accept="image/*"
+              className={styles.inputEscondido}
+              aria-invalid={!!errors.capaUrl}
+              onChange={aoSelecionarCapa}
+            />
           </label>
-          <input
-            id="capaArquivo"
-            type="file"
-            accept="image/*"
-            aria-invalid={!!errors.capaUrl}
-            onChange={aoSelecionarCapa}
-          />
-          {capaPreview ? (
-            <img src={capaPreview} alt="Pré-visualização da capa" className={styles.preview} />
-          ) : null}
           {errors.capaUrl ? (
             <span role="alert" className={styles.erroCapa}>
               {errors.capaUrl.message}

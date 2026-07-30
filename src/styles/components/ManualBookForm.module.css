@@ -26,13 +26,13 @@
   flex: 1;
 }
 
-/* Mesmo espaçamento/tipografia de rótulo e erro do `Input` (Etapa 4) — `<input type="file">` não
- * aceita o mesmo tratamento visual de fundo/borda de um campo de texto (o navegador desenha o
- * próprio botão "Escolher arquivo"), então só rótulo/erro seguem o padrão, o input fica no estilo
- * nativo. */
+/* Mesmo espaçamento/tipografia de rótulo e erro do `Input` (Etapa 4) — o `<input type="file">`
+ * nativo fica escondido dentro do `.dropzone` (ver `.inputEscondido`), então só rótulo/erro seguem
+ * o padrão visual dos outros campos do formulário. */
 .campoCapa {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--space-2);
 }
 
@@ -42,12 +42,74 @@
   color: var(--on-surface);
 }
 
-.preview {
-  width: 96px;
+/* Retângulo vertical (proporção de capa de livro) com borda tracejada — placeholder de "arraste a
+ * imagem" até o usuário selecionar/soltar um arquivo, aí a própria imagem preenche o espaço. */
+.dropzone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
   aspect-ratio: 9 / 11;
-  object-fit: cover;
+  border: 2px dashed var(--outline);
   border-radius: var(--radius-clay-sm);
+  background: var(--background);
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+.dropzone:hover {
+  border-color: var(--primary);
+}
+
+.dropzoneArrastando {
+  border-color: var(--primary);
+  background: var(--surface);
+}
+
+.dropzoneComImagem {
+  border-style: solid;
   box-shadow: var(--shadow-clay-sm);
+}
+
+.dropzoneConteudo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  text-align: center;
+  pointer-events: none;
+}
+
+.dropzoneIcon {
+  color: var(--on-surface-muted);
+}
+
+.dropzoneTexto {
+  font-size: var(--text-xs);
+  color: var(--on-surface-muted);
+}
+
+.inputEscondido {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .erroCapa {
