@@ -1,11 +1,18 @@
+/* `height` fixa, não `min-height` — a sidebar (`AppNavigation`) nunca deve crescer/encolher com o
+ * conteúdo; ela sempre ocupa exatamente a altura da tela, e é só o `.content` que rola por dentro
+ * quando a página é mais alta que a viewport (ver `overflow-y` abaixo). */
 .wrapper {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 .content {
   flex: 1;
+  /* `min-height: 0` cancela o `min-height: auto` padrão de item flex, que senão impede o
+   * `overflow-y: auto` de funcionar (o item cresceria pra caber o conteúdo em vez de rolar). */
+  min-height: 0;
+  overflow-y: auto;
   /* Espaço pra `AppNavigation` (barra inferior fixa) não cobrir o fim do conteúdo no mobile. */
   padding: var(--space-4) var(--space-4) 80px;
 }

@@ -1,6 +1,9 @@
 .grade {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  /* 176px = 140px da capa (`BookCoverThumb` tamanho `md`) + os `var(--space-4)` de padding do
+   * `.item` dos dois lados — sem essa folga a coluna do grid podia encolher até 140px e a capa
+   * (largura fixa) estourava o padding, ficando colada na borda do card. */
+  grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
   gap: var(--space-4);
   list-style: none;
   margin: 0;
@@ -14,7 +17,7 @@
   gap: var(--space-2);
   text-align: center;
   text-decoration: none;
-  padding: var(--space-3);
+  padding: var(--space-4);
   border: 1px solid var(--outline);
   border-radius: var(--radius-clay-sm);
   background: var(--surface);
