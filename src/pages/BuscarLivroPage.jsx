@@ -22,6 +22,10 @@ import styles from '../styles/pages/BuscarLivroPage.module.css'
  * Sem resultado, o formulário de cadastro manual não aparece direto — primeiro mostra um
  * `EmptyState` centralizado com a pergunta "Deseja cadastrar livro?"; o formulário só aparece
  * depois desse clique, dando a chance de tentar outro termo de busca antes de partir pro cadastro.
+ *
+ * Única exceção à regra "busca só na submissão": apagar o campo até ficar vazio já volta a mostrar
+ * o catálogo inteiro na hora, sem precisar submeter de novo — não é busca a cada tecla (isso
+ * continua exigindo `aoBuscar`), é só o caso específico de "campo voltou a ficar vazio".
  */
 function BuscarLivroPage() {
   const navigate = useNavigate()
@@ -30,6 +34,14 @@ function BuscarLivroPage() {
   const [mostrarCadastro, setMostrarCadastro] = useState(false)
 
   const { dado: resultados, carregando, erro, recarregar } = useBuscaDeLivros(termoBuscado)
+
+  function aoMudarQuery(valor) {
+    setQuery(valor)
+    if (valor.trim() === '') {
+      setMostrarCadastro(false)
+      setTermoBuscado('')
+    }
+  }
 
   function aoBuscar(evento) {
     evento.preventDefault()
@@ -42,7 +54,7 @@ function BuscarLivroPage() {
   return (
     <div className={styles.wrapper}>
       <PageHeader title="Buscar livro" />
-      <BookSearchBar value={query} onChange={setQuery} onSubmit={aoBuscar} />
+      <BookSearchBar value={query} onChange={aoMudarQuery} onSubmit={aoBuscar} />
       <PageStateBoundary carregando={carregando} erro={erro} recarregar={recarregar}>
         {naoEncontrouNada ? (
           <div className={styles.semResultado}>
