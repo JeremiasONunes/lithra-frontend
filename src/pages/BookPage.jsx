@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BookOpen, ChevronLeft } from 'lucide-react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { BookDetailHeader } from '../components/BookDetailHeader'
 import { BookSynopsis } from '../components/BookSynopsis'
@@ -55,10 +55,10 @@ function BookPage() {
 
   return (
     <div className={styles.wrapper}>
-      <Link to="/feed" className={styles.voltar}>
+      <button type="button" onClick={() => navigate(-1)} className={styles.voltar}>
         <ChevronLeft size={16} aria-hidden="true" />
         Voltar
-      </Link>
+      </button>
       <PageStateBoundary
         carregando={carregandoLivro}
         erro={erroLivro}

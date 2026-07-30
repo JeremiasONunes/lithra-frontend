@@ -18,6 +18,17 @@
   font-weight: var(--weight-display);
   font-size: var(--text-sm);
   text-decoration: none;
+  /* Era um `Link` (destino fixo); virou `<button>` porque "voltar" agora é
+   * `navigate(-1)` (histórico do navegador), não uma URL — reset do estilo nativo de botão. */
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.voltar:hover {
+  color: var(--on-surface);
 }
 
 .conteudo {
