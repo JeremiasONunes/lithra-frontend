@@ -7,3 +7,13 @@
   width: 100%;
   margin: 0 auto;
 }
+
+/* Centraliza o EmptyState de "nenhum livro encontrado" (e o formulário de cadastro manual, quando
+ * revelado) no meio do espaço restante da tela, não só alinhado ao topo junto da busca. */
+.semResultado {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-4);
+}
