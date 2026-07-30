@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import { BookCoverThumb } from './BookCoverThumb'
+import { RatingStars } from './RatingStars'
 import styles from '../styles/components/BookSearchResults.module.css'
 
 /** @param {{ resultados: object[] }} props */
@@ -13,6 +14,7 @@ function BookSearchResults({ resultados }) {
             <BookCoverThumb src={livro.capaUrl} title={livro.titulo} />
             <span className={styles.titulo}>{livro.titulo}</span>
             <span className={styles.autor}>{livro.autor}</span>
+            <RatingStars value={livro.mediaAvaliacoes} size={14} />
           </Link>
         </li>
       ))}

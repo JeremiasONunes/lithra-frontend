@@ -14,7 +14,7 @@ import styles from '../styles/components/ReviewForm.module.css'
 
 const esquema = z.object({
   nota: z.number().min(1, 'Dê uma nota de 1 a 5 estrelas.').max(5),
-  resenha: z.string().min(1, 'Escreva sua resenha.'),
+  resenha: z.string().min(60, 'A resenha precisa ter pelo menos 60 caracteres.'),
 })
 
 /**

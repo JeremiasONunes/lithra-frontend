@@ -33,9 +33,22 @@
   font-weight: var(--weight-display);
   font-size: var(--text-sm);
   color: var(--on-surface);
+  width: 100%;
+  /* Reserva sempre 2 linhas (mesmo pra títulos curtos, que não usam as 2) — sem isso, cards com
+   * título de 1 linha ficavam mais baixos que cards com título de 2, e o grid parecia desalinhado. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.2;
+  min-height: 2.4em;
+  overflow: hidden;
 }
 
 .autor {
   font-size: var(--text-xs);
   color: var(--on-surface-muted);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
