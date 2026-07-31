@@ -72,7 +72,12 @@ function FeedPage() {
         if (!entrada.isIntersecting || carregandoRef.current) return
         setPagina((atual) => atual + 1)
       },
-      { root: raiz, rootMargin: '600px' },
+      // `rootMargin` pequeno de propósito: com poucos itens por página (`TAMANHO_PAGINA`, ver
+      // useFeed.js) e cards relativamente compactos, uma margem grande (testado com 600px) cobre
+      // quase a lista inteira já na primeira renderização — o próximo lote carregava quase
+      // instantaneamente, sem nenhuma sensação de "lazy" pro usuário. 100px só antecipa o
+      // suficiente pra não esperar o usuário bater no pixel exato do fim.
+      { root: raiz, rootMargin: '100px' },
     )
     observer.observe(elemento)
     observerRef.current = observer
