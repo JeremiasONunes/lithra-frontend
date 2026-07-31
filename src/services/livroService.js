@@ -177,6 +177,15 @@ async function buscarPorId(id) {
   return getAll().find((livro) => livro.id === id)
 }
 
+/** Seleção de livros em destaque pra Descobrir (Etapa 15) — os mais bem avaliados da base,
+ * independente do grafo social do usuário (Descobrir não filtra por quem o usuário segue, ver
+ * Descrição da etapa). Sem campo novo no schema — "destaque" é derivado de `mediaAvaliacoes`, não
+ * uma seleção editorial hard-coded. */
+async function listarEmDestaque() {
+  await delay(300)
+  return [...getAll()].sort((a, b) => b.mediaAvaliacoes - a.mediaAvaliacoes).slice(0, 8)
+}
+
 /** Busca por título, autor ou gênero — mesmo campo de busca cobre os três, simula o que, com API
  * real, seria a consulta a um catálogo externo (Etapa 12). Termo vazio devolve o catálogo inteiro
  * (campo de busca vazio = "mostrar todos os livros", não "nenhum resultado"). Resultado vazio de
@@ -231,6 +240,7 @@ const livroService = {
   listar,
   buscarPorId,
   buscarPorTitulo,
+  listarEmDestaque,
   criar,
   atualizar,
 }

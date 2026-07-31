@@ -125,6 +125,21 @@ async function buscarPorEmail(email) {
   return getAll().find((usuario) => usuario.email.toLowerCase() === email.toLowerCase())
 }
 
+/** Busca leitores ativos por nome — usado pela Busca unificada (Etapa 15), que também busca
+ * livros no mesmo campo (`useBuscaUnificada`). Só `papel === 'leitor'` e `ativo`: contas
+ * desativadas e a conta administradora não são "gente pra encontrar/seguir", mesmo raciocínio de
+ * `verificarCredenciais` já excluir usuário inativo do login. */
+async function buscarPorNome(query) {
+  await delay(400)
+  const termo = query.trim().toLowerCase()
+  const leitoresAtivos = getAll().filter((usuario) => usuario.papel === 'leitor' && usuario.ativo)
+
+  if (!termo) {
+    return []
+  }
+  return leitoresAtivos.filter((usuario) => usuario.nome.toLowerCase().includes(termo))
+}
+
 /** Login mockado: retorna o usuário se e-mail/senha conferem e a conta está ativa; `null` caso
  * contrário — nunca lança erro para credencial inválida, isso é fluxo esperado do chamador
  * (Etapa 9). */
@@ -176,6 +191,7 @@ const usuarioService = {
   listar,
   buscarPorId,
   buscarPorEmail,
+  buscarPorNome,
   verificarCredenciais,
   criar,
   atualizar,

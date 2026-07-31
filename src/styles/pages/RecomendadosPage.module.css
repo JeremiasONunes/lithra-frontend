@@ -1,0 +1,28 @@
+.wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: var(--container-max);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.subtitulo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--on-surface-muted);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.subtitulo svg {
+  color: var(--accent);
+}
+
+.grade {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
