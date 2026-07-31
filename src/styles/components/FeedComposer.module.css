@@ -79,17 +79,20 @@
 }
 
 /* Nome do livro em cima da capa, não do lado — capa sozinha ao lado do texto ficava com proporção
- * estranha (retângulo alto e estreito ao lado de uma linha de texto curta). */
+ * estranha (retângulo alto e estreito ao lado de uma linha de texto curta). Sem borda/fundo — só
+ * capa e título, sem o visual de "card dentro do card". */
 .anexoLivro {
   flex-direction: column;
   align-items: flex-start;
+  border: none;
+  background: none;
+  padding: var(--space-1) var(--space-5) var(--space-1) 0;
 }
 
 .anexoTitulo {
   font-size: var(--text-sm);
   font-weight: var(--weight-bold);
   color: var(--on-surface);
-  padding-right: var(--space-5);
 }
 
 .foto {

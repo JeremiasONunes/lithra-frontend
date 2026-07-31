@@ -100,8 +100,8 @@ function ActivityCard({ atividade, autor, livro, curtidoPeloUsuarioAtual, onCurt
           <p className={styles.texto}>{atividade.texto}</p>
           {livro ? (
             <div className={styles.livroAnexado}>
-              <BookCoverThumb src={livro.capaUrl} title={livro.titulo} size="sm" />
               <span className={styles.descricao}>{livro.titulo}</span>
+              <BookCoverThumb src={livro.capaUrl} title={livro.titulo} size="sm" />
             </div>
           ) : null}
           {atividade.fotoUrl ? (
