@@ -20,15 +20,26 @@ function FeedPage() {
   const { usuario } = useAuth()
   const navigate = useNavigate()
   const [pagina, setPagina] = useState(1)
+  // Curtir atualiza só o card clicado, sem recarregar o feed inteiro (que passaria de novo pelo
+  // estado de `carregando` do PageStateBoundary — a lista some e volta, parecendo um reload da
+  // página). Guarda por id só o que muda (`curtidas`/`curtidoPor`) e sobrepõe no render.
+  const [curtidasLocais, setCurtidasLocais] = useState({})
 
   const { dado, carregando, erro, recarregar } = useFeed(usuario.id, pagina)
   const { dado: usuarios } = useUsuarios()
   const { dado: livros } = useLivros()
 
-  const { curtir } = useCurtirAtividade(recarregar)
+  const { curtir } = useCurtirAtividade((atualizada) => {
+    setCurtidasLocais((atual) => ({
+      ...atual,
+      [atualizada.id]: { curtidas: atualizada.curtidas, curtidoPor: atualizada.curtidoPor },
+    }))
+  })
   const { comentar } = useComentarAtividade(recarregar)
 
-  const atividades = dado?.itens ?? []
+  const atividades = (dado?.itens ?? []).map((atividade) =>
+    curtidasLocais[atividade.id] ? { ...atividade, ...curtidasLocais[atividade.id] } : atividade,
+  )
   const temMais = (dado?.total ?? 0) > atividades.length
 
   return (
