@@ -3,7 +3,13 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  max-width: var(--container-narrow);
+  /* Era --container-narrow (680px) — sobrava espaço vazio grande demais nas laterais em telas
+   * largas. `--container-max` (1200px, usado nas páginas em grade como BookPage/EstantePage) é
+   * largo demais pra uma lista de card único por linha — o card ficaria com fundo/borda esticados
+   * bem além do texto (65ch, ver ActivityCard.module.css), abrindo um vazio novo dentro do próprio
+   * card. 900px em pixel literal (nenhum token de largura entre 680 e 1200 hoje) é o meio-termo: bem
+   * mais largo que antes, sem esvaziar o card. */
+  max-width: 900px;
   width: 100%;
   margin: 0 auto;
 }

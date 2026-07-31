@@ -13,11 +13,15 @@ const COLECAO = 'atividadesDoFeed'
  * @property {string} id
  * @property {TipoAtividade} tipo
  * @property {string} usuarioId
- * @property {string} [livroId] - presente em 'avaliacao' | 'progresso' | 'adicao-estante'
+ * @property {string} [livroId] - presente em 'avaliacao' | 'progresso' | 'adicao-estante'; em
+ *   'post-livre' é opcional (livro anexado pelo autor, escolhido da própria estante em
+ *   `EscolherLivroModal`)
  * @property {string} [avaliacaoId] - presente só em 'avaliacao'
  * @property {number} [paginaAtual] - presente só em 'progresso'
  * @property {number} [totalPaginas] - presente só em 'progresso'
  * @property {string} [texto] - presente só em 'post-livre'
+ * @property {string} [fotoUrl] - presente só em 'post-livre', opcional (data URL base64, mesmo
+ *   padrão sem backend real de `capaUrl` em `ManualBookForm`, Etapa 12)
  * @property {string} criadoEm - data ISO 8601
  * @property {number} curtidas
  * @property {string[]} curtidoPor - ids de quem já curtiu; garante 1 curtida por pessoa (não soma
