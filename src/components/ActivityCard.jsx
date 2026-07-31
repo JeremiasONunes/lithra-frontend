@@ -41,10 +41,15 @@ function formatarTempoRelativo(criadoEm) {
  *
  * Comentários seguem o mesmo raciocínio de "buscar aqui dentro" — `useComentariosDaAtividade` só
  * dispara de verdade quando o painel está aberto (`comentariosAbertos ? atividade.id : null`, mesmo
- * padrão de `useAvaliacao`), pra não buscar comentário de card nenhum até o usuário pedir. A
- * contagem mostrada no botão usa `comentarios.length` (contagem real, já carregada) enquanto o
- * painel está aberto, e volta pra `atividade.comentarios` (última contagem conhecida do feed)
- * quando fechado — evita mostrar 0 comentários por um instante logo que o painel some.
+ * padrão de `useAvaliacao`), pra não buscar comentário de card nenhum até o usuário pedir.
+ *
+ * A contagem mostrada no botão é estado local próprio (`contagemComentarios`), não deriva de
+ * `comentarios.length`/`atividade.comentarios` a cada render — esses dois só refletiriam o
+ * comentário recém-enviado enquanto o painel estivesse aberto (a busca do painel fica `null`
+ * assim que fecha, e `atividade.comentarios` é só a foto do momento em que o feed foi carregado,
+ * nunca atualizada depois). Incrementado direto em `onComentarioEnviado`, sobrevive fechar/abrir o
+ * painel — mesmo raciocínio do mapa local de curtidas em `FeedPage` (sem recarregar o feed inteiro
+ * a cada comentário).
  * @param {{
  *   atividade: object,
  *   autor?: { nome: string, fotoUrl?: string },
@@ -60,14 +65,12 @@ function ActivityCard({ atividade, autor, livro, usuarios, curtidoPeloUsuarioAtu
   )
 
   const [comentariosAbertos, setComentariosAbertos] = useState(false)
+  const [contagemComentarios, setContagemComentarios] = useState(atividade.comentarios)
   const {
     dado: comentarios,
     carregando: carregandoComentarios,
     recarregar: recarregarComentarios,
   } = useComentariosDaAtividade(comentariosAbertos ? atividade.id : null)
-
-  const contagemComentarios =
-    comentariosAbertos && comentarios ? comentarios.length : atividade.comentarios
 
   return (
     <Card className={styles.card}>
@@ -152,7 +155,10 @@ function ActivityCard({ atividade, autor, livro, usuarios, curtidoPeloUsuarioAtu
           comentarios={comentarios ?? []}
           carregando={carregandoComentarios}
           usuarios={usuarios}
-          onComentarioEnviado={recarregarComentarios}
+          onComentarioEnviado={() => {
+            recarregarComentarios()
+            setContagemComentarios((atual) => atual + 1)
+          }}
           onCancelar={() => setComentariosAbertos(false)}
         />
       ) : null}
