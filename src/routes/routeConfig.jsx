@@ -8,6 +8,7 @@ import { BookPage } from '../pages/BookPage'
 import { BuscarLivroPage } from '../pages/BuscarLivroPage'
 import { CadastroPage } from '../pages/CadastroPage'
 import { EstantePage } from '../pages/EstantePage'
+import { FeedPage } from '../pages/FeedPage'
 import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
@@ -17,11 +18,11 @@ import { RequireRole } from './guards/RequireRole'
 
 /**
  * Toda a árvore de rotas do produto, declarada num só lugar — nenhuma rota "pertence" a uma
- * feature. Cada rota ainda não implementada aponta pra `PlaceholderPage`; etapas futuras (14-19)
+ * feature. Cada rota ainda não implementada aponta pra `PlaceholderPage`; etapas futuras (15-19)
  * substituem só o `element` da rota correspondente pela tela real, sem tocar na estrutura da árvore
  * — `/`, `/login`, `/cadastro`, `/recuperar-senha` (Etapa 9), `/nao-autorizado` (Etapa 10), `*`
- * (Etapa 11), `/livros/:livroId`/`/buscar-livro` (Etapa 12) e `/estante` (Etapa 13) já ganharam a
- * tela final.
+ * (Etapa 11), `/livros/:livroId`/`/buscar-livro` (Etapa 12), `/estante` (Etapa 13) e `/feed`
+ * (Etapa 14) já ganharam a tela final.
  *
  * Separado de `AppRoutes.jsx` (não `createBrowserRouter` aqui) só pra `AppRoutes.test.jsx` poder
  * montar um `createMemoryRouter` próprio, com URL inicial controlada por teste — e pra manter
@@ -47,7 +48,7 @@ const routeConfig = [
       {
         element: <ReaderLayout />,
         children: [
-          { path: '/feed', element: <PlaceholderPage title="Feed" /> },
+          { path: '/feed', element: <FeedPage /> },
           { path: '/descobrir', element: <PlaceholderPage title="Descobrir" /> },
           { path: '/busca', element: <PlaceholderPage title="Busca" /> },
           { path: '/recomendados', element: <PlaceholderPage title="Recomendados" /> },

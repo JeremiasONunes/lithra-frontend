@@ -63,4 +63,28 @@ describe('atividadeDoFeedService', () => {
     const atividades = await atividadeDoFeedService.listarPorUsuario('usuario-1')
     expect(atividades.some((atividade) => atividade.texto === 'Persistente.')).toBe(true)
   })
+
+  it('curtir incrementa curtidas em 1 e persiste', async () => {
+    const antes = await atividadeDoFeedService.buscarPorId('atividade-1')
+    const atualizada = await atividadeDoFeedService.curtir('atividade-1')
+    expect(atualizada.curtidas).toBe(antes.curtidas + 1)
+
+    const releitura = await atividadeDoFeedService.buscarPorId('atividade-1')
+    expect(releitura.curtidas).toBe(antes.curtidas + 1)
+  })
+
+  it('comentar incrementa comentarios em 1 e persiste', async () => {
+    const antes = await atividadeDoFeedService.buscarPorId('atividade-1')
+    const atualizada = await atividadeDoFeedService.comentar('atividade-1')
+    expect(atualizada.comentarios).toBe(antes.comentarios + 1)
+
+    const releitura = await atividadeDoFeedService.buscarPorId('atividade-1')
+    expect(releitura.comentarios).toBe(antes.comentarios + 1)
+  })
+
+  it('curtir lança erro pra atividade inexistente', async () => {
+    await expect(atividadeDoFeedService.curtir('atividade-inexistente')).rejects.toThrow(
+      'Atividade não encontrada.',
+    )
+  })
 })

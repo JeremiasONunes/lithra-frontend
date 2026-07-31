@@ -1,0 +1,19 @@
+.wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: var(--container-narrow);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.carregarMais {
+  align-self: center;
+}

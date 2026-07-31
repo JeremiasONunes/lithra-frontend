@@ -1,0 +1,66 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.autorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nome {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-sm);
+  color: var(--on-surface);
+}
+
+.tempo {
+  font-size: var(--text-xs);
+  color: var(--on-surface-muted);
+}
+
+.corpoComLivro {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.detalheLivro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.descricao {
+  color: var(--on-surface);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.resenha {
+  color: var(--on-surface-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.texto {
+  color: var(--on-surface);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}

@@ -1,4 +1,4 @@
-import { delay, generateId, readCollection, writeCollection } from './mockStorage'
+import { MockServiceError, delay, generateId, readCollection, writeCollection } from './mockStorage'
 
 const COLECAO = 'atividadesDoFeed'
 
@@ -173,11 +173,49 @@ async function criar(dados) {
   return nova
 }
 
+/** Incrementa `curtidas` em 1 — a entidade guarda só o total, não uma lista de quem curtiu (ver
+ * `@typedef` acima), então não há como "descurtir" nem evitar curtida duplicada do mesmo usuário. */
+async function curtir(id) {
+  await delay(200)
+  const atividades = getAll()
+  const index = atividades.findIndex((atividade) => atividade.id === id)
+
+  if (index === -1) {
+    throw new MockServiceError('Atividade não encontrada.')
+  }
+
+  const atualizada = { ...atividades[index], curtidas: atividades[index].curtidas + 1 }
+  const proximas = [...atividades]
+  proximas[index] = atualizada
+  writeCollection(COLECAO, proximas)
+  return atualizada
+}
+
+/** Incrementa `comentarios` em 1 — mesmo raciocínio de `curtir`: a entidade não guarda o conteúdo
+ * de cada comentário, só o total (Etapa 14 não pede uma tela de lista/thread de comentários). */
+async function comentar(id) {
+  await delay(200)
+  const atividades = getAll()
+  const index = atividades.findIndex((atividade) => atividade.id === id)
+
+  if (index === -1) {
+    throw new MockServiceError('Atividade não encontrada.')
+  }
+
+  const atualizada = { ...atividades[index], comentarios: atividades[index].comentarios + 1 }
+  const proximas = [...atividades]
+  proximas[index] = atualizada
+  writeCollection(COLECAO, proximas)
+  return atualizada
+}
+
 const atividadeDoFeedService = {
   listar,
   listarPorUsuario,
   buscarPorId,
   criar,
+  curtir,
+  comentar,
 }
 
 export { atividadeDoFeedService }
