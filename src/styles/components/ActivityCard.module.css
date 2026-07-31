@@ -94,11 +94,39 @@
   flex-shrink: 0;
   width: fit-content;
   max-width: 100%;
+  /* Virou link pra /livros/:livroId — reset do estilo padrão de <a> (cor/sublinhado), o clique já
+   * fica óbvio pelo cursor e pelo hover abaixo. */
+  text-decoration: none;
+  color: inherit;
 }
 
 .livroAnexado .descricao {
   font-weight: var(--weight-bold);
   text-align: center;
+}
+
+.livroAnexado:hover .descricao {
+  text-decoration: underline;
+}
+
+/* Título do livro dentro da frase ("avaliou X", "está lendo X"...) também vira link — mesmo reset
+ * de `.livroAnexado`, sublinha só no hover pra não parecer link o tempo todo dentro do texto corrido. */
+.linkTitulo {
+  text-decoration: none;
+  color: inherit;
+}
+
+.linkTitulo:hover {
+  text-decoration: underline;
+}
+
+/* `<a>` (`Link`) envolvendo só a capa — `display: block` evita depender do comportamento padrão do
+ * navegador pra elemento de bloco (`BookCoverThumb`) dentro de elemento inline (`<a>`), que varia
+ * entre navegadores; `line-height: 0` some com um espaço fantasma que apareceria embaixo da capa. */
+.linkCapa {
+  display: block;
+  line-height: 0;
+  flex-shrink: 0;
 }
 
 .fotoPost {

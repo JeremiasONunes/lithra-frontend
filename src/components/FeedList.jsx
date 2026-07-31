@@ -6,19 +6,34 @@ import styles from '../styles/components/FeedList.module.css'
  * uma única vez pela página (`usuarios`/`livros`) — mesmo padrão de `ReviewList` (Etapa 12).
  * `usuarios` também é repassado inteiro pra cada `ActivityCard` resolver o autor de cada comentário
  * (não só o da própria atividade).
+ *
+ * `indiceGatilho`/`onGatilhoRef` (lazy load, sem botão "carregar mais"): o item nessa posição
+ * recebe a ref que `FeedPage` observa via `IntersectionObserver` — quando ele entra na tela, a
+ * próxima página já começa a carregar. `-1` (nenhum item corresponde) desliga o gatilho quando não
+ * há mais páginas.
  * @param {{
  *   atividades: object[],
  *   usuarios?: object[],
  *   livros?: object[],
  *   usuarioAtualId: string,
+ *   indiceGatilho?: number,
+ *   onGatilhoRef?: (elemento: HTMLElement | null) => void,
  *   onCurtir: (atividade: object) => void,
  * }} props
  */
-function FeedList({ atividades, usuarios, livros, usuarioAtualId, onCurtir }) {
+function FeedList({
+  atividades,
+  usuarios,
+  livros,
+  usuarioAtualId,
+  indiceGatilho = -1,
+  onGatilhoRef,
+  onCurtir,
+}) {
   return (
     <ul className={styles.lista}>
-      {atividades.map((atividade) => (
-        <li key={atividade.id}>
+      {atividades.map((atividade, indice) => (
+        <li key={atividade.id} ref={indice === indiceGatilho ? onGatilhoRef : undefined}>
           <ActivityCard
             atividade={atividade}
             autor={usuarios?.find((usuario) => usuario.id === atividade.usuarioId)}

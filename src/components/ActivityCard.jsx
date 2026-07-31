@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import { ActivityCardActions } from './ActivityCardActions'
 import { ActivityComments } from './ActivityComments'
@@ -25,6 +26,21 @@ function formatarTempoRelativo(criadoEm) {
     return formatadorRelativo.format(diffHoras, 'hour')
   }
   return formatadorRelativo.format(Math.round(diffHoras / 24), 'day')
+}
+
+/** Capa/título do livro referenciado por uma atividade viram link pra `/livros/:livroId` (mesmo
+ * destino que `BookSearchResults`, Etapa 12) — só quando `livro` já chegou (`useLivros`, buscado em
+ * lote na página, pode ainda não ter resolvido no primeiro render); sem `livro.id`, um `<span>`
+ * simples evita um link quebrado pra `/livros/undefined`. */
+function LivroLink({ livro, className, children }) {
+  if (!livro?.id) {
+    return <span className={className}>{children}</span>
+  }
+  return (
+    <Link to={`/livros/${livro.id}`} className={className}>
+      {children}
+    </Link>
+  )
 }
 
 /**
@@ -84,10 +100,15 @@ function ActivityCard({ atividade, autor, livro, usuarios, curtidoPeloUsuarioAtu
 
       {atividade.tipo === 'avaliacao' ? (
         <div className={styles.corpoComLivro}>
-          <BookCoverThumb src={livro?.capaUrl} title={livro?.titulo ?? ''} size="sm" />
+          <LivroLink livro={livro} className={styles.linkCapa}>
+            <BookCoverThumb src={livro?.capaUrl} title={livro?.titulo ?? ''} size="sm" />
+          </LivroLink>
           <div className={styles.detalheLivro}>
             <p className={styles.descricao}>
-              avaliou <strong>{livro?.titulo}</strong>
+              avaliou{' '}
+              <LivroLink livro={livro} className={styles.linkTitulo}>
+                <strong>{livro?.titulo}</strong>
+              </LivroLink>
             </p>
             <RatingStars value={avaliacao?.nota ?? 0} size={16} />
             {avaliacao?.resenha ? <p className={styles.resenha}>{avaliacao.resenha}</p> : null}
@@ -97,10 +118,15 @@ function ActivityCard({ atividade, autor, livro, usuarios, curtidoPeloUsuarioAtu
 
       {atividade.tipo === 'progresso' ? (
         <div className={styles.corpoComLivro}>
-          <BookCoverThumb src={livro?.capaUrl} title={livro?.titulo ?? ''} size="sm" />
+          <LivroLink livro={livro} className={styles.linkCapa}>
+            <BookCoverThumb src={livro?.capaUrl} title={livro?.titulo ?? ''} size="sm" />
+          </LivroLink>
           <div className={styles.detalheLivro}>
             <p className={styles.descricao}>
-              está lendo <strong>{livro?.titulo}</strong>
+              está lendo{' '}
+              <LivroLink livro={livro} className={styles.linkTitulo}>
+                <strong>{livro?.titulo}</strong>
+              </LivroLink>
             </p>
             <ReadingProgressBar
               paginaAtual={atividade.paginaAtual}
@@ -112,9 +138,15 @@ function ActivityCard({ atividade, autor, livro, usuarios, curtidoPeloUsuarioAtu
 
       {atividade.tipo === 'adicao-estante' ? (
         <div className={styles.corpoComLivro}>
-          <BookCoverThumb src={livro?.capaUrl} title={livro?.titulo ?? ''} size="sm" />
+          <LivroLink livro={livro} className={styles.linkCapa}>
+            <BookCoverThumb src={livro?.capaUrl} title={livro?.titulo ?? ''} size="sm" />
+          </LivroLink>
           <p className={styles.descricao}>
-            adicionou <strong>{livro?.titulo}</strong> à estante
+            adicionou{' '}
+            <LivroLink livro={livro} className={styles.linkTitulo}>
+              <strong>{livro?.titulo}</strong>
+            </LivroLink>{' '}
+            à estante
           </p>
         </div>
       ) : null}
@@ -122,10 +154,10 @@ function ActivityCard({ atividade, autor, livro, usuarios, curtidoPeloUsuarioAtu
       {atividade.tipo === 'post-livre' ? (
         <div className={livro ? styles.corpoComLivro : styles.corpoPost}>
           {livro ? (
-            <div className={styles.livroAnexado}>
+            <LivroLink livro={livro} className={styles.livroAnexado}>
               <span className={styles.descricao}>{livro.titulo}</span>
               <BookCoverThumb src={livro.capaUrl} title={livro.titulo} size="sm" />
-            </div>
+            </LivroLink>
           ) : null}
           <div className={styles.corpoPost}>
             <p className={styles.texto}>{atividade.texto}</p>

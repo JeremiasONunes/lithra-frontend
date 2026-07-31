@@ -4,7 +4,7 @@ import { atividadeDoFeedService } from '../services/atividadeDoFeedService'
 import { seguimentoService } from '../services/seguimentoService'
 import { useAsync } from './useAsync'
 
-const TAMANHO_PAGINA = 5
+const TAMANHO_PAGINA = 6
 
 /**
  * Timeline do usuário logado — atividades dele mesmo + de quem ele segue (não só "quem segue":
@@ -15,7 +15,8 @@ const TAMANHO_PAGINA = 5
  *
  * Paginação client-side simples: a cada `pagina`, a busca recalcula a lista inteira (mock, poucos
  * registros) e devolve só os primeiros `TAMANHO_PAGINA * pagina` itens — sem estado de acumulação
- * separado, o "carregar mais" só incrementa `pagina` e `dado.itens` já cresce sozinho.
+ * separado, `dado.itens` já cresce sozinho a cada `pagina` incrementada. `FeedPage` incrementa
+ * `pagina` automaticamente (lazy load via `IntersectionObserver`, sem botão "carregar mais").
  * @param {string} usuarioId
  * @param {number} pagina - a partir de 1
  * @returns {{ dado: { itens: object[], total: number } | null, carregando: boolean, erro: unknown, recarregar: () => void }}
