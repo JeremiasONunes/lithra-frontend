@@ -13,8 +13,10 @@
    * `overflow-y: auto` de funcionar (o item cresceria pra caber o conteúdo em vez de rolar). */
   min-height: 0;
   overflow-y: auto;
-  /* Espaço pra `AppNavigation` (barra inferior fixa) não cobrir o fim do conteúdo no mobile. */
-  padding: var(--space-4) var(--space-4) 80px;
+  /* Espaço pra `AppNavigation` (barra inferior fixa) não cobrir o fim do conteúdo no mobile — 96px,
+   * não só a altura da barra (~64-72px): sem essa folga extra, o último item da lista ficava colado
+   * na barra, sem respiro visual nenhum. */
+  padding: var(--space-4) var(--space-4) 96px;
 }
 
 @media (min-width: 768px) {
