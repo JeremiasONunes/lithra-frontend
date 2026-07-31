@@ -177,13 +177,14 @@ async function buscarPorId(id) {
   return getAll().find((livro) => livro.id === id)
 }
 
-/** Seleção de livros em destaque pra Descobrir (Etapa 15) — os mais bem avaliados da base,
- * independente do grafo social do usuário (Descobrir não filtra por quem o usuário segue, ver
- * Descrição da etapa). Sem campo novo no schema — "destaque" é derivado de `mediaAvaliacoes`, não
- * uma seleção editorial hard-coded. */
+/** Livros em destaque pra Descobrir (Etapa 15) — catálogo inteiro ordenado do mais pro menos bem
+ * avaliado, independente do grafo social do usuário (Descobrir não filtra por quem o usuário segue,
+ * ver Descrição da etapa). Sem campo novo no schema — "destaque" é derivado de `mediaAvaliacoes`,
+ * não uma seleção editorial hard-coded. Devolve tudo, não só um recorte fixo: `useLivrosEmDestaque`
+ * pagina o resultado (lazy load, mesmo padrão de `useFeed`). */
 async function listarEmDestaque() {
   await delay(300)
-  return [...getAll()].sort((a, b) => b.mediaAvaliacoes - a.mediaAvaliacoes).slice(0, 8)
+  return [...getAll()].sort((a, b) => b.mediaAvaliacoes - a.mediaAvaliacoes)
 }
 
 /** Busca por título, autor ou gênero — mesmo campo de busca cobre os três, simula o que, com API
