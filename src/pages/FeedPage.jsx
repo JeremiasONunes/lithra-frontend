@@ -8,7 +8,6 @@ import { FeedList } from '../components/FeedList'
 import { PageHeader } from '../components/PageHeader'
 import { PageStateBoundary } from '../components/PageStateBoundary'
 import { useAuth } from '../context/AuthContext'
-import { useComentarAtividade } from '../hooks/useComentarAtividade'
 import { useCurtirAtividade } from '../hooks/useCurtirAtividade'
 import { useFeed } from '../hooks/useFeed'
 import { useLivros } from '../hooks/useLivros'
@@ -35,7 +34,6 @@ function FeedPage() {
       [atualizada.id]: { curtidas: atualizada.curtidas, curtidoPor: atualizada.curtidoPor },
     }))
   })
-  const { comentar } = useComentarAtividade(recarregar)
 
   const atividades = (dado?.itens ?? []).map((atividade) =>
     curtidasLocais[atividade.id] ? { ...atividade, ...curtidasLocais[atividade.id] } : atividade,
@@ -66,7 +64,6 @@ function FeedPage() {
             livros={livros}
             usuarioAtualId={usuario.id}
             onCurtir={(atividade) => curtir(atividade.id, usuario.id)}
-            onComentar={(atividade) => comentar(atividade.id)}
           />
           {temMais ? (
             <Button

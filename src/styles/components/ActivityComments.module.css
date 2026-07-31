@@ -1,0 +1,61 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  border-top: 1px solid var(--outline);
+  padding-top: var(--space-3);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.nome {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-xs);
+  color: var(--on-surface);
+}
+
+.texto {
+  color: var(--on-surface);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.erroGeral {
+  color: var(--danger);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.acoesFormulario {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}

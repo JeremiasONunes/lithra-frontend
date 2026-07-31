@@ -1,10 +1,14 @@
+import { useState } from 'react'
+
 import { ActivityCardActions } from './ActivityCardActions'
+import { ActivityComments } from './ActivityComments'
 import { BookCoverThumb } from './BookCoverThumb'
 import { Card } from './Card'
 import { RatingStars } from './RatingStars'
 import { ReadingProgressBar } from './ReadingProgressBar'
 import { UserAvatar } from './UserAvatar'
 import { useAvaliacao } from '../hooks/useAvaliacao'
+import { useComentariosDaAtividade } from '../hooks/useComentariosDaAtividade'
 import styles from '../styles/components/ActivityCard.module.css'
 
 const formatadorRelativo = new Intl.RelativeTimeFormat('pt-BR', { numeric: 'auto' })
@@ -34,19 +38,36 @@ function formatarTempoRelativo(criadoEm) {
  * desse tipo referencia uma avaliação diferente (`avaliacaoId`), sem sobreposição entre cards pra
  * aproveitar — por isso é buscada aqui dentro, via `useAvaliacao` (hook próprio, sem chamar
  * `avaliacaoService` direto).
+ *
+ * Comentários seguem o mesmo raciocínio de "buscar aqui dentro" — `useComentariosDaAtividade` só
+ * dispara de verdade quando o painel está aberto (`comentariosAbertos ? atividade.id : null`, mesmo
+ * padrão de `useAvaliacao`), pra não buscar comentário de card nenhum até o usuário pedir. A
+ * contagem mostrada no botão usa `comentarios.length` (contagem real, já carregada) enquanto o
+ * painel está aberto, e volta pra `atividade.comentarios` (última contagem conhecida do feed)
+ * quando fechado — evita mostrar 0 comentários por um instante logo que o painel some.
  * @param {{
  *   atividade: object,
  *   autor?: { nome: string, fotoUrl?: string },
  *   livro?: object,
+ *   usuarios?: object[],
  *   curtidoPeloUsuarioAtual: boolean,
  *   onCurtir: () => void,
- *   onComentar: () => void,
  * }} props
  */
-function ActivityCard({ atividade, autor, livro, curtidoPeloUsuarioAtual, onCurtir, onComentar }) {
+function ActivityCard({ atividade, autor, livro, usuarios, curtidoPeloUsuarioAtual, onCurtir }) {
   const { dado: avaliacao } = useAvaliacao(
     atividade.tipo === 'avaliacao' ? atividade.avaliacaoId : null,
   )
+
+  const [comentariosAbertos, setComentariosAbertos] = useState(false)
+  const {
+    dado: comentarios,
+    carregando: carregandoComentarios,
+    recarregar: recarregarComentarios,
+  } = useComentariosDaAtividade(comentariosAbertos ? atividade.id : null)
+
+  const contagemComentarios =
+    comentariosAbertos && comentarios ? comentarios.length : atividade.comentarios
 
   return (
     <Card className={styles.card}>
@@ -118,11 +139,23 @@ function ActivityCard({ atividade, autor, livro, curtidoPeloUsuarioAtual, onCurt
 
       <ActivityCardActions
         curtidas={atividade.curtidas}
-        comentarios={atividade.comentarios}
+        comentarios={contagemComentarios}
         curtido={curtidoPeloUsuarioAtual}
+        comentariosAbertos={comentariosAbertos}
         onCurtir={onCurtir}
-        onComentar={onComentar}
+        onComentar={() => setComentariosAbertos((atual) => !atual)}
       />
+
+      {comentariosAbertos ? (
+        <ActivityComments
+          atividadeId={atividade.id}
+          comentarios={comentarios ?? []}
+          carregando={carregandoComentarios}
+          usuarios={usuarios}
+          onComentarioEnviado={recarregarComentarios}
+          onCancelar={() => setComentariosAbertos(false)}
+        />
+      ) : null}
     </Card>
   )
 }

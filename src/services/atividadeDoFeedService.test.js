@@ -83,15 +83,6 @@ describe('atividadeDoFeedService', () => {
     expect(descurtida.curtidoPor).not.toContain('usuario-2')
   })
 
-  it('comentar incrementa comentarios em 1 e persiste', async () => {
-    const antes = await atividadeDoFeedService.buscarPorId('atividade-1')
-    const atualizada = await atividadeDoFeedService.comentar('atividade-1')
-    expect(atualizada.comentarios).toBe(antes.comentarios + 1)
-
-    const releitura = await atividadeDoFeedService.buscarPorId('atividade-1')
-    expect(releitura.comentarios).toBe(antes.comentarios + 1)
-  })
-
   it('curtir lança erro pra atividade inexistente', async () => {
     await expect(
       atividadeDoFeedService.curtir('atividade-inexistente', 'usuario-2'),

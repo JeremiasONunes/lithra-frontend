@@ -35,3 +35,11 @@
 .curtido:hover {
   color: var(--danger);
 }
+
+.ativo {
+  color: var(--primary);
+}
+
+.ativo:hover {
+  color: var(--primary);
+}

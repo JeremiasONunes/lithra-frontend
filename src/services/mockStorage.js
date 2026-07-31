@@ -8,6 +8,7 @@ const COLECOES = [
   'avaliacoes',
   'itensDaEstante',
   'atividadesDoFeed',
+  'comentariosDoFeed',
   'seguimentos',
   'metasDeLeitura',
 ]

@@ -27,7 +27,8 @@ const COLECAO = 'atividadesDoFeed'
  * @property {string[]} curtidoPor - ids de quem já curtiu; garante 1 curtida por pessoa (não soma
  *   ao dado histórico da fixture, que já vem com `curtidas` seedado sem ator — só rastreia curtidas
  *   dadas de verdade pela UI, ver `curtir` abaixo)
- * @property {number} comentarios
+ * @property {number} comentarios - mantido sincronizado com a quantidade real de `Comentario`
+ *   (`comentarioService.js`) toda vez que um comentário é criado — nunca editado direto aqui
  */
 
 /**
@@ -45,7 +46,10 @@ const atividadesDoFeedFixture = [
     criadoEm: '2025-04-01T10:05:00.000Z',
     curtidas: 24,
     curtidoPor: [],
-    comentarios: 8,
+    // 2 pra bater com os 2 comentários seedados em comentarioService.js (mesmo raciocínio de
+    // curtidoPor: sem Comentario de verdade por trás, o número não teria como fazer sentido quando
+    // o painel de comentários fosse aberto).
+    comentarios: 2,
   },
   {
     id: 'atividade-2',
@@ -69,7 +73,7 @@ const atividadesDoFeedFixture = [
     criadoEm: '2025-06-12T10:00:00.000Z',
     curtidas: 2,
     curtidoPor: [],
-    comentarios: 1,
+    comentarios: 0,
   },
   {
     id: 'atividade-4',
@@ -100,7 +104,7 @@ const atividadesDoFeedFixture = [
     criadoEm: '2025-03-20T09:05:00.000Z',
     curtidas: 18,
     curtidoPor: [],
-    comentarios: 4,
+    comentarios: 0,
   },
   {
     id: 'atividade-7',
@@ -111,7 +115,7 @@ const atividadesDoFeedFixture = [
     criadoEm: '2025-02-10T11:35:00.000Z',
     curtidas: 12,
     curtidoPor: [],
-    comentarios: 3,
+    comentarios: 0,
   },
   {
     id: 'atividade-8',
@@ -121,7 +125,7 @@ const atividadesDoFeedFixture = [
     criadoEm: '2025-06-22T08:00:00.000Z',
     curtidas: 7,
     curtidoPor: [],
-    comentarios: 5,
+    comentarios: 0,
   },
   {
     id: 'atividade-9',
@@ -131,7 +135,7 @@ const atividadesDoFeedFixture = [
     criadoEm: '2025-06-21T21:00:00.000Z',
     curtidas: 9,
     curtidoPor: [],
-    comentarios: 2,
+    comentarios: 0,
   },
   {
     id: 'atividade-10',
@@ -142,7 +146,7 @@ const atividadesDoFeedFixture = [
     criadoEm: '2025-01-15T10:05:00.000Z',
     curtidas: 30,
     curtidoPor: [],
-    comentarios: 6,
+    comentarios: 0,
   },
 ]
 
@@ -221,31 +225,12 @@ async function curtir(id, usuarioId) {
   return atualizada
 }
 
-/** Incrementa `comentarios` em 1 — mesmo raciocínio de `curtir`: a entidade não guarda o conteúdo
- * de cada comentário, só o total (Etapa 14 não pede uma tela de lista/thread de comentários). */
-async function comentar(id) {
-  await delay(200)
-  const atividades = getAll()
-  const index = atividades.findIndex((atividade) => atividade.id === id)
-
-  if (index === -1) {
-    throw new MockServiceError('Atividade não encontrada.')
-  }
-
-  const atualizada = { ...atividades[index], comentarios: atividades[index].comentarios + 1 }
-  const proximas = [...atividades]
-  proximas[index] = atualizada
-  writeCollection(COLECAO, proximas)
-  return atualizada
-}
-
 const atividadeDoFeedService = {
   listar,
   listarPorUsuario,
   buscarPorId,
   criar,
   curtir,
-  comentar,
 }
 
-export { atividadeDoFeedService }
+export { atividadeDoFeedService, atividadesDoFeedFixture }
