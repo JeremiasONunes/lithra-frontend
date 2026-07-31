@@ -96,21 +96,23 @@ function ActivityCard({ atividade, autor, livro, curtidoPeloUsuarioAtual, onCurt
       ) : null}
 
       {atividade.tipo === 'post-livre' ? (
-        <div className={styles.corpoPost}>
-          <p className={styles.texto}>{atividade.texto}</p>
+        <div className={livro ? styles.corpoComLivro : styles.corpoPost}>
           {livro ? (
             <div className={styles.livroAnexado}>
               <span className={styles.descricao}>{livro.titulo}</span>
               <BookCoverThumb src={livro.capaUrl} title={livro.titulo} size="sm" />
             </div>
           ) : null}
-          {atividade.fotoUrl ? (
-            <img
-              src={atividade.fotoUrl}
-              alt={`Foto publicada por ${autor?.nome ?? 'usuário'}`}
-              className={styles.fotoPost}
-            />
-          ) : null}
+          <div className={styles.corpoPost}>
+            <p className={styles.texto}>{atividade.texto}</p>
+            {atividade.fotoUrl ? (
+              <img
+                src={atividade.fotoUrl}
+                alt={`Foto publicada por ${autor?.nome ?? 'usuário'}`}
+                className={styles.fotoPost}
+              />
+            ) : null}
+          </div>
         </div>
       ) : null}
 

@@ -73,22 +73,32 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  /* Quando tem livro anexado, `.corpoPost` também é usado como coluna de texto dentro de
+   * `.corpoComLivro` (linha) — `flex`/`min-width` só fazem efeito nesse caso, inofensivos quando
+   * `.corpoPost` é o container de fora (post sem livro, sem pai flex). */
+  flex: 1;
+  min-width: 0;
 }
 
 /* Nome do livro em cima da capa, não do lado — capa sozinha ao lado de uma linha de texto curta
  * ficava com proporção estranha (mesmo ajuste já feito na prévia do composer, FeedComposer.module.css).
- * Sem borda/fundo — só capa e título, sem o visual de "card dentro do card". */
+ * Sem borda/fundo — só capa e título, sem o visual de "card dentro do card". Texto do post fica ao
+ * lado (não embaixo) do livro, mesmo padrão de alinhamento à esquerda das outras variações
+ * (`.corpoComLivro`/`.detalheLivro`, usado em avaliação/progresso/adição à estante) —
+ * `flex-shrink: 0` garante que o texto do post não empurre/espreme a coluna do livro. */
 .livroAnexado {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-2);
+  flex-shrink: 0;
   width: fit-content;
   max-width: 100%;
 }
 
 .livroAnexado .descricao {
   font-weight: var(--weight-bold);
+  text-align: center;
 }
 
 .fotoPost {

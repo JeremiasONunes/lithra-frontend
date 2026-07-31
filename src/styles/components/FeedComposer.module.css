@@ -83,7 +83,7 @@
  * capa e título, sem o visual de "card dentro do card". */
 .anexoLivro {
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   border: none;
   background: none;
   padding: var(--space-1) var(--space-5) var(--space-1) 0;
@@ -93,6 +93,7 @@
   font-size: var(--text-sm);
   font-weight: var(--weight-bold);
   color: var(--on-surface);
+  text-align: center;
 }
 
 .foto {
