@@ -20,6 +20,9 @@ const COLECAO = 'atividadesDoFeed'
  * @property {string} [texto] - presente só em 'post-livre'
  * @property {string} criadoEm - data ISO 8601
  * @property {number} curtidas
+ * @property {string[]} curtidoPor - ids de quem já curtiu; garante 1 curtida por pessoa (não soma
+ *   ao dado histórico da fixture, que já vem com `curtidas` seedado sem ator — só rastreia curtidas
+ *   dadas de verdade pela UI, ver `curtir` abaixo)
  * @property {number} comentarios
  */
 
@@ -37,6 +40,7 @@ const atividadesDoFeedFixture = [
     avaliacaoId: 'avaliacao-1',
     criadoEm: '2025-04-01T10:05:00.000Z',
     curtidas: 24,
+    curtidoPor: [],
     comentarios: 8,
   },
   {
@@ -48,6 +52,7 @@ const atividadesDoFeedFixture = [
     totalPaginas: 688,
     criadoEm: '2025-06-10T10:00:00.000Z',
     curtidas: 5,
+    curtidoPor: [],
     comentarios: 0,
   },
   {
@@ -59,6 +64,7 @@ const atividadesDoFeedFixture = [
     totalPaginas: 416,
     criadoEm: '2025-06-12T10:00:00.000Z',
     curtidas: 2,
+    curtidoPor: [],
     comentarios: 1,
   },
   {
@@ -68,6 +74,7 @@ const atividadesDoFeedFixture = [
     livroId: 'livro-4',
     criadoEm: '2025-06-20T10:05:00.000Z',
     curtidas: 3,
+    curtidoPor: [],
     comentarios: 0,
   },
   {
@@ -77,6 +84,7 @@ const atividadesDoFeedFixture = [
     livroId: 'livro-12',
     criadoEm: '2025-06-18T10:05:00.000Z',
     curtidas: 1,
+    curtidoPor: [],
     comentarios: 0,
   },
   {
@@ -87,6 +95,7 @@ const atividadesDoFeedFixture = [
     avaliacaoId: 'avaliacao-3',
     criadoEm: '2025-03-20T09:05:00.000Z',
     curtidas: 18,
+    curtidoPor: [],
     comentarios: 4,
   },
   {
@@ -97,6 +106,7 @@ const atividadesDoFeedFixture = [
     avaliacaoId: 'avaliacao-4',
     criadoEm: '2025-02-10T11:35:00.000Z',
     curtidas: 12,
+    curtidoPor: [],
     comentarios: 3,
   },
   {
@@ -106,6 +116,7 @@ const atividadesDoFeedFixture = [
     texto: 'Alguém mais lendo algo bom essa semana? Preciso de uma indicação nova!',
     criadoEm: '2025-06-22T08:00:00.000Z',
     curtidas: 7,
+    curtidoPor: [],
     comentarios: 5,
   },
   {
@@ -115,6 +126,7 @@ const atividadesDoFeedFixture = [
     texto: 'Terminei mais um capítulo de Circe hoje. Que livro incrível.',
     criadoEm: '2025-06-21T21:00:00.000Z',
     curtidas: 9,
+    curtidoPor: [],
     comentarios: 2,
   },
   {
@@ -125,6 +137,7 @@ const atividadesDoFeedFixture = [
     avaliacaoId: 'avaliacao-12',
     criadoEm: '2025-01-15T10:05:00.000Z',
     curtidas: 30,
+    curtidoPor: [],
     comentarios: 6,
   },
 ]
@@ -166,6 +179,7 @@ async function criar(dados) {
     id: generateId('atividade'),
     criadoEm: new Date().toISOString(),
     curtidas: 0,
+    curtidoPor: [],
     comentarios: 0,
   }
 
@@ -173,9 +187,11 @@ async function criar(dados) {
   return nova
 }
 
-/** Incrementa `curtidas` em 1 — a entidade guarda só o total, não uma lista de quem curtiu (ver
- * `@typedef` acima), então não há como "descurtir" nem evitar curtida duplicada do mesmo usuário. */
-async function curtir(id) {
+/** Alterna a curtida de `usuarioId` (curtir se ainda não tinha curtido, descurtir se já tinha) —
+ * cada pessoa só pode ter uma curtida ativa por vez numa atividade, nunca mais de uma. `curtidoPor`
+ * pode não existir em registros salvos antes desse campo existir (localStorage antigo); `?? []`
+ * trata isso como "ninguém curtiu ainda" em vez de quebrar. */
+async function curtir(id, usuarioId) {
   await delay(200)
   const atividades = getAll()
   const index = atividades.findIndex((atividade) => atividade.id === id)
@@ -184,7 +200,17 @@ async function curtir(id) {
     throw new MockServiceError('Atividade não encontrada.')
   }
 
-  const atualizada = { ...atividades[index], curtidas: atividades[index].curtidas + 1 }
+  const atividade = atividades[index]
+  const curtidoPor = atividade.curtidoPor ?? []
+  const jaCurtiu = curtidoPor.includes(usuarioId)
+
+  const atualizada = {
+    ...atividade,
+    curtidas: jaCurtiu ? atividade.curtidas - 1 : atividade.curtidas + 1,
+    curtidoPor: jaCurtiu
+      ? curtidoPor.filter((idUsuario) => idUsuario !== usuarioId)
+      : [...curtidoPor, usuarioId],
+  }
   const proximas = [...atividades]
   proximas[index] = atualizada
   writeCollection(COLECAO, proximas)

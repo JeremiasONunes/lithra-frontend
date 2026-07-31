@@ -27,3 +27,11 @@
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
+
+.curtido {
+  color: var(--danger);
+}
+
+.curtido:hover {
+  color: var(--danger);
+}

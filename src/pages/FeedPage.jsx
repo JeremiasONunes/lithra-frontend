@@ -53,7 +53,8 @@ function FeedPage() {
             atividades={atividades}
             usuarios={usuarios}
             livros={livros}
-            onCurtir={(atividade) => curtir(atividade.id)}
+            usuarioAtualId={usuario.id}
+            onCurtir={(atividade) => curtir(atividade.id, usuario.id)}
             onComentar={(atividade) => comentar(atividade.id)}
           />
           {temMais ? (

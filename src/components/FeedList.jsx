@@ -8,11 +8,12 @@ import styles from '../styles/components/FeedList.module.css'
  *   atividades: object[],
  *   usuarios?: object[],
  *   livros?: object[],
+ *   usuarioAtualId: string,
  *   onCurtir: (atividade: object) => void,
  *   onComentar: (atividade: object) => void,
  * }} props
  */
-function FeedList({ atividades, usuarios, livros, onCurtir, onComentar }) {
+function FeedList({ atividades, usuarios, livros, usuarioAtualId, onCurtir, onComentar }) {
   return (
     <ul className={styles.lista}>
       {atividades.map((atividade) => (
@@ -21,6 +22,7 @@ function FeedList({ atividades, usuarios, livros, onCurtir, onComentar }) {
             atividade={atividade}
             autor={usuarios?.find((usuario) => usuario.id === atividade.usuarioId)}
             livro={livros?.find((livro) => livro.id === atividade.livroId)}
+            curtidoPeloUsuarioAtual={!!atividade.curtidoPor?.includes(usuarioAtualId)}
             onCurtir={() => onCurtir(atividade)}
             onComentar={() => onComentar(atividade)}
           />

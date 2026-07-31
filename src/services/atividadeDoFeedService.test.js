@@ -64,13 +64,23 @@ describe('atividadeDoFeedService', () => {
     expect(atividades.some((atividade) => atividade.texto === 'Persistente.')).toBe(true)
   })
 
-  it('curtir incrementa curtidas em 1 e persiste', async () => {
+  it('curtir incrementa curtidas em 1 e registra o usuário em curtidoPor', async () => {
     const antes = await atividadeDoFeedService.buscarPorId('atividade-1')
-    const atualizada = await atividadeDoFeedService.curtir('atividade-1')
+    const atualizada = await atividadeDoFeedService.curtir('atividade-1', 'usuario-2')
     expect(atualizada.curtidas).toBe(antes.curtidas + 1)
+    expect(atualizada.curtidoPor).toContain('usuario-2')
 
     const releitura = await atividadeDoFeedService.buscarPorId('atividade-1')
     expect(releitura.curtidas).toBe(antes.curtidas + 1)
+  })
+
+  it('curtir de novo pelo mesmo usuário descurtir (alterna), nunca soma duas curtidas da mesma pessoa', async () => {
+    const antes = await atividadeDoFeedService.buscarPorId('atividade-1')
+    await atividadeDoFeedService.curtir('atividade-1', 'usuario-2')
+    const descurtida = await atividadeDoFeedService.curtir('atividade-1', 'usuario-2')
+
+    expect(descurtida.curtidas).toBe(antes.curtidas)
+    expect(descurtida.curtidoPor).not.toContain('usuario-2')
   })
 
   it('comentar incrementa comentarios em 1 e persiste', async () => {
@@ -83,8 +93,8 @@ describe('atividadeDoFeedService', () => {
   })
 
   it('curtir lança erro pra atividade inexistente', async () => {
-    await expect(atividadeDoFeedService.curtir('atividade-inexistente')).rejects.toThrow(
-      'Atividade não encontrada.',
-    )
+    await expect(
+      atividadeDoFeedService.curtir('atividade-inexistente', 'usuario-2'),
+    ).rejects.toThrow('Atividade não encontrada.')
   })
 })

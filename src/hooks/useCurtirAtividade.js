@@ -3,19 +3,20 @@ import { useState } from 'react'
 import { atividadeDoFeedService } from '../services/atividadeDoFeedService'
 
 /**
- * Mutation de curtir uma atividade — mesmo formato das demais mutations. `aoConcluir` chamado só em
- * caso de sucesso, recebe a atividade com `curtidas` já incrementado.
+ * Mutation de curtir/descurtir uma atividade — alterna (uma pessoa nunca tem mais de uma curtida
+ * ativa na mesma atividade, ver `atividadeDoFeedService.curtir`). Mesmo formato das demais
+ * mutations. `aoConcluir` chamado só em caso de sucesso, recebe a atividade já atualizada.
  * @param {(atividade: object) => void} [aoConcluir]
  */
 function useCurtirAtividade(aoConcluir) {
   const [enviando, setEnviando] = useState(false)
   const [erro, setErro] = useState(null)
 
-  async function curtir(id) {
+  async function curtir(id, usuarioId) {
     setEnviando(true)
     setErro(null)
     try {
-      const atualizada = await atividadeDoFeedService.curtir(id)
+      const atualizada = await atividadeDoFeedService.curtir(id, usuarioId)
       aoConcluir?.(atualizada)
       return atualizada
     } catch (e) {

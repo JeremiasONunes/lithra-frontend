@@ -38,11 +38,12 @@ function formatarTempoRelativo(criadoEm) {
  *   atividade: object,
  *   autor?: { nome: string, fotoUrl?: string },
  *   livro?: object,
+ *   curtidoPeloUsuarioAtual: boolean,
  *   onCurtir: () => void,
  *   onComentar: () => void,
  * }} props
  */
-function ActivityCard({ atividade, autor, livro, onCurtir, onComentar }) {
+function ActivityCard({ atividade, autor, livro, curtidoPeloUsuarioAtual, onCurtir, onComentar }) {
   const { dado: avaliacao } = useAvaliacao(
     atividade.tipo === 'avaliacao' ? atividade.avaliacaoId : null,
   )
@@ -99,6 +100,7 @@ function ActivityCard({ atividade, autor, livro, onCurtir, onComentar }) {
       <ActivityCardActions
         curtidas={atividade.curtidas}
         comentarios={atividade.comentarios}
+        curtido={curtidoPeloUsuarioAtual}
         onCurtir={onCurtir}
         onComentar={onComentar}
       />
