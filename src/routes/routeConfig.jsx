@@ -9,11 +9,14 @@ import { BuscarLivroPage } from '../pages/BuscarLivroPage'
 import { BuscaPage } from '../pages/BuscaPage'
 import { CadastroPage } from '../pages/CadastroPage'
 import { DescobrirPage } from '../pages/DescobrirPage'
+import { EditarPerfilPage } from '../pages/EditarPerfilPage'
 import { EstantePage } from '../pages/EstantePage'
 import { FeedPage } from '../pages/FeedPage'
+import { FollowListPage } from '../pages/FollowListPage'
 import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
+import { ProfilePage } from '../pages/ProfilePage'
 import { RecomendadosPage } from '../pages/RecomendadosPage'
 import { RecuperarSenhaPage } from '../pages/RecuperarSenhaPage'
 import { RequireAuth } from './guards/RequireAuth'
@@ -21,11 +24,13 @@ import { RequireRole } from './guards/RequireRole'
 
 /**
  * Toda a árvore de rotas do produto, declarada num só lugar — nenhuma rota "pertence" a uma
- * feature. Cada rota ainda não implementada aponta pra `PlaceholderPage`; etapas futuras (16-19)
+ * feature. Cada rota ainda não implementada aponta pra `PlaceholderPage`; etapas futuras (17-19)
  * substituem só o `element` da rota correspondente pela tela real, sem tocar na estrutura da árvore
  * — `/`, `/login`, `/cadastro`, `/recuperar-senha` (Etapa 9), `/nao-autorizado` (Etapa 10), `*`
  * (Etapa 11), `/livros/:livroId`/`/buscar-livro` (Etapa 12), `/estante` (Etapa 13), `/feed`
- * (Etapa 14) e `/descobrir`/`/busca`/`/recomendados` (Etapa 15) já ganharam a tela final.
+ * (Etapa 14), `/descobrir`/`/busca`/`/recomendados` (Etapa 15) e `/perfil/:username` (tratado como
+ * `usuario.id`, não um campo `username` próprio)/`/perfil/editar`/`/perfil/:username/seguidores`/
+ * `/perfil/:username/seguindo` (Etapa 16) já ganharam a tela final.
  *
  * Separado de `AppRoutes.jsx` (não `createBrowserRouter` aqui) só pra `AppRoutes.test.jsx` poder
  * montar um `createMemoryRouter` próprio, com URL inicial controlada por teste — e pra manter
@@ -55,15 +60,15 @@ const routeConfig = [
           { path: '/descobrir', element: <DescobrirPage /> },
           { path: '/busca', element: <BuscaPage /> },
           { path: '/recomendados', element: <RecomendadosPage /> },
-          { path: '/perfil/:username', element: <PlaceholderPage title="Perfil" /> },
-          { path: '/perfil/editar', element: <PlaceholderPage title="Editar perfil" /> },
+          { path: '/perfil/:username', element: <ProfilePage /> },
+          { path: '/perfil/editar', element: <EditarPerfilPage /> },
           {
             path: '/perfil/:username/seguidores',
-            element: <PlaceholderPage title="Seguidores" />,
+            element: <FollowListPage tipo="seguidores" />,
           },
           {
             path: '/perfil/:username/seguindo',
-            element: <PlaceholderPage title="Seguindo" />,
+            element: <FollowListPage tipo="seguindo" />,
           },
           { path: '/livros/:livroId', element: <BookPage /> },
           { path: '/buscar-livro', element: <BuscarLivroPage /> },

@@ -1,0 +1,47 @@
+/* Mobile first: avatar em cima, informações embaixo, centralizado. A partir de 768px
+ * (--breakpoint-tablet, ver tokens/breakpoints.css) vira lado a lado — mesmo padrão de
+ * `BookDetailHeader` (Etapa 12). */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.nome {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-xl);
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.bio {
+  color: var(--on-surface-muted);
+  font-size: var(--text-md);
+  margin: 0;
+}
+
+.acao {
+  margin-top: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .info {
+    align-items: flex-start;
+  }
+}

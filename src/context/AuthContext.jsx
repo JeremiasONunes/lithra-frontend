@@ -62,6 +62,14 @@ function AuthProvider({ children }) {
     persistirUsuarioId(null)
   }
 
+  /** Sincroniza o `usuario` da sessão depois de uma edição de perfil (Etapa 16) — só atualiza o
+   * estado local, não persiste nada novo (o `id` da sessão não muda). Sem isto, `UserMenu`/qualquer
+   * outro lugar que lê `useAuth().usuario` ficaria com nome/foto/bio desatualizados até um novo
+   * login, já que `usuarioService.atualizar` não passa por aqui sozinho. */
+  function atualizarUsuario(usuarioAtualizado) {
+    setUsuario(usuarioAtualizado)
+  }
+
   /** Propaga o erro de `usuarioService.criar` (ex.: e-mail já cadastrado) — diferente de `login`,
    * aqui é uma falha real, não um fluxo esperado. */
   async function cadastrar(dados) {
@@ -79,6 +87,7 @@ function AuthProvider({ children }) {
     login,
     logout,
     cadastrar,
+    atualizarUsuario,
   }
 
   return <AuthContext.Provider value={valor}>{children}</AuthContext.Provider>

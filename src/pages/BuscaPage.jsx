@@ -5,6 +5,7 @@ import { BookSearchBar } from '../components/BookSearchBar'
 import { PageHeader } from '../components/PageHeader'
 import { PageStateBoundary } from '../components/PageStateBoundary'
 import { UnifiedSearchResults } from '../components/UnifiedSearchResults'
+import { useAuth } from '../context/AuthContext'
 import { useBuscaUnificada } from '../hooks/useBuscaUnificada'
 import styles from '../styles/pages/BuscaPage.module.css'
 
@@ -19,6 +20,7 @@ import styles from '../styles/pages/BuscaPage.module.css'
  * padrão de "campo vazio reseta a busca na hora" já usado em `/buscar-livro`.
  */
 function BuscaPage() {
+  const { usuario } = useAuth()
   const [query, setQuery] = useState('')
   const [termoBuscado, setTermoBuscado] = useState('')
 
@@ -61,7 +63,7 @@ function BuscaPage() {
             description: 'Tente buscar por outro termo.',
           }}
         >
-          <UnifiedSearchResults livros={livros} leitores={leitores} />
+          <UnifiedSearchResults livros={livros} leitores={leitores} usuarioAtualId={usuario.id} />
         </PageStateBoundary>
       ) : null}
     </div>

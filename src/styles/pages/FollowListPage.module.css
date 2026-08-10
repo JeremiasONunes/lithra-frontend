@@ -1,0 +1,47 @@
+.wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--container-narrow);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.subtitulo {
+  color: var(--on-surface-muted);
+  font-size: var(--text-sm);
+  margin: calc(var(--space-4) * -1) 0 0;
+}
+
+/* Mesma linguagem visual de `ShelfStatusTabs` (Etapa 13) — abas em pílula, ativa com borda
+ * `--primary` — mas com `Link` no lugar de `button`/`onClick`: aqui a URL muda de fato entre
+ * Seguidores/Seguindo, não é um filtro em estado local. */
+.abas {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.aba {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-clay-full);
+  border: 2px solid transparent;
+  background: var(--surface);
+  color: var(--on-surface-muted);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-sm);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.aba:hover {
+  color: var(--on-surface);
+}
+
+.ativa {
+  border-color: var(--primary);
+  color: var(--on-surface);
+  background: var(--surface-raised);
+}

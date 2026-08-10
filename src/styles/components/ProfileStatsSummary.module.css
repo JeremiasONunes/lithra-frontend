@@ -1,0 +1,12 @@
+.grade {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+/* Reset de link — o `Card` por baixo já tem toda a aparência necessária; sem isto herdaria
+ * sublinhado/cor de link do reset global (`tokens/effects.css`). */
+.link {
+  text-decoration: none;
+  color: inherit;
+}
