@@ -21,6 +21,16 @@ function item(id, livroId, status, atualizadoEm) {
   return { id, livroId, status, atualizadoEm }
 }
 
+function avaliacao(livroId, nota) {
+  return { livroId, nota }
+}
+
+/** Livro como aparece dentro de `distribucaoPorGenero[].livros` — sempre com `minhaNota` (`null`
+ * quando o usuário não avaliou aquele livro). */
+function comNota(livro, nota = null) {
+  return { ...livro, minhaNota: nota }
+}
+
 describe('agregarEstatisticasDeLeitura', () => {
   it('estante vazia: todos os totais zerados, sem gênero/autor favorito, sem erro', () => {
     const resultado = agregarEstatisticasDeLeitura([], LIVROS)
@@ -58,7 +68,7 @@ describe('agregarEstatisticasDeLeitura', () => {
     expect(resultado.totalLivrosLidos).toBe(2)
     expect(resultado.generoFavorito).toBe('Fantasia')
     expect(resultado.distribucaoPorGenero).toEqual([
-      { genero: 'Fantasia', quantidade: 2, livros: [LIVRO_HOBBIT, LIVRO_CIRCE] },
+      { genero: 'Fantasia', quantidade: 2, livros: [comNota(LIVRO_HOBBIT), comNota(LIVRO_CIRCE)] },
     ])
   })
 
@@ -75,8 +85,8 @@ describe('agregarEstatisticasDeLeitura', () => {
     expect(resultado.totalPaginasLidas).toBe(310 + 400 + 688)
     expect(resultado.generoFavorito).toBe('Fantasia')
     expect(resultado.distribucaoPorGenero).toEqual([
-      { genero: 'Fantasia', quantidade: 2, livros: [LIVRO_HOBBIT, LIVRO_CIRCE] },
-      { genero: 'Ficção Científica', quantidade: 1, livros: [LIVRO_DUNA] },
+      { genero: 'Fantasia', quantidade: 2, livros: [comNota(LIVRO_HOBBIT), comNota(LIVRO_CIRCE)] },
+      { genero: 'Ficção Científica', quantidade: 1, livros: [comNota(LIVRO_DUNA)] },
     ])
     expect(resultado.autorMaisLido).toBe('Tolkien')
     expect(resultado.livrosPorMes.find((mes) => mes.mes === 'Mar').quantidade).toBe(2)
@@ -94,12 +104,28 @@ describe('agregarEstatisticasDeLeitura', () => {
     const resultado = agregarEstatisticasDeLeitura(itens, LIVROS)
 
     const fantasia = resultado.distribucaoPorGenero.find((linha) => linha.genero === 'Fantasia')
-    expect(fantasia.livros).toEqual([LIVRO_HOBBIT])
+    expect(fantasia.livros).toEqual([comNota(LIVRO_HOBBIT)])
 
     const ficcaoCientifica = resultado.distribucaoPorGenero.find(
       (linha) => linha.genero === 'Ficção Científica',
     )
-    expect(ficcaoCientifica.livros).toEqual([LIVRO_DUNA])
+    expect(ficcaoCientifica.livros).toEqual([comNota(LIVRO_DUNA)])
+  })
+
+  it('anexa "minha avaliação" (minhaNota) em cada livro de distribucaoPorGenero, null quando não avaliado', () => {
+    const itens = [
+      item('item-1', 'livro-1', 'lido', '2025-03-15T10:00:00.000Z'),
+      item('item-2', 'livro-2', 'lido', '2025-03-20T10:00:00.000Z'),
+    ]
+    const avaliacoes = [avaliacao('livro-1', 5)] // só O Hobbit foi avaliado, Circe não
+    const resultado = agregarEstatisticasDeLeitura(itens, LIVROS, avaliacoes)
+
+    const fantasia = resultado.distribucaoPorGenero.find((linha) => linha.genero === 'Fantasia')
+    const hobbit = fantasia.livros.find((livro) => livro.id === 'livro-1')
+    const circe = fantasia.livros.find((livro) => livro.id === 'livro-2')
+
+    expect(hobbit.minhaNota).toBe(5)
+    expect(circe.minhaNota).toBeNull()
   })
 
   it('anoReferencia é o ano mais recente com livro lido, mesmo com histórico em vários anos', () => {

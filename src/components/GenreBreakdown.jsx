@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { BookCoverThumb } from './BookCoverThumb'
 import { Card } from './Card'
 import { ProgressBar } from './ProgressBar'
+import { RatingStars } from './RatingStars'
 import styles from '../styles/components/GenreBreakdown.module.css'
 
 /**
@@ -12,10 +13,15 @@ import styles from '../styles/components/GenreBreakdown.module.css'
  * barra novo — mesmo raciocínio já usado em Descobrir (Etapa 15) pra `BookSearchResults`.
  *
  * Cada linha é clicável (a pedido do responsável do projeto, revisão pós-aprovação da Etapa 17):
- * abre/fecha, embaixo da própria barra, a lista dos livros lidos daquele gênero — `distribucaoPorGenero`
- * já vem com `livros` resolvidos (`agregarEstatisticasDeLeitura`/`useReadingStats`, não precisa de
- * outro cruzamento aqui). Só um gênero aberto por vez (`generoAberto`, não um Set) — mesma
- * simplicidade de outros painéis do projeto que só têm um item expandido por vez.
+ * abre/fecha, embaixo da própria barra, a lista dos livros lidos daquele gênero. Cada livro mostra
+ * capa, título, autor, número de páginas e "minha avaliação" (`RatingStars` só-leitura, se o próprio
+ * usuário já avaliou aquele livro — `minhaNota`, anexado por `agregarEstatisticasDeLeitura`) — lista
+ * em linhas (não grade de miniaturas) de propósito, pra caber esses detalhes com respiro (pedido
+ * explícito do responsável do projeto: "mais espaço entre os livros").
+ *
+ * `distribucaoPorGenero` já vem com `livros` resolvidos (`useReadingStats`), não precisa de outro
+ * cruzamento aqui. Só um gênero aberto por vez (`generoAberto`, não um Set) — mesma simplicidade de
+ * outros painéis do projeto que só têm um item expandido por vez.
  * @param {{
  *   distribucaoPorGenero: { genero: string, quantidade: number, livros: object[] }[],
  *   total: number,
@@ -52,7 +58,18 @@ function GenreBreakdown({ distribucaoPorGenero, total }) {
                     <li key={livro.id}>
                       <Link to={`/livros/${livro.id}`} className={styles.livroItem}>
                         <BookCoverThumb src={livro.capaUrl} title={livro.titulo} size="sm" />
-                        <span className={styles.livroTitulo}>{livro.titulo}</span>
+                        <div className={styles.livroInfo}>
+                          <span className={styles.livroTitulo}>{livro.titulo}</span>
+                          <span className={styles.livroAutor}>{livro.autor}</span>
+                          <span className={styles.livroPaginas}>{livro.numeroPaginas} páginas</span>
+                          {livro.minhaNota ? (
+                            <span className={styles.minhaAvaliacao}>
+                              <RatingStars value={livro.minhaNota} size={14} />
+                            </span>
+                          ) : (
+                            <span className={styles.semAvaliacao}>Você ainda não avaliou</span>
+                          )}
+                        </div>
                       </Link>
                     </li>
                   ))}

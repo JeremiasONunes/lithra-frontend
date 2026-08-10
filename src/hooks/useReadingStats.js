@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 
+import { avaliacaoService } from '../services/avaliacaoService'
 import { itemDaEstanteService } from '../services/itemDaEstanteService'
 import { livroService } from '../services/livroService'
 import { useAsync } from './useAsync'
@@ -52,9 +53,17 @@ function contarLivrosLidosNoAno(itensDaEstante, ano) {
  * `new Date().getFullYear()` só quando não há nenhum livro lido ainda (usuário novo, sem histórico
  * — aí faz sentido a meta já nascer no ano real corrente).
  *
+ * `livros` de `distribucaoPorGenero` vêm com `minhaNota` anexada (a pedido do responsável do
+ * projeto, revisão antes da aprovação: "mostrando detalhes do livro... minha avaliação se houver")
+ * — `null` pra livro sem avaliação do próprio usuário, nunca omitido, pra quem consome não precisar
+ * checar se o campo existe.
+ *
  * @param {object[]} itensDaEstante - todos os itens do usuário, qualquer status (a função filtra
  *   "lido" sozinha — quem chama não precisa pré-filtrar)
  * @param {object[]} livros - catálogo inteiro, pra cruzar `livroId` com gênero/autor/páginas
+ * @param {object[]} [avaliacoes] - avaliações do próprio usuário (qualquer livro; a função cruza
+ *   por `livroId` sozinha) — opcional, `[]` por padrão pra não quebrar quem já chamava sem esse
+ *   argumento
  * @returns {{
  *   totalLivrosLidos: number,
  *   totalPaginasLidas: number,
@@ -66,10 +75,16 @@ function contarLivrosLidosNoAno(itensDaEstante, ano) {
  *   livrosLidosNoAnoReferencia: number,
  * }}
  */
-function agregarEstatisticasDeLeitura(itensDaEstante, livros) {
+function agregarEstatisticasDeLeitura(itensDaEstante, livros, avaliacoes = []) {
+  const notaPorLivroId = new Map(avaliacoes.map((avaliacao) => [avaliacao.livroId, avaliacao.nota]))
+
   const itensLidos = itensDaEstante
     .filter((item) => item.status === 'lido')
-    .map((item) => ({ ...item, livro: livros.find((livro) => livro.id === item.livroId) }))
+    .map((item) => {
+      const livro = livros.find((livro) => livro.id === item.livroId)
+      if (!livro) return { ...item, livro: null }
+      return { ...item, livro: { ...livro, minhaNota: notaPorLivroId.get(livro.id) ?? null } }
+    })
     .filter((item) => item.livro)
 
   const totalLivrosLidos = itensLidos.length
@@ -125,18 +140,22 @@ function contarPorChave(itens, chave) {
 }
 
 /**
- * Estatísticas de Leitura do usuário — busca `ItemDaEstante`/`Livro` (Etapas 7/12/13) e aplica
- * `agregarEstatisticasDeLeitura`. Sem service próprio (a Descrição da etapa é explícita: "não é uma
- * nova fonte de dado primário, é uma função pura de agregação").
+ * Estatísticas de Leitura do usuário — busca `ItemDaEstante`/`Livro`/`Avaliacao` (Etapas 7/12/13) e
+ * aplica `agregarEstatisticasDeLeitura`. Sem service próprio (a Descrição da etapa é explícita: "não
+ * é uma nova fonte de dado primário, é uma função pura de agregação"). `avaliacaoService` não chega
+ * a um hook próprio (`useAvaliacoesDoUsuario`) porque nada além daqui precisa dele hoje — chamado
+ * direto, mesmo padrão de qualquer outro hook que compõe `services/` (`useEstante`,
+ * `useLivrosEmDestaque`...).
  * @param {string} usuarioId
  */
 function useReadingStats(usuarioId) {
   const buscar = useCallback(async () => {
-    const [itensDaEstante, livros] = await Promise.all([
+    const [itensDaEstante, livros, avaliacoes] = await Promise.all([
       itemDaEstanteService.listarPorUsuario(usuarioId),
       livroService.listar(),
+      avaliacaoService.listarPorUsuario(usuarioId),
     ])
-    return agregarEstatisticasDeLeitura(itensDaEstante, livros)
+    return agregarEstatisticasDeLeitura(itensDaEstante, livros, avaliacoes)
   }, [usuarioId])
 
   return useAsync(buscar)
