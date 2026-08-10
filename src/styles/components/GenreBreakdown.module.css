@@ -41,15 +41,24 @@
 }
 
 /* Lista em linhas (não grade de miniaturas): cada livro tem espaço pra capa + título/autor/páginas/
- * avaliação, com bastante respiro entre um livro e outro (`gap`, maior que o de `.lista`). */
+ * avaliação, com bastante respiro entre um livro e outro (`gap`, maior que o de `.lista`).
+ *
+ * `max-height` fixa em ~3 livros de altura (padrão, não muda com a quantidade): capa `sm`
+ * (96px de largura, proporção 9/11 = ~117px de altura) + padding de `.livroItem` (16px) = ~133px
+ * por item; 3 itens + 2 `gap` de `--space-4` (16px) entre eles = ~431px, arredondado pra 440px.
+ * Com 4+ livros no gênero, o excesso rola dentro da própria lista (`overflow-y: auto`) — a barra de
+ * rolagem já vem estilizada globalmente (`styles/scrollbar.css`, Etapa 9), sem CSS extra aqui. Com
+ * 3 ou menos, `max-height` nunca é atingida e nada rola. */
 .livros {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
   list-style: none;
   margin: var(--space-4) 0 0;
-  padding: var(--space-4) 0 0;
+  padding: var(--space-4) var(--space-2) 0 0;
   border-top: 1px solid var(--outline);
+  max-height: 440px;
+  overflow-y: auto;
 }
 
 .livroItem {
