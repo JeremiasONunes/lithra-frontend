@@ -57,7 +57,9 @@ describe('agregarEstatisticasDeLeitura', () => {
 
     expect(resultado.totalLivrosLidos).toBe(2)
     expect(resultado.generoFavorito).toBe('Fantasia')
-    expect(resultado.distribucaoPorGenero).toEqual([{ genero: 'Fantasia', quantidade: 2 }])
+    expect(resultado.distribucaoPorGenero).toEqual([
+      { genero: 'Fantasia', quantidade: 2, livros: [LIVRO_HOBBIT, LIVRO_CIRCE] },
+    ])
   })
 
   it('agrega páginas, gênero/autor favorito e livros por mês de um histórico com vários gêneros', () => {
@@ -73,8 +75,8 @@ describe('agregarEstatisticasDeLeitura', () => {
     expect(resultado.totalPaginasLidas).toBe(310 + 400 + 688)
     expect(resultado.generoFavorito).toBe('Fantasia')
     expect(resultado.distribucaoPorGenero).toEqual([
-      { genero: 'Fantasia', quantidade: 2 },
-      { genero: 'Ficção Científica', quantidade: 1 },
+      { genero: 'Fantasia', quantidade: 2, livros: [LIVRO_HOBBIT, LIVRO_CIRCE] },
+      { genero: 'Ficção Científica', quantidade: 1, livros: [LIVRO_DUNA] },
     ])
     expect(resultado.autorMaisLido).toBe('Tolkien')
     expect(resultado.livrosPorMes.find((mes) => mes.mes === 'Mar').quantidade).toBe(2)
@@ -82,6 +84,22 @@ describe('agregarEstatisticasDeLeitura', () => {
     expect(resultado.livrosPorMes.find((mes) => mes.mes === 'Jan').quantidade).toBe(0)
     expect(resultado.anoReferencia).toBe(2025)
     expect(resultado.livrosLidosNoAnoReferencia).toBe(3)
+  })
+
+  it('cada entrada de distribucaoPorGenero traz os livros de verdade daquele gênero, não só a contagem', () => {
+    const itens = [
+      item('item-1', 'livro-1', 'lido', '2025-03-15T10:00:00.000Z'),
+      item('item-2', 'livro-3', 'lido', '2025-05-01T10:00:00.000Z'),
+    ]
+    const resultado = agregarEstatisticasDeLeitura(itens, LIVROS)
+
+    const fantasia = resultado.distribucaoPorGenero.find((linha) => linha.genero === 'Fantasia')
+    expect(fantasia.livros).toEqual([LIVRO_HOBBIT])
+
+    const ficcaoCientifica = resultado.distribucaoPorGenero.find(
+      (linha) => linha.genero === 'Ficção Científica',
+    )
+    expect(ficcaoCientifica.livros).toEqual([LIVRO_DUNA])
   })
 
   it('anoReferencia é o ano mais recente com livro lido, mesmo com histórico em vários anos', () => {

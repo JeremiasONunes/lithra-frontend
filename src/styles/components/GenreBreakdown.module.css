@@ -20,3 +20,52 @@
   margin: 0;
   padding: 0;
 }
+
+/* Reset de `<button>` — o conteúdo visual continua sendo o `ProgressBar` de dentro, o botão só
+ * adiciona o comportamento de clique/teclado em cima. */
+.linha {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: var(--space-1);
+  margin: calc(var(--space-1) * -1);
+  border-radius: var(--radius-clay-sm);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.linha:hover {
+  background: var(--surface);
+}
+
+.livros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  list-style: none;
+  margin: var(--space-3) 0 0;
+  padding: var(--space-3) 0 0;
+  border-top: 1px solid var(--outline);
+}
+
+.livroItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  width: 72px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.livroTitulo {
+  font-size: var(--text-xs);
+  color: var(--on-surface-muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.2;
+  overflow: hidden;
+}

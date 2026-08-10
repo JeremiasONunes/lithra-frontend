@@ -58,7 +58,7 @@ function contarLivrosLidosNoAno(itensDaEstante, ano) {
  * @returns {{
  *   totalLivrosLidos: number,
  *   totalPaginasLidas: number,
- *   distribucaoPorGenero: { genero: string, quantidade: number }[],
+ *   distribucaoPorGenero: { genero: string, quantidade: number, livros: object[] }[],
  *   generoFavorito: string | null,
  *   autorMaisLido: string | null,
  *   livrosPorMes: { mes: string, quantidade: number }[],
@@ -105,17 +105,22 @@ function agregarEstatisticasDeLeitura(itensDaEstante, livros) {
   }
 }
 
-/** Conta ocorrências de `chave(item)` e devolve `{ genero, quantidade }[]` ordenado do mais pro
- * menos frequente — reaproveitada tanto pra gênero quanto pra autor (campo devolvido chama-se
- * sempre `genero` por simplicidade; quem usa pra autor só lê o mesmo campo com outro significado). */
+/** Agrupa por `chave(item)` e devolve `{ genero, quantidade, livros }[]` ordenado do mais pro menos
+ * frequente — reaproveitada tanto pra gênero quanto pra autor (campo devolvido chama-se sempre
+ * `genero` por simplicidade; quem usa pra autor só lê `genero`/`quantidade`, ignora `livros`).
+ * `livros` (usado por `GenreBreakdown`, Etapa 17: "descobrir qual livro foi lido em cada gênero") já
+ * vem cada um o próprio objeto `Livro` cruzado, não precisa de outro `find` em quem consome. */
 function contarPorChave(itens, chave) {
-  const contagem = new Map()
+  const grupos = new Map()
   for (const item of itens) {
     const valor = chave(item)
-    contagem.set(valor, (contagem.get(valor) ?? 0) + 1)
+    if (!grupos.has(valor)) {
+      grupos.set(valor, [])
+    }
+    grupos.get(valor).push(item.livro)
   }
-  return [...contagem.entries()]
-    .map(([genero, quantidade]) => ({ genero, quantidade }))
+  return [...grupos.entries()]
+    .map(([genero, livros]) => ({ genero, quantidade: livros.length, livros }))
     .sort((a, b) => b.quantidade - a.quantidade)
 }
 
