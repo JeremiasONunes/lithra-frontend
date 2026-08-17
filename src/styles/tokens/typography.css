@@ -1,11 +1,97 @@
 /*
- * Copiado de `lythra/Lythra Design System/tokens/typography.css` (Etapa 3), com uma mudança: o
- * arquivo original carrega Fredoka/Nunito via `@import url(...)` do Google Fonts (CDN). Aqui as
- * fontes são autohospedadas via `@fontsource` (instalado como dependência), reduzindo a dependência
- * de rede externa em produção — só os pesos realmente usados pelos tokens abaixo (Fredoka 600,
- * Nunito 400/600/700; o CDN original também carregava Fredoka 500 e Nunito 800, que nenhum token
- * usa). Atenção: é `@fontsource/nunito` (a família "Nunito"), não `@fontsource/nunito-sans` — são
- * famílias tipográficas diferentes, e o kit de design especifica a primeira.
+ * ============================================================================
+ * TOKENS DE TIPOGRAFIA — teoria e organização
+ * ============================================================================
+ *
+ * PAR TIPOGRÁFICO: POR QUE DUAS FONTES, NUNCA UMA SÓ (NEM TRÊS)
+ * ---------------------------------------------------------------------------
+ * Interfaces sérias quase sempre separam DUAS famílias com papéis diferentes:
+ *   - Uma fonte de EXIBIÇÃO/TÍTULO (aqui, Fredoka) — usada em pouco texto
+ *     (títulos, botões), onde a personalidade da marca pode aparecer sem
+ *     prejudicar a leitura, porque o texto é curto.
+ *   - Uma fonte de CORPO (aqui, Nunito) — usada em blocos longos (uma
+ *     resenha de livro, uma descrição), onde a prioridade é CONFORTO de
+ *     leitura prolongada, não personalidade.
+ * Usar a fonte de exibição num parágrafo inteiro cansa a leitura; usar a de
+ * corpo num título grande perde impacto visual. A dupla existe porque
+ * nenhuma das duas faz bem o trabalho da outra sozinha. Mais que duas
+ * famílias, por outro lado, é ruído: cada fonte nova é mais um "sotaque"
+ * visual que o cérebro do usuário precisa reprocessar.
+ *
+ * FONTES AUTOHOSPEDADAS (`@fontsource`) EM VEZ DE CDN DO GOOGLE FONTS
+ * ---------------------------------------------------------------------------
+ * A forma mais comum de usar Google Fonts é um `<link>`/`@import` apontando
+ * pro CDN do Google. Aqui, em vez disso, os arquivos de fonte são instalados
+ * como dependência npm (`@fontsource/...`) e servidos pelo próprio Vite,
+ * junto com o resto do build. Vantagens reais, não só estilo:
+ *   1. Uma requisição a menos para um domínio externo — menos uma coisa que
+ *      pode falhar ou atrasar o carregamento da página (rede do usuário,
+ *      instabilidade do CDN, bloqueadores de terceiros).
+ *   2. Nenhum dado do visitante trafega para o Google só para carregar uma
+ *      fonte (uma preocupação real de privacidade).
+ *   3. Controle preciso de quais PESOS (weights) baixar — só os que os
+ *      tokens abaixo realmente usam (Fredoka 600; Nunito 400/600/700), em
+ *      vez do pacote "família inteira" que um `<link>` de CDN costuma trazer.
+ *
+ * ESCALA TIPOGRÁFICA: POR QUE DEGRAUS FIXOS, NÃO QUALQUER TAMANHO
+ * ---------------------------------------------------------------------------
+ * `--text-xs` até `--text-3xl` formam uma ESCALA — um conjunto pequeno e
+ * fechado de tamanhos permitidos, em vez de qualquer `font-size` que alguém
+ * queira digitar. Isso existe pelo mesmo motivo de qualquer sistema de
+ * tokens: PREVISIBILIDADE. Se um componente novo precisa de "um texto
+ * grande", a pergunta não é "que valor eu invento?", é "qual desses 8
+ * degraus já resolve isso?" — a variação visual do produto inteiro fica
+ * contida nesses poucos passos, em vez de crescer sem controle a cada tela
+ * nova. Os valores usam `rem`, não `px` — ver por quê na nota de acessibilidade
+ * mais abaixo.
+ *
+ * `line-height` (ALTURA DE LINHA): POR QUE VARIA COM A DENSIDADE DO TEXTO
+ * ---------------------------------------------------------------------------
+ * `line-height` é a distância vertical entre uma linha de texto e a próxima.
+ * Regra prática de tipografia (vale tanto pra papel quanto pra tela): quanto
+ * MAIS texto corrido (parágrafos longos), MAIS espaço entre linhas ajuda o
+ * olho a não "perder a linha" ao voltar pro início da próxima — daí
+ * `--leading-relaxed` (1.65) para corpo de texto. Já um título grande, com
+ * poucas palavras, fica com aparência solta/desconexa se receber o mesmo
+ * espaçamento generoso — por isso `--leading-tight` (1.15) para títulos. Os
+ * quatro degraus aqui cobrem esse espectro: apertado (título) → normal →
+ * relaxado (texto longo).
+ *
+ * `font-weight`: NOMES SEMÂNTICOS SOBRE OS NÚMEROS CSS
+ * ---------------------------------------------------------------------------
+ * `font-weight` no CSS é numérico (100–900, onde 400 é "normal" e 700 é
+ * "bold"). Os tokens abaixo dão nome a esses números pelo MESMO motivo de
+ * qualquer token: um componente escreve `var(--weight-bold)`, não o número
+ * "cru" `700` — se a escala de pesos do produto mudar um dia, muda aqui uma
+ * vez só. `--weight-display` existe separado dos outros dois porque é
+ * conceitualmente diferente: não é "o quão forte o texto é", é "qual peso a
+ * fonte de EXIBIÇÃO usa por padrão" — hoje coincide com semibold (600), mas
+ * responde a uma pergunta diferente.
+ *
+ * ACESSIBILIDADE: POR QUE `rem` E NÃO `px`
+ * ---------------------------------------------------------------------------
+ * `px` é um tamanho absoluto — sempre o mesmo tamanho físico, não importa a
+ * configuração do usuário. `rem` ("root em") é relativo ao `font-size` do
+ * elemento `<html>` (por padrão, 16px em todo navegador) — então
+ * `1rem = 16px`, `1.5rem = 24px`, e por aí vai. A diferença prática: uma
+ * pessoa com baixa visão que aumenta o tamanho de fonte padrão do navegador
+ * (uma configuração de acessibilidade real, usada por muita gente) vê TODO
+ * o texto do site crescer proporcionalmente quando os tamanhos são `rem` —
+ * e continua vendo tudo do mesmo tamanho fixo, ignorando a preferência dela,
+ * se os tamanhos forem `px`. É acessibilidade "de graça", só pela escolha da
+ * unidade.
+ *
+ * ---------------------------------------------------------------------------
+ * Copiado de `lythra/Lythra Design System/tokens/typography.css` (Etapa 3),
+ * com uma mudança: o arquivo original carrega Fredoka/Nunito via
+ * `@import url(...)` do Google Fonts (CDN). Aqui as fontes são
+ * autohospedadas via `@fontsource` (instalado como dependência), reduzindo a
+ * dependência de rede externa em produção — só os pesos realmente usados
+ * pelos tokens abaixo (Fredoka 600; Nunito 400/600/700 — o CDN original
+ * também carregava Fredoka 500 e Nunito 800, que nenhum token usa).
+ * Atenção: é `@fontsource/nunito` (a família "Nunito"), não
+ * `@fontsource/nunito-sans` — são famílias tipográficas diferentes, e o kit
+ * de design especifica a primeira.
  */
 @import '@fontsource/fredoka/600.css';
 @import '@fontsource/nunito/400.css';
@@ -13,22 +99,34 @@
 @import '@fontsource/nunito/700.css';
 
 :root {
+  /* `ui-rounded`/`system-ui` são fallbacks — se a fonte da marca ainda não
+   * carregou (ou falhar), o navegador usa a fonte "arredondada" do sistema
+   * operacional (ex.: SF Rounded no iOS) antes de cair pra um sans-serif
+   * genérico, mantendo o texto legível a qualquer momento do carregamento. */
   --font-display: 'Fredoka', ui-rounded, system-ui, sans-serif;
   --font-body: 'Nunito', ui-sans-serif, system-ui, sans-serif;
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-md: 1.125rem;
-  --text-lg: 1.375rem;
-  --text-xl: 1.75rem;
-  --text-2xl: 2.25rem;
-  --text-3xl: 3rem;
+
+  /* Escala de tamanhos — 8 degraus, do menor (legendas) ao maior (números de
+   * destaque). Sempre `rem` (ver nota de acessibilidade acima). */
+  --text-xs: 0.75rem; /* 12px — legendas, metadados */
+  --text-sm: 0.875rem; /* 14px — texto secundário, botões pequenos */
+  --text-base: 1rem; /* 16px — corpo de texto padrão */
+  --text-md: 1.125rem; /* 18px — título de card (H3) */
+  --text-lg: 1.375rem; /* 22px — título de seção (H2) */
+  --text-xl: 1.75rem; /* 28px — título de página (H1) */
+  --text-2xl: 2.25rem; /* 36px — números de destaque (ex.: estatística grande) */
+  --text-3xl: 3rem; /* 48px — o maior degrau, uso raro/hero */
+
+  /* Altura de linha — do mais apertado (títulos) ao mais espaçado (texto
+   * corrido longo), ver teoria acima. */
   --leading-tight: 1.15;
   --leading-snug: 1.35;
   --leading-normal: 1.5;
   --leading-relaxed: 1.65;
+
+  /* Pesos — nomes semânticos sobre os números crus do CSS. */
   --weight-regular: 400;
   --weight-semibold: 600;
   --weight-bold: 700;
-  --weight-display: 600;
+  --weight-display: 600; /* peso padrão da fonte de exibição (Fredoka) — ver nota acima */
 }

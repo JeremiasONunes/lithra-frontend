@@ -1,4 +1,65 @@
-/* Copiado de `lythra/Lythra Design System/tokens/spacing.css` (Etapa 3), sem alterações. */
+/*
+ * ============================================================================
+ * TOKENS DE ESPAÇAMENTO — teoria e organização
+ * ============================================================================
+ *
+ * A IDEIA DE UMA "GRADE DE ESPAÇAMENTO" (SPACING SCALE)
+ * ---------------------------------------------------------------------------
+ * Sem uma escala, é comum um projeto acumular margens/paddings quase
+ * aleatórios: `13px` aqui, `18px` ali, `15px` acolá — cada um "parecia bom"
+ * isoladamente, mas juntos criam uma interface sem RITMO VISUAL, onde nada
+ * se alinha de verdade com nada. A solução, usada por praticamente todo
+ * design system profissional (Material Design, Tailwind, etc.), é restringir
+ * TODO espaçamento do produto a um conjunto pequeno e fechado de valores —
+ * exatamente como a escala tipográfica faz para tamanho de fonte
+ * (`typography.css`). Se um componente precisa de espaço entre dois
+ * elementos, a pergunta vira "qual destes 11 valores serve?", nunca "que
+ * número eu invento agora?".
+ *
+ * POR QUE MÚLTIPLOS DE 4 (A "GRADE DE 4PX")
+ * ---------------------------------------------------------------------------
+ * Repare que cada valor abaixo é múltiplo de 4px: 4, 8, 12, 16, 20, 24, 32,
+ * 40, 48, 64, 80. Essa base de 4px (uma variação comum é base 8px — o
+ * "8-point grid" popularizado pelo Google) existe por um motivo prático:
+ * telas modernas em geral respeitam bem múltiplos pequenos de 4, então
+ * qualquer combinação de tokens somados (`--space-2` + `--space-3` = 20px,
+ * por exemplo) continua caindo num valor "redondo" e nítido, sem meio-pixel
+ * ou arredondamento estranho de sub-pixel entre diferentes densidades de
+ * tela. O salto entre os degraus também não é sempre igual: é mais fino nos
+ * valores pequenos (4px em 4px, para ajustes finos de ícone/texto) e mais
+ * largo nos valores grandes (16px em 16px, depois 32px em 32px) — porque
+ * espaçamentos grandes raramente precisam de precisão fina; a diferença
+ * entre 60px e 64px de respiro numa seção não é perceptível, mas a
+ * diferença entre 4px e 8px ao lado de um ícone é.
+ *
+ * POR QUE ISSO IMPORTA NA PRÁTICA (E NÃO SÓ ESTÉTICA)
+ * ---------------------------------------------------------------------------
+ * Além de "ficar bonito", uma grade de espaçamento consistente é o que faz
+ * telas diferentes do mesmo produto PARECEREM parte do mesmo produto — o
+ * mesmo respiro entre um título e o conteúdo abaixo dele em toda página,
+ * o mesmo espaço interno de todo `Card`. É também mais rápido de programar:
+ * ninguém para pra "calibrar" um espaçamento novo a cada componente, só
+ * escolhe entre 11 opções já aprovadas.
+ *
+ * `--container-*`: LARGURA MÁXIMA DE LEITURA
+ * ---------------------------------------------------------------------------
+ * `--container-max`/`--container-narrow` não são espaçamento entre
+ * elementos — são a LARGURA MÁXIMA que um bloco de conteúdo pode ocupar,
+ * mesmo em uma tela ultra larga. Isso existe por uma razão de legibilidade
+ * bem estudada em tipografia: uma linha de texto MUITO longa (o olho
+ * percorrendo a tela inteira de ponta a ponta) é mais difícil de ler do que
+ * uma linha de comprimento moderado — o olho "se perde" ao pular de volta
+ * pro início da linha seguinte. Por isso páginas de conteúdo centralizam o
+ * texto dentro de uma largura máxima, em vez de deixar o texto esticar até
+ * a borda de um monitor grande. `--container-narrow` (680px) é ainda mais
+ * estreito que `--container-max` (1200px) — reservado para telas
+ * dominadas por texto corrido, onde o conforto de leitura pesa mais do que
+ * aproveitar a largura inteira da tela.
+ *
+ * ---------------------------------------------------------------------------
+ * Copiado de `lythra/Lythra Design System/tokens/spacing.css` (Etapa 3), sem
+ * alterações.
+ */
 :root {
   --space-1: 4px;
   --space-2: 8px;
@@ -11,6 +72,6 @@
   --space-12: 48px;
   --space-16: 64px;
   --space-20: 80px;
-  --container-max: 1200px;
-  --container-narrow: 680px;
+  --container-max: 1200px; /* largura máxima de uma página de conteúdo comum */
+  --container-narrow: 680px; /* largura máxima de uma página dominada por texto corrido */
 }

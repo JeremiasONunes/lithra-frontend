@@ -1,0 +1,79 @@
+/*
+ * ============================================================================
+ * BARRA DE ROLAGEM CUSTOMIZADA — teoria e organização
+ * ============================================================================
+ *
+ * POR QUE ISTO NÃO É UM "TOKEN" COMO OS OUTROS ARQUIVOS DA PASTA
+ * ---------------------------------------------------------------------------
+ * Diferente de `colors.css`/`typography.css`/`spacing.css`/`effects.css`,
+ * este arquivo não declara nenhuma variável `--nome: valor` — ele aplica
+ * ESTILO DE VERDADE, globalmente, igual ao reset (`* { box-sizing: ... }`)
+ * que mora em `effects.css`. Fica dentro de `tokens/` mesmo assim porque é
+ * fundação visual global, no mesmo espírito das outras peças desta pasta —
+ * importado uma vez em `index.css`, nunca repetido em nenhum componente.
+ *
+ * DUAS APIS DIFERENTES PARA A MESMA COISA (E POR QUÊ)
+ * ---------------------------------------------------------------------------
+ * Não existe (ainda) um único jeito universal de estilizar barra de rolagem
+ * no CSS — os navegadores desenvolveram isso em caminhos separados, e o
+ * código abaixo cobre os dois:
+ *   1. `scrollbar-width`/`scrollbar-color` — a propriedade PADRÃO (Firefox
+ *      foi o pioneiro em implementar; hoje outros motores também aceitam).
+ *      Simples, mas só permite "fina/normal" + duas cores (polegar e trilho),
+ *      sem controle fino de tamanho/raio.
+ *   2. `::-webkit-scrollbar`/`::-webkit-scrollbar-track`/
+ *      `::-webkit-scrollbar-thumb` — PSEUDO-ELEMENTOS proprietários da linha
+ *      WebKit/Blink (Chrome, Edge, Safari), que existiam muito antes de
+ *      qualquer padrão oficial. Mais poderosos (permitem definir largura
+ *      exata, `border-radius` do "polegar", etc.), mas só funcionam nesses
+ *      navegadores.
+ * Declarar os dois ao mesmo tempo é chamado de PROGRESSIVE ENHANCEMENT
+ * (aprimoramento progressivo): o navegador simplesmente ignora a regra que
+ * não reconhece (nenhum erro, nenhum aviso) e aplica a que entende — o
+ * resultado final é "todo navegador tem uma barra de rolagem com a cara do
+ * Design System", cada um usando a API que sabe interpretar, sem qualquer
+ * lógica condicional (`if (navegador === ...)`) escrita à mão.
+ *
+ * `*` EM VEZ DE SÓ `html`/`body`
+ * ---------------------------------------------------------------------------
+ * Aplicar o seletor em QUALQUER elemento (`*`), não só na página inteira,
+ * garante que um contêiner com rolagem PRÓPRIA (ex.: a lista de itens dentro
+ * de `TermosDeUsoModal`, que tem `overflow-y` independente da página) também
+ * ganhe a mesma barra de rolagem customizada — sem isso, a maior parte da
+ * navegação usaria o visual customizado, mas um modal específico "vazaria"
+ * de volta pro visual padrão feio do sistema operacional.
+ *
+ * ---------------------------------------------------------------------------
+ * Não vem do `Lythra Design System` (o kit não define isso) — é uma adição
+ * deste projeto, mesmo raciocínio já usado em `tokens/breakpoints.css`.
+ */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--on-surface-muted) transparent;
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  /* `--outline` (usado antes) é claro demais sobre `--surface`/`--background`,
+   * baixo contraste — `--on-surface-muted` é o tom "texto secundário" do
+   * Design System, feito pra se destacar do fundo claro (mesma teoria de
+   * contraste explicada em `colors.css`, aplicada aqui a um elemento de
+   * interface, não a texto). */
+  background: var(--on-surface-muted);
+  border-radius: var(--radius-clay-full);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--on-surface);
+}

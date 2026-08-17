@@ -1,50 +1,146 @@
 /*
- * Copiado de `lythra/Lythra Design System/tokens/colors.css` (Etapa 3), com uma correção
- * deliberada: `on-primary`, `on-secondary` e `on-danger` do arquivo original usam texto branco, que
- * falha contraste WCAG AA sobre as respectivas cores de fundo (fórmula oficial de luminância
- * relativa do WCAG, não estimativa visual):
+ * ============================================================================
+ * TOKENS DE COR — teoria e organização
+ * ============================================================================
+ *
+ * O QUE É UM "CUSTOM PROPERTY" (variável CSS nativa)
+ * ---------------------------------------------------------------------------
+ * `--algo: valor;` declara uma variável CSS de verdade — nativa do navegador,
+ * diferente de uma variável de pré-processador (Sass `$cor`, Less `@cor`).
+ * A diferença importa:
+ *   - Uma variável Sass/Less é substituída em TEMPO DE BUILD — vira o valor
+ *     final antes mesmo do navegador ver o CSS. É só "find and replace".
+ *   - Um custom property é resolvido em TEMPO DE EXECUÇÃO, no navegador, a
+ *     cada elemento. Isso permite coisas que um pré-processador não faz sozinho:
+ *     trocar o valor via JavaScript (`element.style.setProperty(...)`) e ver
+ *     a tela inteira reagir sem recompilar nada — é assim, por exemplo, que
+ *     um dark mode trocado em runtime funcionaria neste projeto (fora do
+ *     escopo do Lythra hoje, mas a arquitetura de tokens já deixa o caminho
+ *     pronto).
+ * `:root` é o seletor do elemento `<html>` — declarar aqui faz o valor
+ * herdar (cascatear) para todo o documento, então qualquer `.module.css` do
+ * projeto consegue ler `var(--nome-do-token)` de qualquer componente.
+ *
+ * O QUE É UM "DESIGN TOKEN"
+ * ---------------------------------------------------------------------------
+ * Token de design é o nome que a indústria dá a exatamente isso: um valor de
+ * design (cor, espaçamento, fonte...) com um NOME, guardado num lugar só,
+ * para nunca mais ser escrito "cru" dentro de um componente. A ideia central
+ * é simples mas poderosa: em vez de cada `Button.module.css`/`Card.module.css`
+ * escrever `color: #EF8C6F` na mão, todos escrevem `color: var(--primary)`.
+ * Se amanhã a marca do Lythra mudar de coral pra outra cor, o valor muda em
+ * UM lugar (aqui) e todo o produto atualiza sozinho — sem caçar hexadecimais
+ * espalhados em dezenas de arquivos.
+ *
+ * DUAS CAMADAS DE TOKEN: PRIMITIVO vs SEMÂNTICO
+ * ---------------------------------------------------------------------------
+ * Repare que este arquivo tem dois "tipos" de declaração:
+ *   1. Tokens PRIMITIVOS — a cor crua em si: `--primary: #ef8c6f;`,
+ *      `--surface: #faf6ef;`. Respondem "qual é a cor?".
+ *   2. Tokens SEMÂNTICOS — um nome que descreve a INTENÇÃO de uso, apontando
+ *      pra um primitivo: `--text-heading: var(--on-surface);`,
+ *      `--surface-card: var(--surface);`. Respondem "pra que serve?".
+ * Por que duas camadas em vez de uma? Indireção é o preço, flexibilidade é o
+ * ganho: um componente de card não deveria precisar saber que a cor de fundo
+ * "correta" hoje é `--surface` — ele só quer "a cor de fundo de um card"
+ * (`--surface-card`). Se um dia o card passar a usar outra cor de fundo,
+ * muda-se o alias aqui, e nenhum componente que já usa `--surface-card`
+ * precisa ser tocado. É a mesma ideia por trás de qualquer camada de
+ * abstração em programação (uma função `calcularFrete()` em vez de escrever
+ * a fórmula em todo lugar que precisa dela).
+ *
+ * A CONVENÇÃO "COR" + "ON-COR" (por que cada cor de fundo tem um par)
+ * ---------------------------------------------------------------------------
+ * Pra cada cor pensada como FUNDO (`--primary`, `--secondary`, `--danger`...)
+ * existe uma variável irmã `--on-<cor>` — a cor de TEXTO/ÍCONE que deve ser
+ * usada quando algo é desenhado POR CIMA daquele fundo (`--on-primary` é o
+ * texto de um botão `primary`, por exemplo). Essa convenção vem do Material
+ * Design (Google) e resolve um problema real: sem ela, é fácil colocar texto
+ * branco sobre um fundo claro "porque ficou bonito" e só descobrir o problema
+ * de legibilidade depois. Com o par obrigatório, a pergunta "qual cor de
+ * texto uso aqui?" já vem respondida.
+ *
+ * TEORIA: CONTRASTE E O PADRÃO WCAG
+ * ---------------------------------------------------------------------------
+ * WCAG (Web Content Accessibility Guidelines) é o padrão internacional de
+ * acessibilidade web. Ele define, para o nível "AA" (o mínimo profissional
+ * esperado), uma RAZÃO DE CONTRASTE mínima de 4.5:1 entre texto e fundo —
+ * abaixo disso, pessoas com baixa visão (e qualquer um sob sol forte na tela
+ * do celular) têm dificuldade real de ler. Essa razão não é "no olho": é
+ * calculada por uma fórmula oficial de LUMINÂNCIA RELATIVA (o quanto uma cor
+ * reflete de luz, numa escala de 0 a 1, ponderando R/G/B de forma diferente
+ * porque o olho humano é mais sensível ao verde do que ao azul, por exemplo).
+ * O resultado prático, e a armadilha mais comum: "cor clara + texto branco"
+ * parece sempre seguro visualmente, mas não é — coral e verde-sálvia (as
+ * cores de marca do Lythra) são CLAROS o bastante pra branco falhar em cima
+ * deles. Os três pares abaixo (`on-primary`, `on-secondary`, `on-danger`)
+ * foram recalculados e corrigidos por causa exatamente disso — ver a nota
+ * original abaixo com os números.
+ *
+ * ---------------------------------------------------------------------------
+ * Copiado de `lythra/Lythra Design System/tokens/colors.css` (Etapa 3), com
+ * uma correção deliberada: `on-primary`, `on-secondary` e `on-danger` do
+ * arquivo original usam texto branco, que falha contraste WCAG AA sobre as
+ * respectivas cores de fundo (fórmula oficial de luminância relativa do
+ * WCAG, não estimativa visual):
  *   - branco sobre `primary` (#EF8C6F):   ~2.43:1 (mínimo exigido: 4.5:1)
  *   - branco sobre `secondary` (#8FB894): ~2.22:1
  *   - branco sobre `danger` (#E2777A):    ~2.94:1
- * As três correções abaixo usam `on-surface` (o marrom escuro já definido neste arquivo) no lugar de
- * branco — cada par recalculado passa AA com folga (~4.6:1, ~4.8:1 e ~5.8:1, respectivamente). Todo
- * o resto dos valores é copiado como está.
+ * As três correções abaixo usam `on-surface` (o marrom escuro já definido
+ * neste arquivo) no lugar de branco — cada par recalculado passa AA com
+ * folga (~4.6:1, ~4.8:1 e ~5.8:1, respectivamente). Todo o resto dos valores
+ * é copiado como está.
  */
 :root {
-  --background: #f3ece0;
-  --surface: #faf6ef;
-  --surface-raised: #fdfbf7;
-  --on-surface: #4a3b31;
-  --on-surface-muted: #8a7a6b;
-  --outline: #dcd0bf;
-  --primary: #ef8c6f;
-  --primary-pressed: #d9755a;
+  /* ---- Neutros: fundo, superfície e texto -------------------------------
+   * "Neutro" aqui não significa cinza puro — é a paleta clay pousando em
+   * tons terrosos quentes (creme/marrom), coerente com a identidade do
+   * produto (ver `Lythra Design System`). São as cores que aparecem em MAIS
+   * área da tela — por isso precisam ser as mais "invisíveis"/confortáveis
+   * de todas, para não competir com o conteúdo real. */
+  --background: #f3ece0; /* fundo mais distante — atrás de tudo */
+  --surface: #faf6ef; /* fundo de card/painel — uma camada "acima" do background */
+  --surface-raised: #fdfbf7; /* fundo de modal/dropdown — mais uma camada acima, ainda mais clara */
+  --on-surface: #4a3b31; /* texto principal sobre qualquer superfície neutra */
+  --on-surface-muted: #8a7a6b; /* texto secundário — mesma família de cor, menor contraste de propósito */
+  --outline: #dcd0bf; /* bordas e divisores sutis */
+
+  /* ---- Cores de marca ("primitivas") ------------------------------------
+   * Cada uma tem seu par `on-<cor>` logo ao lado — nunca uma sem a outra,
+   * reforçando a convenção "cor de fundo sempre vem com sua cor de texto". */
+  --primary: #ef8c6f; /* coral — ação principal (ex.: "Adicionar à Estante") */
+  --primary-pressed: #d9755a; /* mesma cor, mais escura — estado pressionado/hover */
   --on-primary: var(--on-surface); /* era #FFFFFF — falha AA, ver nota acima */
-  --secondary: #8fb894;
+  --secondary: #8fb894; /* sálvia — ações sociais (ex.: "Seguir") */
   --on-secondary: var(--on-surface); /* era #FFFFFF — falha AA, ver nota acima */
-  --accent: #f3c267;
+  --accent: #f3c267; /* âmbar — destaque (ex.: badge "Recomendado") */
   --on-accent: #4a3b31;
-  --success: #8fb894;
-  --on-success: var(
-    --on-surface
-  ); /* alias de --on-secondary: --success é o mesmo valor de --secondary */
-  --warning: #f3c267;
-  --on-warning: #4a3b31; /* alias de --on-accent: --warning é o mesmo valor de --accent */
-  --danger: #e2777a;
+  --success: #8fb894; /* mesmo valor de --secondary: sucesso comunicado com a mesma cor "positiva" */
+  --on-success: var(--on-surface);
+  --warning: #f3c267; /* mesmo valor de --accent */
+  --on-warning: #4a3b31;
+  --danger: #e2777a; /* erro / ação destrutiva */
   --on-danger: var(--on-surface); /* era #FFFFFF — falha AA, ver nota acima */
+
+  /* ---- Tokens semânticos -------------------------------------------------
+   * A partir daqui, nenhum valor novo é inventado — são só ALIASES (nomes
+   * que apontam para os primitivos acima), a camada de "intenção de uso"
+   * explicada no comentário teórico no topo do arquivo. Um componente lê
+   * `var(--text-heading)` sem precisar saber que, hoje, isso é a mesma cor
+   * de `--on-surface`. */
   --text-heading: var(--on-surface);
   --text-body: var(--on-surface);
   --text-muted: var(--on-surface-muted);
-  --text-inverse: var(--surface-raised);
+  --text-inverse: var(--surface-raised); /* texto claro, para usar sobre um fundo escuro (se existir) */
   --text-link: var(--primary-pressed);
   --text-link-hover: var(--primary);
   --surface-page: var(--background);
   --surface-card: var(--surface);
-  --surface-sunken: var(--background);
+  --surface-sunken: var(--background); /* área "afundada" visualmente (ex.: trilho de um input) */
   --border-subtle: var(--outline);
   --border-default: var(--outline);
   --accent-primary: var(--primary);
   --accent-primary-hover: var(--primary-pressed);
   --accent-secondary: var(--secondary);
-  --focus-ring: var(--primary);
+  --focus-ring: var(--primary); /* contorno de foco de teclado — acessibilidade, nunca removido em componente algum */
 }

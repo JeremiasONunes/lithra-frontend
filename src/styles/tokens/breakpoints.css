@@ -1,10 +1,48 @@
 /*
- * Não vem do `Lythra Design System` (o kit não define breakpoints) — criado nesta etapa, conforme
- * `02-plano-mestre.md` (Etapa 3). Mobile é a base, sem media query; os dois breakpoints marcam onde
- * o layout ganha mais espaço (tablet) e vira desktop. CSS custom properties não podem ser usadas
- * dentro de `@media (min-width: ...)` diretamente (limitação da spec) — os valores abaixo são a
- * referência documentada; cada `@media` escreve o pixel por extenso, mas sempre um destes dois
- * valores, nunca um terceiro valor solto.
+ * ============================================================================
+ * TOKENS DE BREAKPOINT (responsividade) — teoria e organização
+ * ============================================================================
+ *
+ * "MOBILE FIRST": POR QUE A BASE DO CSS É O CELULAR, NÃO O DESKTOP
+ * ---------------------------------------------------------------------------
+ * "Mobile first" é uma estratégia de escrita de CSS, não só uma preferência
+ * de design: o layout PADRÃO (sem nenhuma `@media query`) é o do celular —
+ * geralmente uma coluna, elementos empilhados. Só a partir daí, usando
+ * `@media (min-width: ...)`, o CSS vai ACRESCENTANDO regras pra telas
+ * maiores (mais colunas, sidebar em vez de barra inferior, etc.). Por que
+ * essa ordem, e não o contrário ("desktop first", com `max-width`)?
+ *   1. Simplicidade do CSS resultante: é mais fácil ACRESCENTAR estilo
+ *      conforme o espaço cresce do que REMOVER/desfazer estilo de desktop
+ *      pra caber numa tela pequena.
+ *   2. Prioridade de conteúdo: escrever primeiro pro celular obriga a
+ *      decidir logo o que é essencial numa tela pequena — o "extra" só
+ *      aparece quando já sobra espaço, em vez de tentar espremer tudo que
+ *      cabia no desktop pra caber depois.
+ * Por isso este projeto define só DOIS breakpoints — os pontos a partir dos
+ * quais o layout GANHA mais espaço (tablet) e depois vira desktop — nunca um
+ * breakpoint "pra baixo" a partir do celular (não existe tela menor que o
+ * celular sendo suportada aqui).
+ *
+ * POR QUE ESTE ARQUIVO NÃO É USADO DIRETO DENTRO DE `@media`
+ * ---------------------------------------------------------------------------
+ * Esta é uma limitação real e pouco intuitiva da especificação CSS: um
+ * custom property (`var(--breakpoint-tablet)`) NÃO PODE ser usado dentro da
+ * CONDIÇÃO de uma `@media query` —
+ *     @media (min-width: var(--breakpoint-tablet)) { ... }   ← isto NÃO funciona
+ * O motivo é a ORDEM em que o navegador processa as coisas: ele precisa
+ * decidir QUAIS regras de `@media` se aplicam ANTES de montar a árvore de
+ * elementos e resolver o valor de cada custom property (que é calculado por
+ * elemento, durante a cascata — um conceito de "depois"). Uma media query
+ * inteira, portanto, precisa de um valor ESTÁTICO, conhecido antes mesmo de
+ * qualquer elemento existir — e uma variável CSS, por definição, só é
+ * resolvida depois disso. Por isso os valores abaixo são só a REFERÊNCIA
+ * documentada (pra todo mundo usar o mesmo número); cada `@media` no projeto
+ * escreve o pixel por extenso (`@media (min-width: 768px)`), mas sempre um
+ * destes dois valores — nunca um terceiro valor solto e não documentado.
+ *
+ * ---------------------------------------------------------------------------
+ * Não vem do `Lythra Design System` (o kit não define breakpoints) — criado
+ * na Etapa 3 (`02-plano-mestre.md`).
  */
 :root {
   --breakpoint-tablet: 768px; /* usar em @media (min-width: 768px) */

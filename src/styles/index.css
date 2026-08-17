@@ -6,4 +6,4 @@
 @import './tokens/spacing.css';
 @import './tokens/effects.css';
 @import './tokens/breakpoints.css';
-@import './scrollbar.css';
+@import './tokens/scrollbar.css';

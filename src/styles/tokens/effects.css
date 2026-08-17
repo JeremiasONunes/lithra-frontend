@@ -1,18 +1,98 @@
-/* Copiado de `lythra/Lythra Design System/tokens/effects.css` (Etapa 3), sem alterações — valores de
- * sombra/raio já validados (batem, byte a byte, com os já usados e aprovados no projeto anterior). */
+/*
+ * ============================================================================
+ * TOKENS DE EFEITO (raio, sombra, animação) + RESET GLOBAL — teoria e organização
+ * ============================================================================
+ *
+ * RAIO DE BORDA: UMA ESCALA, NÃO UM VALOR SOLTO POR COMPONENTE
+ * ---------------------------------------------------------------------------
+ * Mesma lógica das outras escalas deste projeto (cor, tipografia, espaço):
+ * em vez de cada componente escolher seu próprio `border-radius`, existe um
+ * conjunto fechado de 4 raios (`sm`/`md`/`lg`/`full`), cada um associado a
+ * uma CATEGORIA de elemento (pequeno, médio, grande, "pílula"/círculo) — não
+ * ao componente específico. Isso é o que garante que todo elemento pequeno
+ * (badge, tag) tenha exatamente o mesmo arredondamento em qualquer tela do
+ * produto, sem ninguém precisar lembrar "que valor eu usei da última vez".
+ * Os aliases `--radius-sm`/`--radius-md`/`--radius-lg`/`--radius-pill`
+ * existem só por compatibilidade de nome com o resto do Design System — são
+ * o MESMO valor de `--radius-clay-*`, nunca um valor diferente (evita a
+ * armadilha real já documentada no projeto anterior: um "override parcial"
+ * onde só alguns componentes usavam o valor "clay" e outros ficavam presos
+ * no raio padrão de uma biblioteca — aqui não existe essa duplicidade).
+ *
+ * TEORIA: COMO UM `box-shadow` FUNCIONA
+ * ---------------------------------------------------------------------------
+ * A sintaxe de uma sombra é `deslocamento-x deslocamento-y desfoque cor`
+ * (mais um `inset` opcional no início). Por exemplo, em
+ * `--shadow-clay-md: -8px -8px 16px rgba(255,255,255,0.7), 8px 8px 16px rgba(174,141,112,0.3);`:
+ *   - `-8px -8px` desloca a PRIMEIRA sombra pra cima-esquerda;
+ *   - `8px 8px` desloca a SEGUNDA sombra pra baixo-direita;
+ *   - `16px` é o quanto essa sombra fica borrada (raio de desfoque);
+ *   - a cor de cada uma é semitransparente (o `0.7`/`0.3` no final do
+ *     `rgba`), pra se misturar suavemente com o fundo, não criar uma borda
+ *     dura.
+ * `box-shadow` aceita MAIS de uma sombra na mesma declaração, separadas por
+ * vírgula — e é exatamente isso que cria o efeito "clay" (também chamado de
+ * neumorfismo): DUAS sombras opostas ao mesmo tempo, uma clara nascendo de
+ * um canto e uma escura do canto oposto, simulando uma fonte de luz batendo
+ * na superfície e fazendo o elemento parecer esculpido/em relevo, em vez de
+ * só "flutuando" sobre um fundo plano (que seria o efeito de uma sombra só,
+ * escura, do tipo mais comum na web).
+ *
+ * `--shadow-clay-pressed`/`--shadow-clay-inset`: A DIFERENÇA DO `inset`
+ * ---------------------------------------------------------------------------
+ * A palavra-chave `inset` no início de uma sombra INVERTE onde ela aparece:
+ * em vez de projetada PRA FORA do elemento (elevando-o visualmente), a
+ * sombra é desenhada PRA DENTRO — cria a sensação de uma superfície
+ * afundada/entalhada, não elevada. É assim que este projeto resolve dois
+ * estados visuais diferentes com a mesma técnica:
+ *   - `--shadow-clay-pressed`: um botão sendo clicado parece "afundar" —
+ *     natural pra dar feedback tátil de que o clique registrou.
+ *   - `--shadow-clay-inset`: um campo de texto (`Input`) parece "entalhado"
+ *     na superfície ao redor — reforça visualmente "aqui você digita
+ *     PRA DENTRO", diferente de um botão, que "sai PRA FORA".
+ *
+ * CURVAS DE ANIMAÇÃO (`cubic-bezier`) — POR QUE NÃO "LINEAR"
+ * ---------------------------------------------------------------------------
+ * Uma transição `linear` (velocidade constante do início ao fim) parece
+ * mecânica — nada no mundo físico real acelera e desacelera de forma
+ * perfeitamente constante. `cubic-bezier(x1, y1, x2, y2)` descreve uma curva
+ * de velocidade ao longo do tempo; os dois tokens aqui usam curvas já
+ * "prontas" e amplamente testadas pela indústria (não valores inventados):
+ *   - `--ease-standard` (`cubic-bezier(0.4, 0, 0.2, 1)`): acelera rápido no
+ *     início e desacelera suavemente no fim — o padrão de "movimento
+ *     natural" mais usado em interfaces (é literalmente a curva padrão do
+ *     Material Design).
+ *   - `--ease-out` (`cubic-bezier(0, 0, 0.2, 1)`): começa DEVAGAR (sem
+ *     aceleração brusca) e desacelera até o fim — ótima pra algo que está
+ *     "chegando" na tela (uma sombra crescendo ao passar o mouse, por
+ *     exemplo), porque não dá um "solavanco" visual logo no primeiro
+ *     instante.
+ * `--duration-fast`/`base`/`slow` seguem a mesma lógica de escala fechada
+ * das outras categorias de token — 3 durações permitidas, não qualquer
+ * número de milissegundos.
+ *
+ * ---------------------------------------------------------------------------
+ * Copiado de `lythra/Lythra Design System/tokens/effects.css` (Etapa 3), sem
+ * alterações — valores de sombra/raio já validados (batem, byte a byte, com
+ * os já usados e aprovados no projeto anterior).
+ */
 :root {
+  /* Raio — do mais discreto (badge) ao "pílula"/círculo completo. */
   --radius-clay-sm: 16px;
   --radius-clay-md: 24px;
   --radius-clay-lg: 32px;
-  --radius-clay-full: 999px;
+  --radius-clay-full: 999px; /* maior que qualquer elemento real — sempre vira um círculo/pílula perfeito */
   --radius-sm: var(--radius-clay-sm);
   --radius-md: var(--radius-clay-md);
   --radius-lg: var(--radius-clay-lg);
   --radius-pill: var(--radius-clay-full);
+
+  /* Sombra "clay" — sempre em par (clara + escura), ver teoria acima. */
   --shadow-clay-sm: -4px -4px 8px rgba(255, 255, 255, 0.7), 4px 4px 8px rgba(174, 141, 112, 0.25);
   --shadow-clay-md: -8px -8px 16px rgba(255, 255, 255, 0.7), 8px 8px 16px rgba(174, 141, 112, 0.3);
   --shadow-clay-lg:
     -12px -12px 32px rgba(255, 255, 255, 0.6), 12px 12px 32px rgba(174, 141, 112, 0.35);
+  /* `inset` — sombra pra DENTRO do elemento, não pra fora (ver teoria acima). */
   --shadow-clay-pressed:
     inset -6px -6px 12px rgba(255, 255, 255, 0.5), inset 6px 6px 12px rgba(174, 141, 112, 0.3);
   --shadow-clay-inset:
@@ -20,6 +100,8 @@
   --shadow-sm: var(--shadow-clay-sm);
   --shadow-md: var(--shadow-clay-md);
   --shadow-lg: var(--shadow-clay-lg);
+
+  /* Curvas de aceleração e duração — ver teoria acima. */
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
   --duration-fast: 150ms;
@@ -27,10 +109,30 @@
   --duration-slow: 300ms;
 }
 
+/*
+ * RESET GLOBAL — o único CSS deste arquivo que não é `:root`/token.
+ * Fica aqui (não em `index.css`) porque é importado junto com os tokens, na
+ * mesma "fundação visual" da Etapa 3 — e porque parte dele já DEPENDE de
+ * tokens definidos acima/no `colors.css` (ex.: `var(--surface-page)`).
+ */
+
+/* `box-sizing: border-box` muda o que `width`/`height` significam: por
+ * padrão (`content-box`), `width: 200px` mede só o CONTEÚDO — padding e
+ * borda são somados por cima, então um elemento com padding acaba maior do
+ * que os 200px declarados. Com `border-box`, os 200px já incluem padding e
+ * borda — o elemento nunca "cresce sozinho" quando alguém adiciona um
+ * padding depois. É considerado o padrão sensato pela quase totalidade dos
+ * projetos modernos (aplicado a TODO elemento, `*`, incluindo pseudo-
+ * elementos `::before`/`::after`, que herdam do `*` normalmente). */
 * {
   box-sizing: border-box;
 }
 
+/* Estilo-base do documento inteiro — a "folha em branco" sobre a qual todo
+ * componente é desenhado depois. `margin: 0` remove a margem padrão que
+ * navegadores aplicam em `<body>` por herança de folhas de estilo muito
+ * antigas (existiria um respiro em volta da página inteira, fora do
+ * controle de qualquer componente, se não fosse zerado aqui). */
 body {
   background: var(--surface-page);
   color: var(--text-body);
@@ -38,6 +140,9 @@ body {
   margin: 0;
 }
 
+/* Todo link do produto nasce sem sublinhado (o clay já usa cor + peso pra
+ * indicar "isto é clicável", ver Design System) e com peso semibold — só
+ * ganha sublinhado no hover, como reforço extra de que é interativo. */
 a {
   color: var(--text-link);
   text-decoration: none;
