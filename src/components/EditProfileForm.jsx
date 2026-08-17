@@ -8,6 +8,7 @@ import { useAtualizarPerfil } from '../hooks/useAtualizarPerfil'
 import { Button } from './Button'
 import { Card } from './Card'
 import { Input } from './Input'
+import { PrivacyToggle } from './PrivacyToggle'
 import { Textarea } from './Textarea'
 import { UserAvatar } from './UserAvatar'
 import buttonStyles from '../styles/components/Button.module.css'
@@ -31,6 +32,9 @@ const esquema = z.object({
  * Ao salvar, sincroniza `AuthContext` via `onSalvo` (quem chama, `EditarPerfilPage`, decide o que
  * fazer com o usuário atualizado) — sem isso, `UserMenu`/qualquer outro lugar que lê
  * `useAuth().usuario` ficaria com nome/foto desatualizados até um novo login.
+ * "Estante pública" reaproveita `PrivacyToggle` (Etapa 18) — mesmo controle usado em
+ * `ConfiguracoesPage`, única implementação da UI de privacidade no projeto ("mesma fonte de estado,
+ * não duas", Checklist Técnico da Etapa 18).
  * @param {{ usuario: object, onSalvo: (usuario: object) => void }} props
  */
 function EditProfileForm({ usuario, onSalvo }) {
@@ -103,10 +107,7 @@ function EditProfileForm({ usuario, onSalvo }) {
           {...register('nome')}
         />
         <Textarea label="Bio" id="bio" error={errors.bio?.message} {...register('bio')} />
-        <label className={styles.checkboxCampo}>
-          <input type="checkbox" className={styles.checkbox} {...register('estantePublica')} />
-          Estante pública
-        </label>
+        <PrivacyToggle {...register('estantePublica')} />
         {erroGeral ? (
           <p role="alert" className={styles.erroGeral}>
             {erroGeral}
