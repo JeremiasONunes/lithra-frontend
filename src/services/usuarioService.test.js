@@ -81,6 +81,24 @@ describe('usuarioService', () => {
     expect(encontrado?.ativo).toBe(false)
   })
 
+  // `ativar` — adição fora do escopo original da Etapa 19 (Gestão de Usuários), a pedido do
+  // responsável do projeto; ver `progresso-implementacao.md`.
+  it('ativar reverte uma conta desativada, sem alterar mais nada do registro', async () => {
+    await usuarioService.desativar('usuario-2')
+
+    const reativado = await usuarioService.ativar('usuario-2')
+    expect(reativado.ativo).toBe(true)
+    expect(reativado.email).toBe('lucas@exemplo.com')
+
+    const encontrado = await usuarioService.buscarPorId('usuario-2')
+    expect(encontrado?.ativo).toBe(true)
+  })
+
+  it('ativar em conta já ativa não quebra (idempotente)', async () => {
+    const reativado = await usuarioService.ativar('usuario-1')
+    expect(reativado.ativo).toBe(true)
+  })
+
   it('dado criado sobrevive a uma releitura simulando reload (nova leitura do localStorage)', async () => {
     await usuarioService.criar({
       nome: 'Persistente',

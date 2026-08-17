@@ -43,6 +43,24 @@ function LivroLink({ livro, className, children }) {
   )
 }
 
+/** Resumo de uma linha, usado só pelo modo `compacto` (Etapa 19: `RecentActivityCompactList`) —
+ * texto puro, sem link/nota/resenha, pra caber numa lista densa do Dashboard Administrativo. */
+function resumirAtividade(atividade, livro) {
+  const titulo = livro?.titulo ?? 'um livro'
+  switch (atividade.tipo) {
+    case 'avaliacao':
+      return `avaliou ${titulo}`
+    case 'progresso':
+      return `está lendo ${titulo}`
+    case 'adicao-estante':
+      return `adicionou ${titulo} à estante`
+    case 'post-livre':
+      return atividade.texto ? 'publicou uma atualização' : `compartilhou ${titulo}`
+    default:
+      return 'teve uma atividade'
+  }
+}
+
 /**
  * Um evento da timeline — conteúdo varia por `atividade.tipo` (avaliação, progresso, adição à
  * estante, post livre), reaproveitando `RatingStars`/`BookCoverThumb`/`ReadingProgressBar` já
@@ -66,18 +84,33 @@ function LivroLink({ livro, className, children }) {
  * nunca atualizada depois). Incrementado direto em `onComentarioEnviado`, sobrevive fechar/abrir o
  * painel — mesmo raciocínio do mapa local de curtidas em `FeedPage` (sem recarregar o feed inteiro
  * a cada comentário).
+ *
+ * **Modo `compacto`** (Etapa 19, Dashboard Administrativo): uma linha só (avatar + resumo + tempo),
+ * sem nota/resenha/curtir/comentar — não busca avaliação nem comentários (`useAvaliacao`/
+ * `useComentariosDaAtividade` recebem `null`, mesma técnica de "não buscar até precisar" já usada
+ * pros comentários). Continua o mesmo componente (não um componente novo) porque o roadmap desta
+ * etapa pede explicitamente "reaproveitando `ActivityCard` em modo compacto".
  * @param {{
  *   atividade: object,
  *   autor?: { nome: string, fotoUrl?: string },
  *   livro?: object,
  *   usuarios?: object[],
- *   curtidoPeloUsuarioAtual: boolean,
- *   onCurtir: () => void,
+ *   curtidoPeloUsuarioAtual?: boolean,
+ *   onCurtir?: () => void,
+ *   compacto?: boolean,
  * }} props
  */
-function ActivityCard({ atividade, autor, livro, usuarios, curtidoPeloUsuarioAtual, onCurtir }) {
+function ActivityCard({
+  atividade,
+  autor,
+  livro,
+  usuarios,
+  curtidoPeloUsuarioAtual,
+  onCurtir,
+  compacto = false,
+}) {
   const { dado: avaliacao } = useAvaliacao(
-    atividade.tipo === 'avaliacao' ? atividade.avaliacaoId : null,
+    atividade.tipo === 'avaliacao' && !compacto ? atividade.avaliacaoId : null,
   )
 
   const [comentariosAbertos, setComentariosAbertos] = useState(false)
@@ -86,7 +119,19 @@ function ActivityCard({ atividade, autor, livro, usuarios, curtidoPeloUsuarioAtu
     dado: comentarios,
     carregando: carregandoComentarios,
     recarregar: recarregarComentarios,
-  } = useComentariosDaAtividade(comentariosAbertos ? atividade.id : null)
+  } = useComentariosDaAtividade(!compacto && comentariosAbertos ? atividade.id : null)
+
+  if (compacto) {
+    return (
+      <div className={styles.linhaCompacta}>
+        <UserAvatar name={autor?.nome ?? 'Usuário'} src={autor?.fotoUrl} size="sm" />
+        <p className={styles.descricaoCompacta}>
+          <strong>{autor?.nome ?? 'Usuário'}</strong> {resumirAtividade(atividade, livro)}
+        </p>
+        <span className={styles.tempoCompacto}>{formatarTempoRelativo(atividade.criadoEm)}</span>
+      </div>
+    )
+  }
 
   return (
     <Card className={styles.card}>

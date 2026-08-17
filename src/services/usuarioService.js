@@ -187,6 +187,15 @@ async function desativar(id) {
   return salvarPatch(id, { ativo: false })
 }
 
+/** Reverte `desativar` — reativa uma conta desativada (moderação, Gestão de Usuários). Adição fora
+ * do escopo original da Etapa 19 (o roadmap só pede a ação de desativar), a pedido do responsável do
+ * projeto; ver `progresso-implementacao.md`. Simétrico a `desativar`: só alterna `ativo`, nenhum
+ * outro dado do usuário muda. */
+async function ativar(id) {
+  await delay(300)
+  return salvarPatch(id, { ativo: true })
+}
+
 const usuarioService = {
   listar,
   buscarPorId,
@@ -196,6 +205,7 @@ const usuarioService = {
   criar,
   atualizar,
   desativar,
+  ativar,
 }
 
 export { usuarioService }

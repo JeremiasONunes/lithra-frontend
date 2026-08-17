@@ -1,13 +1,17 @@
 import { AdminLayout } from '../components/AdminLayout'
-import { PlaceholderPage } from '../components/PlaceholderPage'
 import { PublicLayout } from '../components/PublicLayout'
 import { ReaderLayout } from '../components/ReaderLayout'
 import { RouteErrorBoundary } from '../components/RouteErrorBoundary'
 import { AcessoNaoAutorizadoPage } from '../pages/AcessoNaoAutorizadoPage'
+import { AdminCatalogPage } from '../pages/AdminCatalogPage'
+import { AdminDashboardPage } from '../pages/AdminDashboardPage'
+import { AdminSettingsPage } from '../pages/AdminSettingsPage'
+import { AdminUsersPage } from '../pages/AdminUsersPage'
 import { BookPage } from '../pages/BookPage'
 import { BuscarLivroPage } from '../pages/BuscarLivroPage'
 import { BuscaPage } from '../pages/BuscaPage'
 import { CadastroPage } from '../pages/CadastroPage'
+import { ConfiguracoesPage } from '../pages/ConfiguracoesPage'
 import { DescobrirPage } from '../pages/DescobrirPage'
 import { EditarPerfilPage } from '../pages/EditarPerfilPage'
 import { EstantePage } from '../pages/EstantePage'
@@ -27,14 +31,14 @@ import { RequireRole } from './guards/RequireRole'
 
 /**
  * Toda a árvore de rotas do produto, declarada num só lugar — nenhuma rota "pertence" a uma
- * feature. Cada rota ainda não implementada aponta pra `PlaceholderPage`; etapas futuras (18-19)
- * substituem só o `element` da rota correspondente pela tela real, sem tocar na estrutura da árvore
- * — `/`, `/login`, `/cadastro`, `/recuperar-senha` (Etapa 9), `/nao-autorizado` (Etapa 10), `*`
- * (Etapa 11), `/livros/:livroId`/`/buscar-livro` (Etapa 12), `/estante` (Etapa 13), `/feed`
+ * feature. `/`, `/login`, `/cadastro`, `/recuperar-senha` (Etapa 9), `/nao-autorizado` (Etapa 10),
+ * `*` (Etapa 11), `/livros/:livroId`/`/buscar-livro` (Etapa 12), `/estante` (Etapa 13), `/feed`
  * (Etapa 14), `/descobrir`/`/busca`/`/recomendados` (Etapa 15), `/perfil/:username` (tratado como
  * `usuario.id`, não um campo `username` próprio)/`/perfil/editar`/`/perfil/:username/seguidores`/
- * `/perfil/:username/seguindo` (Etapa 16) e `/estatisticas`/`/estatisticas/relatorio-anual`/
- * `/meta-leitura` (Etapa 17) já ganharam a tela final.
+ * `/perfil/:username/seguindo` (Etapa 16), `/estatisticas`/`/estatisticas/relatorio-anual`/
+ * `/meta-leitura` (Etapa 17), `/configuracoes` (Etapa 18) e `/admin`/`/admin/catalogo`/
+ * `/admin/usuarios`/`/admin/configuracoes` (Etapa 19) já ganharam a tela final — as 24 telas de
+ * produto (Fases 1-3) estão completas; só restam as etapas de qualidade transversal (20-22).
  *
  * Separado de `AppRoutes.jsx` (não `createBrowserRouter` aqui) só pra `AppRoutes.test.jsx` poder
  * montar um `createMemoryRouter` próprio, com URL inicial controlada por teste — e pra manter
@@ -83,7 +87,7 @@ const routeConfig = [
             element: <RelatorioAnualPage />,
           },
           { path: '/meta-leitura', element: <MetaLeituraPage /> },
-          { path: '/configuracoes', element: <PlaceholderPage title="Configurações" /> },
+          { path: '/configuracoes', element: <ConfiguracoesPage /> },
         ],
       },
       {
@@ -92,13 +96,10 @@ const routeConfig = [
           {
             element: <AdminLayout />,
             children: [
-              { path: '/admin', element: <PlaceholderPage title="Painel administrativo" /> },
-              { path: '/admin/catalogo', element: <PlaceholderPage title="Catálogo" /> },
-              { path: '/admin/usuarios', element: <PlaceholderPage title="Usuários" /> },
-              {
-                path: '/admin/configuracoes',
-                element: <PlaceholderPage title="Configurações administrativas" />,
-              },
+              { path: '/admin', element: <AdminDashboardPage /> },
+              { path: '/admin/catalogo', element: <AdminCatalogPage /> },
+              { path: '/admin/usuarios', element: <AdminUsersPage /> },
+              { path: '/admin/configuracoes', element: <AdminSettingsPage /> },
             ],
           },
         ],

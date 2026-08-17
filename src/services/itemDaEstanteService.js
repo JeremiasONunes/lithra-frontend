@@ -205,6 +205,15 @@ async function buscarPorUsuarioELivro(usuarioId, livroId) {
   return getAll().find((item) => item.usuarioId === usuarioId && item.livroId === livroId)
 }
 
+/** Todos os itens de estante que referenciam um livro, de qualquer usuário — espelha
+ * `avaliacaoService.listarPorLivro` (Etapa 12). Usado por `useMesclarLivros` (Etapa 19) pra
+ * reatribuir os itens do livro duplicado pro livro principal antes de remover o duplicado, sem
+ * deixar `livroId` órfão apontando pra um registro que não existe mais. */
+async function listarPorLivro(livroId) {
+  await delay(300)
+  return getAll().filter((item) => item.livroId === livroId)
+}
+
 async function criar(dados) {
   await delay(400)
   const itens = getAll()
@@ -264,6 +273,7 @@ const itemDaEstanteService = {
   listarPorUsuario,
   buscarPorId,
   buscarPorUsuarioELivro,
+  listarPorLivro,
   criar,
   atualizar,
   remover,

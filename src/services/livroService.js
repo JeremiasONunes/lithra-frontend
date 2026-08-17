@@ -237,6 +237,25 @@ async function atualizar(id, dados) {
   return atualizado
 }
 
+/** Remove um livro do catálogo (Etapa 19: mesclagem de duplicados) — só a linha do próprio livro.
+ * Reatribuir `avaliacoes`/`itensDaEstante` que referenciavam este id é responsabilidade de quem
+ * chama (`useMesclarLivros`), não deste service: `livroService` nunca importa outro
+ * `entidadeService.js` (evita o primeiro import cruzado entre dois services do projeto — hoje só
+ * existe `avaliacaoService → livrosFixture`, um sentido só, e é só a fixture, não o service). */
+async function remover(id) {
+  await delay(300)
+  const livros = getAll()
+
+  if (!livros.some((livro) => livro.id === id)) {
+    throw new MockServiceError('Livro não encontrado.')
+  }
+
+  writeCollection(
+    COLECAO,
+    livros.filter((livro) => livro.id !== id),
+  )
+}
+
 const livroService = {
   listar,
   buscarPorId,
@@ -244,6 +263,7 @@ const livroService = {
   listarEmDestaque,
   criar,
   atualizar,
+  remover,
 }
 
 export { livroService, livrosFixture }

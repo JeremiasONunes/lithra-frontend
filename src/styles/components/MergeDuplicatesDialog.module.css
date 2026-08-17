@@ -1,0 +1,66 @@
+.corpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.aviso {
+  color: var(--on-surface);
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+.vazio {
+  color: var(--on-surface-muted);
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 240px;
+  overflow-y: auto;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.legenda {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-sm);
+  color: var(--on-surface);
+  padding: 0;
+}
+
+.opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--on-surface);
+  font-size: var(--text-sm);
+  padding: var(--space-2);
+  border-radius: var(--radius-clay-sm);
+}
+
+.opcao:hover {
+  background: var(--background);
+}
+
+.autor {
+  color: var(--on-surface-muted);
+}
+
+.erroGeral {
+  color: var(--danger);
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+.acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}

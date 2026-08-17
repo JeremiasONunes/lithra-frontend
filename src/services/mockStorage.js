@@ -11,6 +11,7 @@ const COLECOES = [
   'comentariosDoFeed',
   'seguimentos',
   'metasDeLeitura',
+  'configuracaoDoSistema',
 ]
 
 function chaveDe(colecao) {

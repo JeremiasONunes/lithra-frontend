@@ -1,0 +1,7 @@
+/* Mesma grade responsiva de `EstatisticasPage.module.css` (`.tiles`, Etapa 17) — `auto-fit`/
+ * `minmax` já resolve mobile→desktop sem precisar de `@media`. */
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-4);
+}
