@@ -1,3 +1,7 @@
+/* Mesma teoria de `LoginForm.module.css` pro `max-width` do card (só um
+ * pouco mais largo, 380px vs. 360px — o Cadastro tem 4 campos + checkbox de
+ * termos, um pouco mais "denso" que o Login de 2 campos, então ganha um
+ * respiro extra). */
 .card {
   width: 100%;
   max-width: 380px;
@@ -27,6 +31,11 @@
   gap: var(--space-1);
 }
 
+/* `align-items: flex-start` (não `center`, o padrão do resto do projeto
+ * pra linhas de ícone+texto) — de propósito: o texto do aceite de termos
+ * pode quebrar em 2-3 linhas em telas estreitas, e alinhar ao TOPO mantém
+ * o checkbox "ancorado" junto da primeira linha de texto, em vez de
+ * flutuar no meio vertical do bloco inteiro quando o texto quebra. */
 .termos {
   display: flex;
   align-items: flex-start;
@@ -43,9 +52,22 @@
   margin-top: 2px;
 }
 
-/* `<button>` por baixo (abre o modal de Termos, não navega — não é um `Link`), mas visualmente
- * idêntico a um link de texto sublinhado, sem nenhum resquício de aparência de botão do navegador
- * (`appearance: none` + reset completo de fundo/borda/margem). */
+/*
+ * TEORIA: `appearance: none` — TIRANDO O ESTILO NATIVO DE UM ELEMENTO DE FORMULÁRIO
+ * ---------------------------------------------------------------------------
+ * Elementos de formulário (`<button>`, `<input>`, `<select>`...) vêm com uma
+ * aparência PRÓPRIA do sistema operacional/navegador por padrão — um
+ * `<button>` sem CSS nenhum já tem borda, fundo cinza claro e cursor de
+ * mão, herdados do tema nativo. `appearance: none` desliga essa aparência
+ * de fábrica, devolvendo ao elemento uma "folha em branco" — é o que
+ * permite que este `<button>` (necessário aqui por razões de semântica e
+ * de formulário, ver o comentário em `CadastroForm.jsx` sobre `type="button"`)
+ * pareça visualmente um LINK sublinhado comum, sem nenhum resquício de
+ * "cara de botão". O restante das propriedades (`background: none`,
+ * `border: none`, `margin: 0`, `padding: 0`, `font: inherit`) completa essa
+ * limpeza — cada uma remove um pedaço específico do estilo nativo que
+ * `appearance: none` sozinho não cobre em todos os navegadores.
+ */
 .linkTermos {
   appearance: none;
   display: inline;
@@ -63,6 +85,20 @@
   color: var(--text-link-hover);
 }
 
+/*
+ * TEORIA: `:focus-visible` x `:focus` — FOCO SÓ QUANDO FAZ SENTIDO MOSTRAR
+ * ---------------------------------------------------------------------------
+ * `:focus` aplica a regra sempre que o elemento está focado — inclusive
+ * depois de um CLIQUE DE MOUSE, quando o contorno de foco é, pra maioria
+ * das pessoas, visualmente desnecessário (o clique já mostrou onde a
+ * atenção está). `:focus-visible` é mais seletivo: o navegador só aplica a
+ * regra quando ele PRÓPRIO decide que um indicador visual é útil — tipicamente
+ * navegação por TECLADO (`Tab`), quando não há outro sinal visual de onde o
+ * foco está. Resultado prático: quem navega com mouse não vê um contorno
+ * "sobrando" a cada clique; quem navega por teclado continua enxergando
+ * claramente qual elemento está ativo — acessibilidade sem comprometer a
+ * limpeza visual pra quem usa mouse.
+ */
 .linkTermos:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;

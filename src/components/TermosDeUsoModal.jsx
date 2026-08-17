@@ -4,8 +4,24 @@ import styles from '../styles/components/TermosDeUsoModal.module.css'
 /**
  * Conteúdo estático dos Termos de Uso e Privacidade, alinhado à Lei Geral de Proteção de Dados
  * (Lei nº 13.709/2018 — LGPD): identifica o controlador, a base legal do tratamento, os dados
- * coletados e os direitos do titular (Art. 18 da LGPD). Compõe `Modal` (Etapa 4) — o `Modal` já
- * cobre foco/`Esc`/`aria-*`, este componente só traz o texto.
+ * coletados e os direitos do titular (Art. 18 da LGPD).
+ *
+ * TEORIA: "CASCA" (SHELL) x "CONTEÚDO" — COMPOSIÇÃO EM VEZ DE HERANÇA
+ * ---------------------------------------------------------------------------
+ * Este componente compõe `Modal` (Etapa 4) em vez de reimplementar sozinho
+ * qualquer parte de "ser um modal". Isso ilustra um princípio central de
+ * React: preferir COMPOSIÇÃO (um componente usa outro componente como
+ * "caixa" ao redor do seu próprio conteúdo) a reescrever comportamento já
+ * pronto. `Modal` já resolve todo o trabalho difícil e repetitivo de
+ * acessibilidade — fechar com `Esc`, mover o foco do teclado pra dentro do
+ * diálogo ao abrir e de volta pra fora ao fechar, `role="dialog"`,
+ * `aria-modal`, `aria-labelledby` apontando pro título — e `TermosDeUsoModal`
+ * não precisa saber NADA disso. A única responsabilidade que sobra aqui é
+ * a mais simples possível: que texto mostrar. Se um dia outro modal de
+ * texto longo for necessário (por exemplo, uma Política de Cookies), o
+ * padrão a seguir é exatamente este — um componente pequeno, só de
+ * conteúdo, compondo o mesmo `Modal` já testado.
+ *
  * @param {{ open: boolean, onClose: () => void }} props
  */
 function TermosDeUsoModal({ open, onClose }) {

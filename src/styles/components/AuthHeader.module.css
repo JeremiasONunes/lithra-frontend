@@ -1,3 +1,8 @@
+/* `justify-content: space-between` empurra os dois grupos de filhos diretos
+ * (a marca `.marca` e o link `.entrar`) pras extremidades opostas do
+ * cabeçalho, com qualquer espaço sobrando ficando NO MEIO dos dois — é o
+ * jeito padrão em flexbox de resolver "um elemento na ponta esquerda, outro
+ * na ponta direita, sem calcular posição/margem manualmente". */
 .header {
   display: flex;
   align-items: center;
@@ -26,10 +31,31 @@
   color: var(--primary);
 }
 
-/* Mesmo visual de pílula do `Button` `ghost`/`sm` (display/padding/raio/tipografia), CSS próprio em
- * vez de importar as classes de `Button.module.css` — de propósito, sem nenhuma regra de `:hover`:
- * é só a cor do texto que muda (herdada do reset global `a:hover`, `tokens/effects.css`), sem o
- * fundo claro que o `ghost` normalmente ganha ao passar o mouse. */
+/*
+ * TEORIA: ESPECIFICIDADE CSS — POR QUE ESTE LINK TEM CSS PRÓPRIO, NÃO O DO `Button`
+ * ---------------------------------------------------------------------------
+ * O link "Entrar" tem a MESMA forma visual de pílula do `Button` variante
+ * `ghost`/`sm`, mas escrito com classes próprias (`.entrar`), não
+ * importando `Button.module.css`. O motivo é uma armadilha real de CSS já
+ * encontrada neste projeto: o reset global de `a:hover` (definido em
+ * `tokens/effects.css`, aplicado a QUALQUER link do produto) tem
+ * especificidade `0,1,1` (uma pseudo-classe + um elemento). Se este link
+ * usasse a classe `.ghost` do `Button` (especificidade `0,1,0`, só uma
+ * classe), o reset global de `a:hover` GANHARIA da regra de hover do
+ * `ghost` — porque `0,1,1` é maior que `0,1,0` na cascata CSS, não importa
+ * a ORDEM em que as regras foram escritas ou importadas. O resultado visual
+ * seria um fundo claro herdado do `ghost` aparecendo sozinho, sem a cor de
+ * texto que o `ghost` também deveria trazer — visualmente quebrado.
+ *
+ * A solução aqui: escrever a MESMA aparência (padding/raio/tipografia) numa
+ * classe própria, DE PROPÓSITO sem nenhuma regra de `:hover` — a cor muda
+ * no hover só porque HERDA do reset global `a:hover` (que já tem
+ * especificidade suficiente pra sempre se aplicar), sem competir com nada.
+ * É uma lição prática de que "cascata CSS" não é só sobre ORDEM das
+ * regras — especificidade (contada em `(IDs, classes/pseudo-classes/
+ * atributos, elementos)`) decide o empate mesmo quando a ordem sozinha
+ * sugeriria outro vencedor.
+ */
 .entrar {
   display: inline-flex;
   align-items: center;

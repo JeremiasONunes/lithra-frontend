@@ -1,3 +1,13 @@
+/*
+ * Idêntico a `LoginPage.module.css` — mesma teoria de centralização flex
+ * nos dois eixos (`align-items` + `justify-content` + `flex: 1`), ver
+ * comentário lá. Repetir a mesma regra CSS aqui, em vez de tentar
+ * "economizar" compartilhando uma classe entre as duas páginas, é
+ * intencional: Login e Cadastro são páginas conceitualmente diferentes, que
+ * hoje têm o mesmo layout por coincidência — se um dia precisarem divergir
+ * (por exemplo, Cadastro ganhar uma coluna lateral), elas já são arquivos
+ * independentes, sem nenhum acoplamento a desfazer.
+ */
 .wrapper {
   flex: 1;
   display: flex;

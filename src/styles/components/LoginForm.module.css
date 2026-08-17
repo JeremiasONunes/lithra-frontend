@@ -1,3 +1,17 @@
+/*
+ * TEORIA: POR QUE UM CARD DE FORMULÁRIO TEM `max-width`, NÃO 100% DA TELA
+ * ---------------------------------------------------------------------------
+ * `width: 100%` (preenche o espaço do pai) combinado com `max-width: 360px`
+ * (nunca mais largo que isso) é o padrão de "responsivo com teto": numa
+ * tela de celular estreita, o card ocupa a largura disponível; numa tela de
+ * desktop larga, ele PARA de crescer em 360px, em vez de esticar até virar
+ * uma linha larguíssima de campos de formulário. Um campo de e-mail com
+ * 1000px de largura não fica mais fácil de preencher — só fica estranho
+ * visualmente. 360px é deliberadamente mais estreito que
+ * `--container-narrow` (680px, para texto corrido): um formulário de login
+ * é ainda mais compacto que um bloco de leitura, porque cada campo é uma
+ * linha curta, não um parágrafo.
+ */
 .card {
   width: 100%;
   max-width: 360px;
@@ -21,7 +35,10 @@
   gap: var(--space-4);
 }
 
-/* Temporário — ver comentário em LoginForm.jsx. */
+/* Temporário — ver comentário em LoginForm.jsx. `border: 1px dashed` (em vez
+ * de sólida) é uma convenção visual comum pra sinalizar "isto não é parte
+ * definitiva da interface" — o tracejado comunica "provisório" antes mesmo
+ * de ler o texto dentro da caixa. */
 .credenciaisTeste {
   display: flex;
   flex-direction: column;

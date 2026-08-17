@@ -1,3 +1,7 @@
+/* Coluna centralizada, texto centralizado — o layout natural de um "hero"
+ * (bloco de abertura de destaque): tudo alinhado num eixo vertical só,
+ * chamando atenção pra sequência logo → título → subtítulo → botão, na
+ * ordem em que o olho deve ler. */
 .hero {
   display: flex;
   flex-direction: column;
@@ -16,6 +20,24 @@
   margin-bottom: var(--space-2);
 }
 
+/*
+ * TEORIA: UM "TYPE STYLE" É A COMBINAÇÃO DE VÁRIOS TOKENS, NÃO UM SÓ
+ * ---------------------------------------------------------------------------
+ * Repare que `.titulo` não usa só `font-size` — ele combina QUATRO tokens
+ * de tipografia ao mesmo tempo (`--font-display`, `--weight-display`,
+ * `--text-2xl`, `--leading-tight`) pra formar UM estilo de texto completo.
+ * Isso é proposital: tamanho de fonte sozinho não define a "personalidade"
+ * de um título — a MESMA fonte de corpo, no mesmo tamanho grande, pareceria
+ * errada aqui. É a combinação de família + peso + tamanho + altura de linha
+ * que faz um título "parecer título" (ver a teoria completa de cada um
+ * desses tokens em `tokens/typography.css`).
+ *
+ * `max-width: 640px` NUM TÍTULO: A MESMA TEORIA DE LEGIBILIDADE DE
+ * `--container-narrow` (ver `tokens/spacing.css`), aplicada a UM elemento
+ * específico em vez de à página inteira — sem isso, numa tela ultra larga,
+ * "Sua estante, seu ritmo." esticaria numa única linha gigante, perdendo o
+ * impacto visual de um título quebrado em 1-2 linhas equilibradas.
+ */
 .titulo {
   font-family: var(--font-display);
   font-weight: var(--weight-display);

@@ -1,5 +1,28 @@
-/* Mobile first: uma coluna; a partir de 768px (--breakpoint-tablet, ver tokens/breakpoints.css —
- * `var()` não funciona dentro de `@media`, por isso o valor é escrito por extenso aqui) vira grade. */
+/*
+ * TEORIA: MOBILE FIRST NA PRÁTICA — POR QUE A REGRA-BASE JÁ É UMA COLUNA
+ * ---------------------------------------------------------------------------
+ * A regra `.grade` FORA de qualquer `@media` é o layout MOBILE — uma coluna
+ * só (`flex-direction: column`), o formato mais seguro pra uma tela
+ * estreita, onde 4 cards lado a lado nunca caberiam de forma legível. Só a
+ * partir de `min-width: 768px` (tablet — ver `tokens/breakpoints.css` para
+ * a teoria de por que este valor não pode vir de `var()` aqui) o layout
+ * GANHA a grade de 4 colunas. Essa ordem — regra simples primeiro, telas
+ * maiores "ganham" complexidade depois — é a essência de mobile first (ver
+ * a teoria completa em `tokens/breakpoints.css`).
+ *
+ * `display: grid` + `repeat(4, 1fr)`: POR QUE GRID, NÃO FLEXBOX, AQUI
+ * ---------------------------------------------------------------------------
+ * Flexbox (usado no resto deste arquivo, e na maior parte do projeto) é
+ * ótimo pra alinhar itens numa ÚNICA DIREÇÃO por vez. CSS Grid entra quando
+ * o layout precisa pensar em LINHAS E COLUNAS ao mesmo tempo — aqui, os
+ * 4 cards de funcionalidade formam uma grade verdadeira, onde cada coluna
+ * deve ter EXATAMENTE a mesma largura que as outras. `repeat(4, 1fr)`
+ * significa "4 colunas, cada uma ocupando uma fração (`1fr`) igual do
+ * espaço disponível" — o jeito mais direto de expressar "4 colunas do
+ * mesmo tamanho" em CSS, sem calcular porcentagem na mão
+ * (`calc(100% / 4)`, que Grid substitui com uma sintaxe pensada
+ * exatamente pra isso).
+ */
 .grade {
   display: flex;
   flex-direction: column;

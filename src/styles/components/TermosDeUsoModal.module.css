@@ -1,6 +1,21 @@
-/* Rola aqui dentro (não em `.dialog` do `Modal`, Etapa 4 — evita mexer num componente
+/*
+ * TEORIA: ROLAGEM CONTIDA (`max-height` + `overflow-y: auto`)
+ * ---------------------------------------------------------------------------
+ * Um texto legal como este é longo — sem limite de altura, o MODAL INTEIRO
+ * cresceria até sair da tela, empurrando o botão de fechar pra fora da
+ * área visível em telas menores. `max-height: 60vh` (60% da altura da
+ * JANELA — `vh` é uma unidade relativa ao viewport, diferente de `%`, que
+ * seria relativa ao elemento pai) trava o quanto este bloco de conteúdo
+ * pode crescer; `overflow-y: auto` faz o navegador desenhar uma barra de
+ * rolagem PRÓPRIA desse bloco assim que o conteúdo ultrapassa esse limite —
+ * o modal em si (cabeçalho com título + botão fechar) fica sempre visível e
+ * fixo, só o texto interno rola. `padding-right` dá um respiro entre o
+ * texto e essa barra de rolagem, pra letras não ficarem coladas nela.
+ *
+ * Rola aqui dentro (não em `.dialog` do `Modal`, Etapa 4 — evita mexer num componente
  * compartilhado por outras telas) — texto longo, precisa de scroll próprio. A cor da barra em si
- * vem do reset global (`styles/scrollbar.css`), aplicado a qualquer contêiner com scroll. */
+ * vem do reset global (`tokens/scrollbar.css`), aplicado a qualquer contêiner com scroll.
+ */
 .conteudo {
   display: flex;
   flex-direction: column;

@@ -1,3 +1,6 @@
+/* Mesma estrutura de coluna centralizada de `LandingHero.module.css`, numa
+ * escala menor (menos elementos, menos respiro) — reforça visualmente que
+ * este é um bloco de fechamento da página, não a abertura de destaque. */
 .wrapper {
   display: flex;
   flex-direction: column;

@@ -1,3 +1,17 @@
+/*
+ * TEORIA: `flex: 1` — POR QUE ESTE WRAPPER "CRESCE" PRA PREENCHER A TELA
+ * ---------------------------------------------------------------------------
+ * `flex: 1` só faz sentido quando o ELEMENTO PAI é um flex container — aqui,
+ * o pai é `PublicLayout` (`display: flex; flex-direction: column`), que
+ * empilha `AuthHeader` em cima e o conteúdo da rota (esta página) embaixo.
+ * Sem `flex: 1`, este `<div>` ocupraria só a altura do próprio conteúdo
+ * (`LandingHero` + `LandingFeatures` + `LandingCTA`), e se esse conteúdo for
+ * mais baixo que a tela do usuário, sobraria um vazio embaixo. Com
+ * `flex: 1`, o wrapper é instruído a CRESCER e ocupar todo o espaço vertical
+ * restante depois do cabeçalho — o mesmo mecanismo (`flex-grow`, do qual
+ * `flex: 1` é um atalho) que faz um item de flexbox "esticar" pra preencher
+ * o espaço disponível entre irmãos.
+ */
 .wrapper {
   display: flex;
   flex-direction: column;

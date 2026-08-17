@@ -1,3 +1,16 @@
+/*
+ * TEORIA: CENTRALIZAR NOS DOIS EIXOS COM FLEXBOX
+ * ---------------------------------------------------------------------------
+ * `align-items: center` centraliza no eixo TRANSVERSAL do flex container
+ * (aqui, com `flex-direction` padrão `row`, o eixo VERTICAL); `justify-content:
+ * center` centraliza no eixo PRINCIPAL (o eixo HORIZONTAL). Usar os dois ao
+ * mesmo tempo é o jeito mais direto em CSS moderno de centralizar um card
+ * tanto na horizontal quanto na vertical dentro do espaço disponível — sem
+ * precisar do truque antigo de `position: absolute` + `transform: translate(-50%, -50%)`.
+ * `flex: 1` (mesma teoria de `LandingPage.module.css`) garante que "o espaço
+ * disponível" seja a altura inteira da tela abaixo do `AuthHeader`, não só a
+ * altura do próprio card.
+ */
 .wrapper {
   flex: 1;
   display: flex;
