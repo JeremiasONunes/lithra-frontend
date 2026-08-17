@@ -48,9 +48,18 @@ const esquema = z.object({
  * Layout em duas colunas a partir de 768px (capa à esquerda, título/autor/gênero à direita) pra
  * reduzir a altura total do card — sinopse, número de páginas/ano e o botão de envio ocupam a
  * largura cheia abaixo das duas colunas (`.spanTudo`). Abaixo de 768px vira uma coluna só.
- * @param {{ tituloInicial?: string, onCadastrado: (livro: object) => void }} props
+ *
+ * `mensagem` — texto de abertura do card, customizável: o fallback de busca sem resultado
+ * (`BuscarLivroPage`) usa a frase padrão ("Não encontramos esse livro..."), mas o atalho direto
+ * "Cadastrar livro" do cabeçalho da mesma página (sem busca nenhuma por trás) passa uma frase
+ * neutra — mesmo formulário, texto de contexto diferente conforme de onde foi aberto.
+ * @param {{ tituloInicial?: string, mensagem?: string, onCadastrado: (livro: object) => void }} props
  */
-function ManualBookForm({ tituloInicial = '', onCadastrado }) {
+function ManualBookForm({
+  tituloInicial = '',
+  mensagem = 'Não encontramos esse livro. Cadastre manualmente:',
+  onCadastrado,
+}) {
   const [erroGeral, setErroGeral] = useState(null)
   const [arrastando, setArrastando] = useState(false)
   const { cadastrar, enviando } = useCadastrarLivro(onCadastrado)
@@ -99,7 +108,7 @@ function ManualBookForm({ tituloInicial = '', onCadastrado }) {
 
   return (
     <Card className={styles.card}>
-      <p className={styles.aviso}>Não encontramos esse livro. Cadastre manualmente:</p>
+      <p className={styles.aviso}>{mensagem}</p>
       <form onSubmit={handleSubmit(aoSubmeter)} className={styles.formulario} noValidate>
         <div className={styles.campoCapa}>
           <span className={styles.labelCapa}>Capa do livro</span>
